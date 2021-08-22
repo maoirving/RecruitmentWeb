@@ -1,0 +1,14 @@
+body {
+  font-size: 14px;
+}
+ul {
+  list-style: none;
+}
+a {
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s;
+  &:hover {
+    color: #0aa7a7;
+  }
+}
