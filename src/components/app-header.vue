@@ -9,7 +9,7 @@
               v-for="(item, index) in menus.left"
               :key="index"
             >
-              <router-link :to="item">{{ item.name }}</router-link>
+              <router-link :to="item.url">{{ item.name }}</router-link>
             </li>
           </ul>
         </el-col>
