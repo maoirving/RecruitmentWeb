@@ -19,41 +19,17 @@ $cursor-disabled: not-allowed;
 */
 
 /* Theme Color */
-$c-theme-default: rgba(0, 0, 0, 0.15) !default;
-$c-theme-primary: #77ad1a !default;
-$c-theme-primary-dark: #557d10 !default;
-$c-theme-success: #28a745 !default;
-$c-theme-warning: #ffc107 !default;
-$c-theme-danger: #dc3545 !default;
-$c-theme-white: #fff !default;
-$c-theme-black: #000 !default;
-$c-theme-orange: #f18e00 !default;
-$c-theme-gray: #c2c2c2 !default;
-$c-theme-brown: #784700 !default;
-
-/* Element theme color */
-$c-font-base: #000 !default;
-$c-bg-white: #fff !default;
-$c-bg-gray-light: #d9d9d9 !default;
-$c-bg-gray-lighter: #f2f2f2 !default;
-$c-bg-green: #00db54 !default;
-$c-bg-green-light: #acdd8b !default;
-$c-bg-blue: #1a85c8 !default;
-$c-box-shadow-gray-light: rgba(0, 0, 0, 0.05) !default;
-$c-border-gray: #dcdcdc !default;
-$c-placeholder: #c2c2c2 !default;
-
-$c-green: #77ae1b !default;
-
-$c-link: $c-theme-primary;
-$c-link-hover: $c-font-base;
-$c-nav-hover: $c-theme-primary-dark;
-$c-img-holder-bg: $c-theme-default;
-$c-widget-bg-gray-lighter: $c-bg-gray-lighter;
-$c-box-bg-green: $c-bg-green;
-$c-box-bg-green-light: $c-bg-green-light;
-$c-box-bg-blue: $c-bg-blue;
-$c-box-bg-gray-lighter: $c-bg-gray-lighter;
+$c-default: #212529 !default;
+$c-primary: #0aa7a7 !default;
+$c-primary-dark: #557d10 !default;
+$c-success: #28a745 !default;
+$c-warning: #ffc107 !default;
+$c-danger: #dc3545 !default;
+$c-white: #fff !default;
+$c-black: #000 !default;
+$c-orange: #f18e00 !default;
+$c-gray: #c2c2c2 !default;
+$c-brown: #784700 !default;
 
 /**
  * Gap
@@ -63,8 +39,3 @@ $gap: 15px;
 /**
  * Size
 */
-
-$base-height: 0.48rem;
-$small-height: 0.4rem;
-$select-height: 0.4rem;
-$medium-height: 0.5rem;

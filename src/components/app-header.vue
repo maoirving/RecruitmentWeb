@@ -10,7 +10,9 @@
                 v-for="(item, index) in menus.left"
                 :key="index"
               >
-                <router-link :to="item.url">{{ item.name }}</router-link>
+                <router-link class="text-link-white" :to="item.url">{{
+                  item.name
+                }}</router-link>
               </li>
             </ul>
           </el-col>
@@ -21,7 +23,9 @@
                 v-for="(item, index) in menus.right"
                 :key="index"
               >
-                <router-link :to="item.url">{{ item.name }}</router-link>
+                <router-link class="text-link-white" :to="item.url">{{
+                  item.name
+                }}</router-link>
               </li>
             </ul>
           </el-col>

@@ -5,10 +5,17 @@ ul {
   list-style: none;
 }
 a {
-  color: #fff;
-  text-decoration: none;
+  color: $c-primary;
   transition: all 0.3s;
+  text-decoration: none;
+}
+
+.card-link {
+  color: $c-default;
+}
+.text-link-white {
+  color: $c-white;
   &:hover {
-    color: #0aa7a7;
+    color: $c-primary;
   }
 }

@@ -1,35 +1,47 @@
 <template>
   <div class="job-card">
-    <div class="job-card-content">
-      <div class="title-holder">
-        <h4 class="content-title">高级前端开发工程师</h4>
-        <div class="content-tag">12-20k</div>
-      </div>
+    <router-link class="card-link" :to="`/job/detail/${job.id}`">
+      <div class="job-card-content">
+        <div class="title-holder">
+          <h4 class="content-title">{{ job.name }}</h4>
+          <div class="content-tag">{{ job.salary }}</div>
+        </div>
 
-      <p class="content-text">
-        <span>厦门 ｜ 经验不限 ｜ 本科</span>
-      </p>
-    </div>
-    <div class="job-card-footer">
-      <div class="image-holder">
-        <img
-          src="https://img.bosszhipin.com/beijin/upload/com/workfeel/20210722/5a4f1e3b0ad261d54b110a73195759e0cc87ad5622462609c129bd8d4ad5c5ab.jpg"
-          alt=""
-        />
+        <p class="content-text">
+          <span>{{ description }}</span>
+        </p>
       </div>
+      <div class="job-card-footer">
+        <div class="image-holder">
+          <img :src="job.imageUrl" alt="" />
+        </div>
 
-      <div class="text-holder">
-        <span class="footer-info">
-          字节跳动科技有限公司
-        </span>
-        <span class="footer-info">已上市</span>
+        <div class="text-holder">
+          <span class="footer-info">
+            {{ job.company.name }}
+          </span>
+          <span class="footer-info">{{ job.company.financingStage }}</span>
+        </div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    job: {
+      type: Object,
+      default: () => {}
+    }
+  },
+
+  computed: {
+    description() {
+      return `${this.job.city} ｜ ${this.job.experience} ｜ ${this.job.education}`
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
