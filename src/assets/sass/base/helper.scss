@@ -1,0 +1,17 @@
+.unstyle-list {
+  padding: 0;
+  margin: 0;
+}
+
+// flex
+.flex {
+  display: flex;
+  &.justify-end {
+    justify-content: flex-end;
+  }
+}
+
+// text
+.text-right {
+  text-align: right;
+}

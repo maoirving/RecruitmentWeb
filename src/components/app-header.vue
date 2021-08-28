@@ -1,30 +1,32 @@
 <template>
   <header class="header-wrapper">
     <div class="container">
-      <el-row class="menu-wrapper" :gutter="20">
-        <el-col :span="16">
-          <ul class="menu-list">
-            <li
-              class="menu-list-item"
-              v-for="(item, index) in menus.left"
-              :key="index"
-            >
-              <router-link :to="item.url">{{ item.name }}</router-link>
-            </li>
-          </ul>
-        </el-col>
-        <el-col :span="8">
-          <ul class="menu-list">
-            <li
-              class="menu-list-item"
-              v-for="(item, index) in menus.right"
-              :key="index"
-            >
-              <router-link :to="item.url">{{ item.name }}</router-link>
-            </li>
-          </ul>
-        </el-col>
-      </el-row>
+      <div class="menu-wrapper">
+        <el-row type="flex" justify="space-between">
+          <el-col :span="16">
+            <ul class="flex unstyle-list menu-list">
+              <li
+                class="menu-list-item"
+                v-for="(item, index) in menus.left"
+                :key="index"
+              >
+                <router-link :to="item.url">{{ item.name }}</router-link>
+              </li>
+            </ul>
+          </el-col>
+          <el-col :span="8">
+            <ul class="flex unstyle-list justify-end menu-list">
+              <li
+                class="menu-list-item"
+                v-for="(item, index) in menus.right"
+                :key="index"
+              >
+                <router-link :to="item.url">{{ item.name }}</router-link>
+              </li>
+            </ul>
+          </el-col>
+        </el-row>
+      </div>
     </div>
   </header>
 </template>
@@ -69,22 +71,21 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+$menu-gap: 10px;
+
 .header-wrapper {
   color: #fff;
-  padding: 10px 0;
+  padding: 15px 0;
   background-color: #414a60;
 
   .menu-wrapper {
-    display: flex;
-    justify-content: space-between;
-    margin-left: -10px;
-    margin-right: -10px;
+    margin-left: (-$menu-gap);
+    margin-right: (-$menu-gap);
 
     .menu-list {
-      display: flex;
       &-item {
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-left: $menu-gap;
+        padding-right: $menu-gap;
       }
     }
   }
