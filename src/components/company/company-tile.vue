@@ -2,23 +2,38 @@
   <div class="company-tile">
     <div class="company-tile-header">
       <div class="image-holder">
-        <img
-          src="https://img.bosszhipin.com/beijin/upload/com/workfeel/20210722/5a4f1e3b0ad261d54b110a73195759e0cc87ad5622462609c129bd8d4ad5c5ab.jpg"
-          alt=""
-        />
+        <img :src="company.imageUrl" alt="" />
       </div>
     </div>
     <div class="company-tile-body">
-      <p>D轮 ｜ 游戏 ｜ 1000人以下</p>
+      <h4 class="plain-tile">
+        {{ company.name }}
+      </h4>
+      <p>{{ description }}</p>
     </div>
     <div class="company-tile-footer">
-      <a class="link" href="#">了解更多</a>
+      <router-link class="link" :to="`company/detail/${company.id}`">
+        <span>了解更多</span>
+        <i class="el-icon-arrow-right"></i>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    company: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  computed: {
+    description() {
+      return `${this.company.financingStage} ｜ ${this.company.category} ｜ ${this.company.staffCount}`
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -9,10 +9,8 @@
             </div>
           </div>
         </swiper-slide>
-        <div>
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
         <div class="swiper-pagination" slot="pagination" />
       </swiper>
     </div>
@@ -25,10 +23,14 @@ export default {
   data() {
     return {
       swiperOption: {
-        slidesPerView: 1.5,
-        spaceBetween: 10,
+        spaceBetween: 8,
+        speed: 500,
         autoplay: true,
         loop: true,
+        loopAdditionalSlides: 3,
+        effect: 'coverflow',
+        slidesPerView: 2.2,
+        centeredSlides: true,
         pagination: {
           el: '.swiper-pagination',
           clickable: true
