@@ -32,6 +32,43 @@ const routes = [
     path: '/company',
     name: 'company',
     component: () => import('@/views/company/index')
+  },
+  {
+    path: '/account',
+    name: 'account',
+    component: () => import('@/views/account/index'),
+    children: [
+      {
+        path: '/account/profile',
+        name: 'profile',
+        component: () => import('@/views/account/profile')
+      },
+      {
+        path: '/account/resume',
+        name: 'resume',
+        component: () => import('@/views/account/resume')
+      },
+      {
+        path: '/account/application',
+        name: 'application',
+        component: () => import('@/views/account/application')
+      },
+      {
+        path: '/account/message',
+        name: 'message',
+        component: () => import('@/views/account/message')
+      },
+      {
+        path: '/account/favorite',
+        name: 'favorite',
+        component: () => import('@/views/account/favorite')
+      },
+      {
+        path: '/account/resetPassword',
+        name: 'resetPassword',
+        component: () => import('@/views/account/resetPassword')
+      }
+    ]
   }
 ]
 

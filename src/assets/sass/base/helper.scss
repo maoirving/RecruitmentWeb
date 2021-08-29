@@ -20,3 +20,19 @@
 .text-right {
   text-align: right;
 }
+// link
+.card-link {
+  color: $c-default;
+}
+.text-link-black {
+  color: $c-default;
+}
+.text-link-white {
+  color: $c-white;
+}
+.text-link-black,
+.text-link-white {
+  &:hover {
+    color: $c-primary;
+  }
+}
