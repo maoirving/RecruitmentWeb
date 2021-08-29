@@ -18,12 +18,7 @@
         </el-row>
       </el-col>
       <el-col :span="6">
-        <h3 class="plain-title">
-          已申请
-        </h3>
-        <div class="apply-list">
-          wo
-        </div>
+        <job-aside />
       </el-col>
     </el-row>
   </app-layout>
@@ -34,13 +29,15 @@ import AppLayout from '@/layout/app-layout'
 import JobSearch from '@/components/search/job-search'
 import JobList from '@/components/job/job-list'
 import JobCard from '@/components/job/job-card'
+import JobAside from '@/components/job/job-aside'
 
 export default {
   components: {
     AppLayout,
     JobSearch,
     JobList,
-    JobCard
+    JobCard,
+    JobAside
   },
   data() {
     return {

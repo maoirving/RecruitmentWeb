@@ -61,6 +61,10 @@ export default {
             url: '/'
           },
           {
+            name: '我的',
+            url: '/account'
+          },
+          {
             name: '注册',
             url: '/register'
           },

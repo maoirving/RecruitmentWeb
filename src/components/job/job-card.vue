@@ -7,7 +7,7 @@
           <div class="content-tag">{{ job.salary }}</div>
         </div>
 
-        <p class="content-text">
+        <p v-if="!isSimpleType" class="content-text">
           <span>{{ description }}</span>
         </p>
       </div>
@@ -20,7 +20,9 @@
           <span class="footer-info">
             {{ job.company.name }}
           </span>
-          <span class="footer-info">{{ job.company.financingStage }}</span>
+          <span v-if="!isSimpleType" class="footer-info">
+            {{ job.company.financingStage }}
+          </span>
         </div>
       </div>
     </router-link>
@@ -30,6 +32,11 @@
 <script>
 export default {
   props: {
+    isSimpleType: {
+      type: Boolean,
+      default: false
+    },
+
     job: {
       type: Object,
       default: () => {}
