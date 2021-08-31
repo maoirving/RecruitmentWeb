@@ -62,7 +62,7 @@ export default {
           },
           {
             name: '我的',
-            url: '/account'
+            url: '/account/profile'
           },
           {
             name: '注册',
