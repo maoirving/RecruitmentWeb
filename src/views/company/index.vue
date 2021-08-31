@@ -1,29 +1,33 @@
 <template>
   <app-layout>
     <el-row class="menu-wrapper" :gutter="20">
-      <el-col :span="16">
-        <h2 class="primary-title">
-          公司列表
-        </h2>
-        <company-search class="mb-2" />
-        <el-row class="flex-wrap" type="flex" :gutter="20">
-          <el-col
-            class="mb-2"
-            :span="8"
-            v-for="(company, index) in companys"
-            :key="index"
-          >
-            <company-tile :company="company" />
-          </el-col>
-        </el-row>
+      <el-col :span="17">
+        <el-card>
+          <h2 class="primary-title">
+            公司列表
+          </h2>
+          <company-search class="mb-2" />
+          <el-row class="flex-wrap" type="flex" :gutter="20">
+            <el-col
+              class="mb-2"
+              :span="8"
+              v-for="(company, index) in companys"
+              :key="index"
+            >
+              <company-tile :company="company" />
+            </el-col>
+          </el-row>
+        </el-card>
       </el-col>
-      <el-col :span="6">
-        <h3 class="plain-title">
-          已申请
-        </h3>
-        <div class="apply-list">
-          wo
-        </div>
+      <el-col :span="7">
+        <el-card>
+          <h3 class="plain-title">
+            已申请
+          </h3>
+          <div class="apply-list">
+            wo
+          </div>
+        </el-card>
       </el-col>
     </el-row>
   </app-layout>

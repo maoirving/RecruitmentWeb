@@ -1,8 +1,10 @@
 <template>
   <app-layout>
-    <block-banner />
-    <block-job />
-    <block-company />
+    <el-card>
+      <block-banner />
+      <block-job />
+      <block-company />
+    </el-card>
   </app-layout>
 </template>
 

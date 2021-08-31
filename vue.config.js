@@ -1,11 +1,4 @@
 module.exports = {
-  css: {
-    loaderOptions: {
-      scss: {
-        additionalData: `@import "~@/assets/sass/utils/variables.scss";`
-      }
-    }
-  },
   chainWebpack: config => {
     config.module
       .rule('import-glob')
@@ -13,5 +6,12 @@ module.exports = {
       .use('import-glob-loader2')
       .loader('import-glob-loader2')
       .end()
+  },
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: `@import "~@/assets/sass/utils/variables.scss";`
+      }
+    }
   }
 }

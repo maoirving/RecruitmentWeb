@@ -1,36 +1,48 @@
 <template>
-  <div class="job-card">
-    <router-link class="card-link" :to="`/job/detail?jobId=${job.id}`">
-      <div class="job-card-content">
-        <div class="title-holder">
-          <h4 class="content-title">{{ job.name }}</h4>
-          <div class="content-tag">{{ job.salary }}</div>
-        </div>
-
-        <p v-if="!isSimpleType" class="content-text">
-          <span>{{ description }}</span>
-        </p>
+  <div class="job-card" @click="toJobDetail">
+    <div class="job-card-content">
+      <div class="title-holder">
+        <h4 class="font-normal text-base text-green-600">
+          {{ job.name }}
+        </h4>
+        <div class="content-tag">{{ job.salary }}</div>
       </div>
-      <div class="job-card-footer">
-        <div class="image-holder">
-          <img :src="job.imageUrl" alt="" />
-        </div>
 
-        <div class="text-holder">
-          <span class="footer-info">
-            {{ job.company.name }}
-          </span>
-          <span v-if="!isSimpleType" class="footer-info">
-            {{ job.company.financingStage }}
-          </span>
-        </div>
-      </div>
-    </router-link>
+      <p v-if="!isSimpleType" class="content-text">
+        <span class="text-xs">{{ description }}</span>
+      </p>
+    </div>
+    <div class="job-card-footer">
+      <el-row type="flex" align="center" :gutter="10">
+        <el-col :span="4">
+          <base-aspect data-ratio="1:1" isCircle with-shadow>
+            <div class="image-holder" @click.stop="toCompanyDetail">
+              <img :src="job.imageUrl" alt="" />
+            </div>
+          </base-aspect>
+        </el-col>
+        <el-col class="flex items-center" :span="20">
+          <div class="text-holder" @click.stop="toCompanyDetail">
+            <span class="footer-info">
+              {{ job.company.name }}
+            </span>
+            <span v-if="!isSimpleType" class="footer-info">
+              {{ job.company.financingStage }}
+            </span>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 
 <script>
+import BaseAspect from '@/components/base/base-aspect'
+
 export default {
+  components: {
+    BaseAspect
+  },
   props: {
     isSimpleType: {
       type: Boolean,
@@ -47,6 +59,16 @@ export default {
     description() {
       return `${this.job.city} ｜ ${this.job.experience} ｜ ${this.job.education}`
     }
+  },
+
+  methods: {
+    toJobDetail() {
+      this.$router.push(`/job/detail?jobId=${this.job.id}`)
+    },
+
+    toCompanyDetail() {
+      this.$router.push(`/company/detail?companyId=${this.job.company.id}`)
+    }
   }
 }
 </script>
@@ -57,6 +79,7 @@ export default {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 1px 1px 5px rgba($color: #000000, $alpha: 0.3);
+  cursor: pointer;
   transition: all 0.3s;
   &:hover {
     transform: translateY(-2px);
@@ -71,19 +94,6 @@ export default {
       }
       .content-tag {
         color: rgb(240, 54, 54);
-      }
-    }
-  }
-  &-footer {
-    display: flex;
-    align-items: center;
-    .image-holder {
-      width: 30px;
-      border-radius: 50%;
-      box-shadow: 1px 1px 5px rgba($color: #000000, $alpha: 0.3);
-      overflow: hidden;
-      img {
-        width: 100%;
       }
     }
   }

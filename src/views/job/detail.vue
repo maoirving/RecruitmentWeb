@@ -105,9 +105,6 @@ export default {
 
 <style lang="scss" scoped>
 .job-detail-wrapper {
-  $gap: 15px;
-  $c-primary: #0aa7a7 !default;
-
   margin-top: $gap;
   margin-bottom: $gap;
   .info-list {
@@ -116,7 +113,7 @@ export default {
       border-bottom: 1px solid #e8e8e8;
       .info-title {
         padding-left: $gap;
-        border-left: 4px solid $c-primary;
+        border-left: 4px solid $c-green-600;
       }
       .content-list {
         &-item {
