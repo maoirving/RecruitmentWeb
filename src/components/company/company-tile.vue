@@ -39,6 +39,7 @@ export default {
 <style lang="scss" scoped>
 .company-tile {
   padding: 18px 12px;
+  background-color: #fff;
   border-radius: 8px;
   box-shadow: 1px 1px 5px rgba($color: #000000, $alpha: 0.3);
   transition: all 0.3s;

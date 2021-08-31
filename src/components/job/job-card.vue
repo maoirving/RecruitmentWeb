@@ -1,6 +1,6 @@
 <template>
   <div class="job-card">
-    <router-link class="card-link" :to="`/job/detail/${job.id}`">
+    <router-link class="card-link" :to="`/job/detail?jobId=${job.id}`">
       <div class="job-card-content">
         <div class="title-holder">
           <h4 class="content-title">{{ job.name }}</h4>
@@ -54,6 +54,7 @@ export default {
 <style lang="scss" scoped>
 .job-card {
   padding: 18px 12px;
+  background-color: #fff;
   border-radius: 8px;
   box-shadow: 1px 1px 5px rgba($color: #000000, $alpha: 0.3);
   transition: all 0.3s;

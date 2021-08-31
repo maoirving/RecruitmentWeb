@@ -17,9 +17,34 @@
   flex-wrap: wrap;
 }
 // text
+.font-normal {
+  font-weight: 400;
+}
+
 .text-right {
   text-align: right;
 }
+.primary-title {
+  font-size: 24px;
+}
+.plain-title {
+  font-size: 18px;
+}
+.small-title {
+  font-size: 14px;
+}
+.description-title {
+  @extend .font-normal;
+  color: $c-primary;
+  padding-bottom: $gap-l;
+  border-bottom: 2px solid $c-primary;
+}
+
+// .content-title {
+//   // @extend .font-normal;
+//   padding-left: $gap;
+//   border-left: 4px solid $c-primary;
+// }
 // link
 .card-link {
   color: $c-default;
@@ -35,4 +60,8 @@
   &:hover {
     color: $c-primary;
   }
+}
+// border
+.border-b-gray {
+  border-bottom: 1px solid #e8e8e8;
 }
