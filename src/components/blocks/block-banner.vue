@@ -1,20 +1,18 @@
 <template>
-  <div class="block-section">
-    <div class="block-banner-wrapper">
-      <swiper class="block-swiper" :options="swiperOption">
-        <swiper-slide v-for="(image, index) in images" :key="index">
-          <div class="slide-card">
-            <div class="image-holder">
-              <img :src="image.imageUrl" alt="" />
-            </div>
+  <section class="block-section block-banner-wrapper">
+    <swiper class="block-swiper" :options="swiperOption">
+      <swiper-slide v-for="(image, index) in images" :key="index">
+        <div class="slide-card">
+          <div class="image-holder">
+            <img :src="image.imageUrl" alt="" />
           </div>
-        </swiper-slide>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-pagination" slot="pagination" />
-      </swiper>
-    </div>
-  </div>
+        </div>
+      </swiper-slide>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination" slot="pagination" />
+    </swiper>
+  </section>
 </template>
 
 <script>
@@ -46,12 +44,10 @@ export default {
             'https://img.alicdn.com/imgextra/i2/6000000004030/O1CN01QjQl901fdmqFx1qIj_!!6000000004030-0-octopus.jpg'
         },
         {
-          imageUrl:
-            'https://a1.alicdn.com/assets/p4p-fallback/mm_12852562_1778064_13670999.jpg'
+          imageUrl: 'https://a1.alicdn.com/assets/p4p-fallback/mm_12852562_1778064_13670999.jpg'
         },
         {
-          imageUrl:
-            'https://a1.alicdn.com/assets/p4p-fallback/mm_12852562_1778064_13674396.jpg'
+          imageUrl: 'https://a1.alicdn.com/assets/p4p-fallback/mm_12852562_1778064_13674396.jpg'
         }
       ]
     }
@@ -61,6 +57,7 @@ export default {
 
 <style lang="scss" scoped>
 .block-banner-wrapper {
+  padding-top: 0;
   .block-swiper {
     .slide-card {
       background-color: pink;

@@ -3,7 +3,8 @@
     class="base-aspect"
     :class="[
       { 'rounded-full': isCircle },
-      { 'overflow-hidden': isCircle },
+      { 'overflow-hidden': isCircle || isRoundedRectangle },
+      { 'rounded-lg': isRoundedRectangle },
       {
         shadow: withShadow
       }
@@ -26,6 +27,10 @@ export default {
       default: '1:1'
     },
     isCircle: {
+      type: Boolean,
+      default: false
+    },
+    isRoundedRectangle: {
       type: Boolean,
       default: false
     },

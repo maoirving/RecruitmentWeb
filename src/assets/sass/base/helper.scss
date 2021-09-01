@@ -92,14 +92,17 @@
   color: $c-green-600;
 }
 // border
+.rounded-lg {
+  border-radius: 0.5rem;
+}
 .rounded-full {
   border-radius: 9999px;
 }
 .border-gray {
-  border: $border-gray;
+  border: $solid-gray;
 }
 .border-b-gray {
-  border-bottom: $border-gray;
+  border-bottom: $solid-gray;
 }
 
 // shadow

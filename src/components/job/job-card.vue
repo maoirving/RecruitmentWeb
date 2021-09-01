@@ -16,9 +16,9 @@
       </p>
     </div>
     <div class="job-card-footer">
-      <el-row type="flex" align="center" :gutter="10">
+      <el-row type="flex" align="middle" :gutter="10">
         <el-col :span="4">
-          <base-aspect data-ratio="1:1" isCircle with-shadow>
+          <base-aspect data-ratio="1:1" is-circle with-shadow>
             <div class="image-holder" @click.stop="toCompanyDetail">
               <img :src="job.company.imageUrl" />
             </div>
@@ -29,14 +29,16 @@
             <span class="truncate text-gray-600 footer-text main-text">
               {{ job.company.name }}
             </span>
-            <i class="v-line"></i>
-            <span class="truncate footer-text short-text">
-              {{ job.company.category }}
-            </span>
-            <i class="v-line"></i>
-            <span v-if="!isSimpleType" class="truncate footer-text short-text">
-              {{ job.company.financingStage }}
-            </span>
+            <template v-if="!isSimpleType">
+              <i class="v-line"></i>
+              <span class="truncate footer-text short-text">
+                {{ job.company.category }}
+              </span>
+              <i class="v-line"></i>
+              <span class="truncate footer-text short-text">
+                {{ job.company.financingStage }}
+              </span>
+            </template>
           </div>
         </el-col>
       </el-row>
@@ -79,12 +81,12 @@ export default {
 .job-card {
   padding: $gap-sm $gap;
   background-color: $c-white;
-  border-radius: $gap-xs;
+  border-radius: 8px;
   cursor: pointer;
-  border: $border-gray;
+  border: $solid-gray;
   transition: $transition;
   &:hover {
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
   }
   &-header {
@@ -96,7 +98,6 @@ export default {
       max-width: 80%;
       font-weight: 400;
       color: $c-green-600;
-      margin-bottom: 0;
     }
     .header-tag {
       color: $c-red-400;
@@ -104,10 +105,6 @@ export default {
   }
   &-body {
     margin-bottom: 8px;
-
-    .body-content {
-      margin-bottom: 0;
-    }
   }
   &-footer {
     .image-holder {

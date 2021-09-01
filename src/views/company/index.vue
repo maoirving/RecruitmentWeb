@@ -14,7 +14,7 @@
               v-for="(company, index) in companys"
               :key="index"
             >
-              <company-tile :company="company" />
+              <company-card :company="company" />
             </el-col>
           </el-row>
         </el-card>
@@ -36,13 +36,13 @@
 <script>
 import AppLayout from '@/layout/app-layout'
 import companySearch from '@/components/search/company-search'
-import CompanyTile from '@/components/company/company-tile'
+import CompanyCard from '@/components/company/company-card'
 
 export default {
   components: {
     AppLayout,
     companySearch,
-    CompanyTile
+    CompanyCard
   },
   data() {
     return {

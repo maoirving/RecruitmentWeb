@@ -26,7 +26,6 @@
 <script>
 import AppLayout from '@/layout/app-layout'
 import JobSearch from '@/components/search/job-search'
-import JobList from '@/components/job/job-list'
 import JobCard from '@/components/job/job-card'
 import JobAside from '@/components/job/job-aside'
 
@@ -34,7 +33,6 @@ export default {
   components: {
     AppLayout,
     JobSearch,
-    JobList,
     JobCard,
     JobAside
   },
