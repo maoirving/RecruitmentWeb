@@ -1,7 +1,7 @@
 <template>
   <section class="block-section">
     <div class="block-header">
-      <h3 class="title">{{ title }}</h3>
+      <h3 class="text-xl">{{ title }}</h3>
       <router-link class="link-btn" :to="url">
         <span>查看全部</span><i class="el-icon-arrow-right icon"></i>
       </router-link>
@@ -33,9 +33,6 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: $gap-lg;
-    .title {
-      font-size: 20px;
-    }
     .link-btn {
       margin-left: auto;
       font-size: 13px;

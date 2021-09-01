@@ -1,7 +1,10 @@
 <template>
   <div class="job-card" @click="toJobDetail">
     <div class="job-card-header">
-      <h4 class="text-base truncate header-title">
+      <h4
+        class="text-base truncate header-title"
+        :class="{ 'text-green-600': !isSimpleType }"
+      >
         {{ job.name }}
       </h4>
       <div class="header-tag">{{ job.salary }}</div>
@@ -26,7 +29,10 @@
         </el-col>
         <el-col class="flex items-center" :span="20">
           <div class="truncate text-holder" @click.stop="toCompanyDetail">
-            <span class="truncate text-gray-600 footer-text main-text">
+            <span
+              class="truncate text-gray-600 footer-text main-text"
+              :class="{ 'max-w-full': isSimpleType }"
+            >
               {{ job.company.name }}
             </span>
             <template v-if="!isSimpleType">
@@ -97,7 +103,6 @@ export default {
     .header-title {
       max-width: 80%;
       font-weight: 400;
-      color: $c-green-600;
     }
     .header-tag {
       color: $c-red-400;
@@ -117,7 +122,7 @@ export default {
         display: inline-block;
         font-size: 13px;
         &.main-text {
-          max-width: 90px;
+          max-width: 126px;
         }
         &.short-text {
           max-width: 50px;

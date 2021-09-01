@@ -1,28 +1,28 @@
 <template>
   <div class="job-aside-wrapper">
-    <div class="resume-box">
-      <h3 class="plain-title">
-        我的简历
-      </h3>
-      <div class="btn-holder">
-        <el-button type="success">查看简历</el-button>
-        <el-button type="primary">上传简历</el-button>
+    <el-card>
+      <div class="title-holder">
+        <h3 class="text-lg title-text">
+          已申请的职位
+        </h3>
+        <router-link class="text-link title-link" to="/account/applied">
+          <span>
+            查看更多
+          </span>
+          <i class="el-icon-d-arrow-right"></i>
+        </router-link>
       </div>
-    </div>
-    <h3 class="plain-title">
-      已申请
-    </h3>
-    <div class="apply-list">
-      <el-row class="flex-wrap" type="flex" :gutter="20">
+
+      <el-row class="flex-wrap applied-list" type="flex" :gutter="20">
         <el-col
-          class="mb-2"
+          class="applied-list-item"
           v-for="(job, index) in appliedJobs"
           :key="index"
         >
           <job-card is-simple-type :job="job" />
         </el-col>
       </el-row>
-    </div>
+    </el-card>
   </div>
 </template>
 
@@ -33,49 +33,11 @@ export default {
   components: {
     JobCard
   },
-  data() {
-    return {
-      appliedJobs: [
-        {
-          name: '高级前端开发工程师',
-          salary: '12-20k',
-          city: '厦门',
-          experience: '经验不限',
-          education: '本科',
-          imageUrl:
-            'https://img.bosszhipin.com/beijin/upload/com/workfeel/20210722/5a4f1e3b0ad261d54b110a73195759e0cc87ad5622462609c129bd8d4ad5c5ab.jpg',
-          company: {
-            name: '字节跳动科技有限公司',
-            financingStage: '已上市'
-          }
-        },
-        {
-          name: '高级前端开发工程师',
-          salary: '12-20k',
-          city: '厦门',
-          experience: '经验不限',
-          education: '本科',
-          imageUrl:
-            'https://img.bosszhipin.com/beijin/upload/com/workfeel/20210722/5a4f1e3b0ad261d54b110a73195759e0cc87ad5622462609c129bd8d4ad5c5ab.jpg',
-          company: {
-            name: '字节跳动科技有限公司',
-            financingStage: '已上市'
-          }
-        },
-        {
-          name: '高级前端开发工程师',
-          salary: '12-20k',
-          city: '厦门',
-          experience: '经验不限',
-          education: '本科',
-          imageUrl:
-            'https://img.bosszhipin.com/beijin/upload/com/workfeel/20210722/5a4f1e3b0ad261d54b110a73195759e0cc87ad5622462609c129bd8d4ad5c5ab.jpg',
-          company: {
-            name: '字节跳动科技有限公司',
-            financingStage: '已上市'
-          }
-        }
-      ]
+
+  props: {
+    appliedJobs: {
+      type: Array,
+      default: () => []
     }
   }
 }
@@ -83,5 +45,26 @@ export default {
 
 <style lang="scss" scoped>
 .job-aside-wrapper {
+  .title-holder {
+    display: flex;
+    align-items: center;
+    padding-bottom: $gap;
+    margin-bottom: $gap;
+    border-bottom: $dashed-gray;
+    .title-link {
+      margin-left: auto;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .applied-list {
+    &-item {
+      margin-bottom: $gap;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 </style>
