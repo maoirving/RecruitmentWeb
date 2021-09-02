@@ -2,7 +2,7 @@
   <block-section title="热门企业" url="/company">
     <template slot="block-content">
       <el-row class="flex-wrap" type="flex" :gutter="20">
-        <el-col class="mb-2" :span="6" v-for="(company, index) in companys" :key="index">
+        <el-col class="mb-3" :span="6" v-for="(company, index) in companys" :key="index">
           <company-card :company="company" />
         </el-col>
       </el-row>

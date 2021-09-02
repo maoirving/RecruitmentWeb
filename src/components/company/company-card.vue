@@ -1,6 +1,6 @@
 <template>
   <div class="company-card">
-    <router-link class="link" :to="`company/detail/${company.id}`">
+    <router-link class="link" :to="`company/detail?companyId=${company.id}`">
       <div class="company-card-header">
         <el-row type="flex" align="middle" :gutter="20">
           <el-col :span="8">
@@ -12,27 +12,30 @@
           </el-col>
           <el-col :span="16">
             <div class="text-holder">
-              <h4 class="text-sm font-normal header-title">
+              <h4
+                class="text-sm font-normal header-title"
+                :class="{ 'text-green-600': !isSimpleType }"
+              >
                 {{ company.name }}
               </h4>
             </div>
           </el-col>
         </el-row>
       </div>
-      <div class="company-card-body">
+      <div class="company-card-body" :class="{ 'mb-2': !isSimpleType }">
         <span class="truncate content-text">
           {{ company.financingStage }}
         </span>
-        <i class="v-line"></i>
+        <el-divider direction="vertical" />
         <span class="truncate content-text">
           {{ company.category }}
         </span>
-        <i class="v-line"></i>
+        <el-divider direction="vertical" />
         <span class="truncate content-text">
           {{ company.staffCount }}
         </span>
       </div>
-      <div class="company-card-footer">
+      <div v-if="!isSimpleType" class="company-card-footer">
         <p>
           <span class="text-green-600">{{ company.jobNumber }}个 </span>
           <span>在招岗位</span>
@@ -50,6 +53,11 @@ export default {
     BaseAspect
   },
   props: {
+    isSimpleType: {
+      type: Boolean,
+      default: false
+    },
+
     company: {
       type: Object,
       default: () => {}
@@ -65,27 +73,24 @@ export default {
 
 <style lang="scss" scoped>
 .company-card {
-  padding: $gap;
-  background-color: #fff;
+  padding: $gap-sm $gap;
+  background-color: $c-white;
+  border: $solid-gray;
   border-radius: 8px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
   transition: all 0.3s;
   &:hover {
-    box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.18);
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
   }
   &-header {
     margin-bottom: 8px;
     .text-holder {
       .header-title {
-        color: $c-green-600;
         letter-spacing: 0.5px;
       }
     }
   }
   &-body {
-    padding-bottom: $gap;
-    border-bottom: $dotted-gray;
     display: flex;
     align-items: center;
     .content-text {
@@ -97,6 +102,7 @@ export default {
   &-footer {
     font-size: 13px;
     padding-top: 8px;
+    border-top: $dotted-gray;
   }
 }
 </style>

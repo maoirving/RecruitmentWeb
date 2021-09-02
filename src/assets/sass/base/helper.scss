@@ -143,15 +143,6 @@
 .text-green-600 {
   color: $c-green-600;
 }
-// line
-.v-line {
-  display: inline-block;
-  width: 1px;
-  height: 12px;
-  vertical-align: middle;
-  background: $c-gray-300;
-  margin: 0 $gap-sm;
-}
 // width
 .max-w-full {
   max-width: 100% !important;

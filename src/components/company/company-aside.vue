@@ -1,7 +1,7 @@
 <template>
-  <aside-wrapper class="aside-container" title="已申请的职位" link="/account/applied">
+  <aside-wrapper class="aside-container" title="最新职位" link="/job">
     <el-row slot="aside-content" class="flex-wrap content-list" type="flex" :gutter="20">
-      <el-col class="content-list-item" v-for="(job, index) in appliedJobs" :key="index">
+      <el-col class="content-list-item" v-for="(job, index) in jobs" :key="index">
         <job-card is-simple-type :job="job" />
       </el-col>
     </el-row>
@@ -19,7 +19,7 @@ export default {
   },
 
   props: {
-    appliedJobs: {
+    jobs: {
       type: Array,
       default: () => []
     }

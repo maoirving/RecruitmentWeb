@@ -2,7 +2,7 @@
   <block-section title="最新职位" url="/job">
     <template slot="block-content">
       <el-row class="flex-wrap" type="flex" :gutter="20">
-        <el-col class="mb-2" v-for="(job, index) in jobs" :key="index" :span="8">
+        <el-col class="mb-3" v-for="(job, index) in jobs" :key="index" :span="8">
           <job-card :job="job" />
         </el-col>
       </el-row>

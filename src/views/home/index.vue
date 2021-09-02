@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <app-layout class="home-page">
     <el-card>
       <block-banner />
       <block-job />
@@ -35,4 +35,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped></style>

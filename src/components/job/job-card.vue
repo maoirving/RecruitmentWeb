@@ -1,10 +1,7 @@
 <template>
   <div class="job-card" @click="toJobDetail">
     <div class="job-card-header">
-      <h4
-        class="text-base truncate header-title"
-        :class="{ 'text-green-600': !isSimpleType }"
-      >
+      <h4 class="text-base truncate header-title" :class="{ 'text-green-600': !isSimpleType }">
         {{ job.name }}
       </h4>
       <div class="header-tag">{{ job.salary }}</div>
@@ -12,9 +9,9 @@
     <div class="job-card-body">
       <p v-if="!isSimpleType" class="body-content">
         <span class="text-xs">{{ job.city }}</span>
-        <i class="v-line"></i>
+        <el-divider direction="vertical" />
         <span class="text-xs">{{ job.experience }}</span>
-        <i class="v-line"></i>
+        <el-divider direction="vertical" />
         <span class="text-xs">{{ job.education }}</span>
       </p>
     </div>
@@ -36,11 +33,11 @@
               {{ job.company.name }}
             </span>
             <template v-if="!isSimpleType">
-              <i class="v-line"></i>
+              <el-divider direction="vertical" />
               <span class="truncate footer-text short-text">
                 {{ job.company.category }}
               </span>
-              <i class="v-line"></i>
+              <el-divider direction="vertical" />
               <span class="truncate footer-text short-text">
                 {{ job.company.financingStage }}
               </span>

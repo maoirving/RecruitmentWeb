@@ -8,18 +8,13 @@
           </h2>
           <job-search class="job-search" />
           <el-row class="flex-wrap" type="flex" :gutter="15">
-            <el-col
-              class="mb-2"
-              :span="12"
-              v-for="(job, index) in jobs"
-              :key="index"
-            >
+            <el-col class="mb-3" :span="12" v-for="(job, index) in jobs" :key="index">
               <job-card :job="job" />
             </el-col>
           </el-row>
         </el-card>
       </el-col>
-      <el-col class="aside-wrapper" :span="7">
+      <el-col class="aside-box" :span="7">
         <job-aside :applied-jobs="appliedJobs" />
       </el-col>
     </el-row>
@@ -61,7 +56,7 @@ export default {
         company: {
           name: '字节跳动科技有限公司',
           imageUrl:
-            'https://img.bosszhipin.com/beijin/upload/com/workfeel/20210722/5a4f1e3b0ad261d54b110a73195759e0cc87ad5622462609c129bd8d4ad5c5ab.jpg',
+            'https://img.bosszhipin.com/beijin/upload/com/logo/20210525/77d60eae41e48b90df64951371a7a07a19f97e2c258c6cead07beaf11928d91b.png?x-oss-process=image/resize,w_120,limit_0',
           category: '计算机',
           financingStage: '已上市'
         }
@@ -82,7 +77,7 @@ export default {
         company: {
           name: '字节跳动科技有限公司',
           imageUrl:
-            'https://img.bosszhipin.com/beijin/upload/com/workfeel/20210722/5a4f1e3b0ad261d54b110a73195759e0cc87ad5622462609c129bd8d4ad5c5ab.jpg'
+            'https://img.bosszhipin.com/beijin/upload/com/logo/20210525/77d60eae41e48b90df64951371a7a07a19f97e2c258c6cead07beaf11928d91b.png?x-oss-process=image/resize,w_120,limit_0'
         }
       }
       for (let i = 0; i < 4; i++) {
@@ -90,6 +85,7 @@ export default {
       }
     }
   },
+
   created() {
     this.init()
   }
@@ -108,7 +104,7 @@ export default {
         margin-bottom: $gap;
       }
     }
-    .aside-wrapper {
+    .aside-box {
       position: sticky;
       top: 0;
     }

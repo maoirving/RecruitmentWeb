@@ -20,6 +20,12 @@
     max-width: 1300px;
   }
 }
+.mb-1 {
+  margin-bottom: $gap-xs;
+}
 .mb-2 {
+  margin-bottom: $gap-sm;
+}
+.mb-3 {
   margin-bottom: $gap;
 }

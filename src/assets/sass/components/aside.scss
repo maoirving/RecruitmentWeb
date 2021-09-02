@@ -1,0 +1,7 @@
+.content-list {
+  &-item {
+    &:not(:last-child) {
+      margin-bottom: $gap;
+    }
+  }
+}

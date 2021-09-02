@@ -4,7 +4,7 @@
       <el-col class="main-content" :span="17">
         <el-card>
           <h2 class="text-2xl description-title main-title">
-            {{ job.name }}
+            Web前端开发工程师
           </h2>
           <div class="info-list">
             <div class="info-list-item" v-for="(info, index) in job.infos" :key="index">
@@ -20,11 +20,7 @@
         </el-card>
       </el-col>
       <el-col class="aside-wrapper" :span="7">
-        <aside-wrapper class="aside-container" title="公司基本信息" link="/account/applied">
-          <template slot="aside-content">
-            <company-card :company="job.company" />
-          </template>
-        </aside-wrapper>
+        <job-aside :applied-jobs="jobs" />
       </el-col>
     </el-row>
   </app-layout>
@@ -35,6 +31,7 @@ import AppLayout from '@/layout/app-layout'
 import JobSearch from '@/components/search/job-search'
 import JobCard from '@/components/job/job-card'
 import AsideWrapper from '@/components/aside/aside-wrapper'
+import JobAside from '@/components/job/job-aside'
 import CompanyCard from '@/components/company/company-card'
 
 export default {
@@ -43,12 +40,12 @@ export default {
     JobSearch,
     JobCard,
     AsideWrapper,
-    CompanyCard
+    CompanyCard,
+    JobAside
   },
   data() {
     return {
       job: {
-        name: 'Web前端开发工程师',
         infos: [
           {
             title: '职位信息',
@@ -98,8 +95,35 @@ export default {
           financingStage: '已上市',
           staffCount: '1000人以上'
         }
+      },
+      jobs: []
+    }
+  },
+
+  methods: {
+    getJobs() {
+      const job = {
+        name: '高级前端开发工程师',
+        salary: '12-20k',
+        city: '厦门',
+        experience: '经验不限',
+        education: '本科',
+        company: {
+          name: '字节跳动科技有限公司',
+          imageUrl:
+            'https://img.bosszhipin.com/beijin/upload/com/logo/20210525/77d60eae41e48b90df64951371a7a07a19f97e2c258c6cead07beaf11928d91b.png?x-oss-process=image/resize,w_120,limit_0',
+          category: '计算机',
+          financingStage: '已上市'
+        }
+      }
+      for (let i = 0; i < 20; i++) {
+        this.jobs.push(job)
       }
     }
+  },
+
+  created() {
+    this.getJobs()
   }
 }
 </script>
