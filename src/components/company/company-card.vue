@@ -1,6 +1,6 @@
 <template>
   <div class="company-card">
-    <router-link class="link" :to="`company/detail?companyId=${company.id}`">
+    <router-link class="link" :to="`/company/detail?companyId=${company.id}`">
       <div class="company-card-header">
         <el-row type="flex" align="middle" :gutter="20">
           <el-col :span="8">

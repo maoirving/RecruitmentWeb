@@ -7,26 +7,47 @@
             {{ job.name }}
           </h2>
           <div class="info-list">
-            <div class="info-list-item" v-for="(info, index) in job.infos" :key="index">
+            <div
+              class="info-list-item"
+              v-for="(info, index) in job.infos"
+              :key="index"
+            >
               <h4 class="text-lg info-title">{{ info.title }}</h4>
               <div class="content-list">
-                <div class="content-list-item" v-for="(item, i) in info.children" :key="i">
-                  <h5 class="text-sm content-title" v-if="item.name">{{ item.name }}：</h5>
+                <div
+                  class="content-list-item"
+                  v-for="(item, i) in info.children"
+                  :key="i"
+                >
+                  <h5 class="text-sm content-title" v-if="item.name">
+                    {{ item.name }}：
+                  </h5>
                   <p class="info-content" v-html="item.content"></p>
                 </div>
               </div>
             </div>
           </div>
+          <div class="btn-holder">
+            <el-button type="primary" @click="showDialog">
+              立即申请
+            </el-button>
+          </div>
         </el-card>
       </el-col>
       <el-col class="aside-wrapper" :span="7">
-        <aside-wrapper class="aside-container" title="公司基本信息" link="/account/applied">
+        <aside-wrapper class="aside-container" title="公司基本信息">
           <template slot="aside-content">
             <company-card :company="job.company" />
           </template>
         </aside-wrapper>
       </el-col>
     </el-row>
+    <div class="dialog-wrapper">
+      <job-apply-dialog
+        :visible.sync="dialogVisible"
+        @close-dialog="dialogVisible = false"
+      />
+    </div>
   </app-layout>
 </template>
 
@@ -36,6 +57,7 @@ import JobSearch from '@/components/search/job-search'
 import JobCard from '@/components/job/job-card'
 import AsideWrapper from '@/components/aside/aside-wrapper'
 import CompanyCard from '@/components/company/company-card'
+import JobApplyDialog from '@/components/job/job-apply-dialog'
 
 export default {
   components: {
@@ -43,7 +65,8 @@ export default {
     JobSearch,
     JobCard,
     AsideWrapper,
-    CompanyCard
+    CompanyCard,
+    JobApplyDialog
   },
   data() {
     return {
@@ -70,20 +93,12 @@ export default {
             children: [
               {
                 name: '公司地址',
-                content: '厦门市湖滨东路11号邮电广通大厦22楼及同安、集美、海沧、翔安办事处'
+                content:
+                  '厦门市湖滨东路11号邮电广通大厦22楼及同安、集美、海沧、翔安办事处'
               },
               {
                 name: '电话',
                 content: '565656565'
-              }
-            ]
-          },
-          {
-            title: '公司信息',
-            children: [
-              {
-                content:
-                  '银联商务有限公司是中国银联控股的，专门从事银行卡受理市场建设和提供综合支付服务的机构，成立于2002年12月。银联商务是首批获得人民银行《支付业务许可证》的支付机构，也是人民银行确定的21家重点支付机构之一。'
               }
             ]
           }
@@ -98,7 +113,14 @@ export default {
           financingStage: '已上市',
           staffCount: '1000人以上'
         }
-      }
+      },
+      dialogVisible: false
+    }
+  },
+
+  methods: {
+    showDialog() {
+      this.dialogVisible = true
     }
   }
 }
@@ -135,6 +157,9 @@ export default {
             }
           }
         }
+      }
+      .btn-holder {
+        text-align: center;
       }
     }
     .aside-wrapper {

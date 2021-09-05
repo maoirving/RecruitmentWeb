@@ -5,7 +5,7 @@
         <h3 class="text-lg title-text">
           {{ title }}
         </h3>
-        <router-link class="text-link title-link" :to="link">
+        <router-link v-if="link" class="text-link title-link" :to="link">
           <span>
             查看更多
           </span>
@@ -52,6 +52,7 @@ export default {
   }
   .aside-content {
     max-height: 400px;
+    overflow: auto;
   }
 }
 </style>

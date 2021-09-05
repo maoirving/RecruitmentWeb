@@ -1,8 +1,5 @@
 <template>
   <div class="profile-wrapper">
-    <h2 class="large-title">
-      个人信息
-    </h2>
     <div class="image-holder">
       <el-upload
         class="avatar-uploader"
@@ -11,7 +8,11 @@
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
       >
-        <el-avatar v-if="profileForm.imageUrl" :size="100" :src="profileForm.imageUrl" />
+        <el-avatar
+          v-if="profileForm.imageUrl"
+          :size="100"
+          :src="profileForm.imageUrl"
+        />
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
     </div>
@@ -27,12 +28,15 @@
       </el-col>
     </el-row>
     <div class="text-right btn-holder">
-      <el-button type="text" @click="showDialog">
+      <el-button @click="showDialog">
         修改个人信息
       </el-button>
     </div>
     <div class="dialog-wrapper">
-      <profile-form-dialog :visible.sync="dialogVisible" @close-dialog="dialogVisible = false" />
+      <profile-form-dialog
+        :visible.sync="dialogVisible"
+        @close-dialog="dialogVisible = false"
+      />
     </div>
   </div>
 </template>
@@ -73,7 +77,8 @@ export default {
         }
       ],
       profileForm: {
-        imageUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+        imageUrl:
+          'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
         name: '毛欧文',
         sex: '男',
         birthday: '1999-01-16',
@@ -93,7 +98,7 @@ export default {
     handleAvatarSuccess() {
       console.log('handleAvatarSuccess')
     },
-    
+
     showDialog() {
       this.dialogVisible = true
     }

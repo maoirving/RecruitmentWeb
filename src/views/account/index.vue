@@ -1,25 +1,32 @@
 <template>
   <app-layout>
-    <el-row class="account-wrapper" :gutter="20">
-      <el-col :span="6">
-        <h2 class="primary-title">我的</h2>
-        <el-menu :default-active="activeIndex" class="el-menu-vertical-demo">
-          <template v-for="(item, index) in accountMenus">
-            <el-menu-item
-              :key="index"
-              :index="item.name"
-              @click="setContent(item)"
-            >
-              <i :class="item.iconClass"></i>
-              <span slot="title">
-                {{ item.title }}
-              </span>
-            </el-menu-item>
-          </template>
-        </el-menu>
+    <el-row class="account-wrapper" :gutter="15">
+      <el-col :span="5">
+        <el-card class="menu-card">
+          <h2 class="text-2xl menu-title">我的</h2>
+          <el-menu class="account-menu" :default-active="activeIndex">
+            <template v-for="(item, index) in accountMenus">
+              <el-menu-item
+                :key="index"
+                :index="item.name"
+                @click="setContent(item)"
+              >
+                <i :class="item.iconClass"></i>
+                <span slot="title">
+                  {{ item.title }}
+                </span>
+              </el-menu-item>
+            </template>
+          </el-menu>
+        </el-card>
       </el-col>
-      <el-col :span="18">
-        <router-view />
+      <el-col :span="19">
+        <el-card class="content-card">
+          <h2 class="text-xl content-title">
+            {{ titleText }}
+          </h2>
+          <router-view />
+        </el-card>
       </el-col>
     </el-row>
   </app-layout>
@@ -66,13 +73,6 @@ export default {
         },
         {
           id: '5',
-          title: '我的收藏',
-          name: 'favorite',
-          url: '/account/favorite',
-          iconClass: 'el-icon-star-on'
-        },
-        {
-          id: '6',
           title: '修改密码',
           name: 'resetPassword',
           url: '/account/resetPassword',
@@ -161,6 +161,19 @@ export default {
       ]
     }
   },
+
+  computed: {
+    titleText() {
+      let title = ''
+      this.accountMenus.forEach(item => {
+        if (item.name === this.activeIndex) {
+          title = item.title
+        }
+      })
+      return title
+    }
+  },
+
   methods: {
     setContent(menu) {
       this.activeIndex = menu.name
@@ -175,4 +188,27 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.account-wrapper {
+  .menu-card {
+    ::v-deep .el-card__body {
+      padding: 20px 0 0;
+    }
+    .menu-title {
+      padding-left: 20px;
+      margin-bottom: $gap;
+    }
+    .account-menu {
+      border-right: 0;
+    }
+  }
+  .content-card {
+    min-height: 80vh;
+    .content-title {
+      padding-bottom: $gap;
+      margin-bottom: $gap-lg;
+      border-bottom: $solid-gray;
+    }
+  }
+}
+</style>

@@ -4,14 +4,24 @@
       <el-col class="main-content" :span="17">
         <el-card>
           <h2 class="text-2xl description-title main-title">
-            Web前端开发工程师
+            {{ company.name }}
           </h2>
           <div class="info-list">
-            <div class="info-list-item" v-for="(info, index) in job.infos" :key="index">
+            <div
+              class="info-list-item"
+              v-for="(info, index) in company.infos"
+              :key="index"
+            >
               <h4 class="text-lg info-title">{{ info.title }}</h4>
               <div class="content-list">
-                <div class="content-list-item" v-for="(item, i) in info.children" :key="i">
-                  <h5 class="text-sm content-title" v-if="item.name">{{ item.name }}：</h5>
+                <div
+                  class="content-list-item"
+                  v-for="(item, i) in info.children"
+                  :key="i"
+                >
+                  <h5 class="text-sm content-title" v-if="item.name">
+                    {{ item.name }}：
+                  </h5>
                   <p class="info-content" v-html="item.content"></p>
                 </div>
               </div>
@@ -20,7 +30,22 @@
         </el-card>
       </el-col>
       <el-col class="aside-wrapper" :span="7">
-        <job-aside :applied-jobs="jobs" />
+        <aside-wrapper class="aside-container" title="在招职位">
+          <el-row
+            slot="aside-content"
+            class="flex-wrap content-list"
+            type="flex"
+            :gutter="20"
+          >
+            <el-col
+              class="content-list-item"
+              v-for="(job, index) in jobs"
+              :key="index"
+            >
+              <job-card is-simple-type :job="job" />
+            </el-col>
+          </el-row>
+        </aside-wrapper>
       </el-col>
     </el-row>
   </app-layout>
@@ -45,56 +70,62 @@ export default {
   },
   data() {
     return {
-      job: {
+      company: {
+        name: '字节跳动科技有限公司',
         infos: [
           {
-            title: '职位信息',
+            title: '基本信息',
             children: [
               {
-                name: '岗位职责',
-                content:
-                  '1、负责前端架构设计和实现；<br>2、参与相关产品工程优化、组件设计和开发工作；<br>3、研发通用功能的SDK和基础组件，提升代码复用率，提高技术团队的开发效率和质量；<br>4、引入前端新技术，并推动新技术落地；'
+                name: '融资阶段',
+                content: '已上市'
               },
               {
-                name: '技能要求',
-                content:
-                  '1、掌握前端工程化与模块化开发、架构设计；<br>2、对代码和设计质量有严格要求，良好的编码风格，有代码洁癖；具有较高的技术钻研能力、技术难点攻关能力，分析问题解决问题的能力；<br>3、掌握webpack构建工具配置和使用、熟悉npm依赖管理；<br>4、能独立完成复杂的自定义控件，如：日期、课表、瀑布流等，掌握各种动画实现方式；'
+                name: '公司规模',
+                content: '1000-9999人'
+              },
+              {
+                name: '行业类别',
+                content: '互联网'
               }
             ]
           },
           {
-            title: '联系方式',
+            title: '公司简介',
             children: [
               {
-                name: '公司地址',
-                content: '厦门市湖滨东路11号邮电广通大厦22楼及同安、集美、海沧、翔安办事处'
-              },
-              {
-                name: '电话',
-                content: '565656565'
+                content: `美图公司成立于2008年10月，以“让更多人变美”为使命，怀揣着“成为全球懂美的科技公司”的愿景，创造了一系列软硬件产品，如美图秀秀、BeautyCam美颜相机、短视频社区美拍以及美图拍照手机，改变了用户创造与分享美的方式，也使自拍文化深入人心。
+美图总部坐落于厦门，此外，在北京、上海、杭州、广州、深圳、香港设立了分公司和办事处。同时，在海外的美国、巴西、印度、英国、日本、韩国、新加坡、印度尼西亚等国家设立了分公司和办事处，并推出了本地化应用和服务。
+2016年12月15日，美图公司在香港联合交易所（“联交所”）主板挂牌上市，股票代码1357。`
               }
             ]
           },
           {
-            title: '公司信息',
+            title: '工商信息',
             children: [
               {
-                content:
-                  '银联商务有限公司是中国银联控股的，专门从事银行卡受理市场建设和提供综合支付服务的机构，成立于2002年12月。银联商务是首批获得人民银行《支付业务许可证》的支付机构，也是人民银行确定的21家重点支付机构之一。'
+                name: '法定代表人',
+                content: '陈翠娥'
+              },
+              {
+                name: '注册资本',
+                content: '1000万人民币'
+              },
+              {
+                name: '成立日期',
+                content: '2016-07-27'
+              }
+            ]
+          },
+          {
+            title: '公司地址',
+            children: [
+              {
+                content: '厦门思明区厦门市软件园望海路8号楼1楼'
               }
             ]
           }
-        ],
-        company: {
-          id: 1,
-          name: '字节跳动科技有限公司',
-          jobNumber: '11',
-          imageUrl:
-            'https://img.bosszhipin.com/beijin/upload/com/workfeel/20210722/5a4f1e3b0ad261d54b110a73195759e0cc87ad5622462609c129bd8d4ad5c5ab.jpg',
-          category: '游戏',
-          financingStage: '已上市',
-          staffCount: '1000人以上'
-        }
+        ]
       },
       jobs: []
     }

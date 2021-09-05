@@ -7,11 +7,22 @@
             职位列表
           </h2>
           <job-search class="job-search" />
-          <el-row class="flex-wrap" type="flex" :gutter="15">
-            <el-col class="mb-3" :span="12" v-for="(job, index) in jobs" :key="index">
+          <el-row
+            v-if="jobs && jobs.length"
+            class="flex-wrap"
+            type="flex"
+            :gutter="15"
+          >
+            <el-col
+              class="mb-3"
+              :span="12"
+              v-for="(job, index) in jobs"
+              :key="index"
+            >
               <job-card :job="job" />
             </el-col>
           </el-row>
+          <el-empty v-else description="暂无职位" />
         </el-card>
       </el-col>
       <el-col class="aside-box" :span="7">
