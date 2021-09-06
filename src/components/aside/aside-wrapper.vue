@@ -52,7 +52,26 @@ export default {
   }
   .aside-content {
     max-height: 400px;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-top: $gap-xs;
+    padding-bottom: $gap-xs;
+    // &::-webkit-scrollbar {
+    //   display: none;
+    // }
+    &::-webkit-scrollbar-track {
+      border-radius: 16px;
+      background-color: #f3f4f5;
+    }
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+      background-color: #f5f5f5;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 16px;
+      background-color: #c1c1c1;
+    }
   }
 }
 </style>

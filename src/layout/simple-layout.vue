@@ -1,47 +1,35 @@
 <template>
   <div class="simple-layout">
-    <div class="content-wrapper">
-      <h2 class="text-xl title">{{ title }}</h2>
-      <div class="form-wrapper">
-        <el-form class="form-wrapper" ref="form" :model="loginForm">
-          <el-form-item>
-            <el-input
-              prefix-icon="el-icon-user"
-              placeholder="请输入用户名"
-              v-model="loginForm.username"
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-input
-              prefix-icon="el-icon-lock"
-              v-model="loginForm.password"
-              type="password"
-              placeholder="请输入密码"
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-checkbox v-model="checked">
-              <span> 我已阅读并同意</span>
-              <a class="text-link" href="#"> 用户协议</a> 和
-              <a class="text-link" href="#"> 隐私条款</a>
-            </el-checkbox>
-          </el-form-item>
-        </el-form>
+    <app-header class="header" />
+    <main class="main">
+      <div class="content-wrapper">
+        <h2 class="text-xl title">{{ title }}</h2>
+        <div class="form-wrapper">
+          <slot name="form-content" />
+        </div>
+        <div class="btn-holder">
+          <el-button type="primary" @click="handleClick">{{ btnText }}</el-button>
+        </div>
       </div>
-
-      <div class="btn-holder">
-        <el-button type="primary">立即登录</el-button>
-      </div>
-    </div>
+    </main>
   </div>
 </template>
 
 <script>
+import AppHeader from '@/components/app-header'
+
 export default {
+  components: {
+    AppHeader
+  },
   props: {
     type: {
-      type: Stirng,
+      type: String,
       default: 'login'
+    },
+    isAdminType: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -55,9 +43,30 @@ export default {
     }
   },
 
-  computed:{
-    title(){
-      
+  computed: {
+    typeText() {
+      return this.type === 'login' ? '登录' : '注册'
+    },
+    title() {
+      let text = this.isAdminType ? '管理员' : '欢迎'
+      return text + this.typeText
+    },
+    btnText() {
+      return `立即${this.typeText}`
+    }
+  },
+
+  methods: {
+    handleClick() {
+      if (this.isAdminType) {
+        this.$router.push('/admin')
+        return
+      }
+      if (this.type === 'login') {
+        this.$router.push('/home')
+      } else {
+        this.$router.push('/login')
+      }
     }
   }
 }
@@ -65,13 +74,23 @@ export default {
 
 <style lang="scss" scoped>
 .simple-layout {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
+  .header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
+  .main {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(141deg, #9fb8ad 0%, #42c4d3 51%, #40beec 75%);
+  }
   .content-wrapper {
     box-sizing: border-box;
-    width: 500px;
+    width: 560px;
     padding: 40px 40px;
     border-radius: 8px;
     background-color: #fff;

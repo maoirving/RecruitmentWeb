@@ -79,6 +79,38 @@ const routes = [
         component: () => import('@/views/account/resetPassword')
       }
     ]
+  },
+  {
+    path: '/admin/login',
+    name: 'AdminLogin',
+    component: () => import('@/views/login/index')
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/views/admin/index'),
+    children: [
+      {
+        path: '/admin/job',
+        name: 'AdminJob',
+        component: () => import('@/views/account/profile')
+      },
+      {
+        path: '/admin/company',
+        name: 'AdminCompany',
+        component: () => import('@/views/account/resume')
+      },
+      {
+        path: '/admin/user',
+        name: 'AdminUser',
+        component: () => import('@/views/account/application')
+      },
+      {
+        path: '/admin/profile',
+        name: 'AdminProfile',
+        component: () => import('@/views/account/application')
+      }
+    ]
   }
 ]
 

@@ -1,6 +1,6 @@
 <template>
   <section class="block-section block-banner-wrapper">
-    <swiper class="block-swiper" :options="swiperOption">
+    <!-- <swiper class="block-swiper" :options="swiperOption">
       <swiper-slide v-for="(image, index) in images" :key="index">
         <div class="slide-card">
           <div class="image-holder">
@@ -11,7 +11,16 @@
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
       <div class="swiper-pagination" slot="pagination" />
-    </swiper>
+    </swiper> -->
+    <el-carousel :interval="3000" type="card" height="300px">
+      <el-carousel-item class="block-swiper" v-for="(image, index) in images" :key="index">
+        <div class="slide-card">
+          <div class="image-holder">
+            <img :src="image.imageUrl" alt="" />
+          </div>
+        </div>
+      </el-carousel-item>
+    </el-carousel>
   </section>
 </template>
 
@@ -48,6 +57,9 @@ export default {
         },
         {
           imageUrl: 'https://a1.alicdn.com/assets/p4p-fallback/mm_12852562_1778064_13674396.jpg'
+        },
+        {
+          imageUrl: 'https://gtms03.alicdn.com/tps/i3/TB1gXd1JXXXXXapXpXXvKyzTVXX-520-280.jpg'
         }
       ]
     }
@@ -57,13 +69,11 @@ export default {
 
 <style lang="scss" scoped>
 .block-banner-wrapper {
-  padding-top: 0;
   .block-swiper {
     .slide-card {
-      background-color: pink;
       .image-holder {
         img {
-          width: 100%;
+          height: 100%;
         }
       }
     }

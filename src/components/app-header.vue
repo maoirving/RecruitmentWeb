@@ -5,27 +5,15 @@
         <el-row type="flex" justify="space-between">
           <el-col :span="16">
             <ul class="flex unstyle-list menu-list">
-              <li
-                class="menu-list-item"
-                v-for="(item, index) in menus.left"
-                :key="index"
-              >
-                <router-link class="text-link-white" :to="item.url">{{
-                  item.name
-                }}</router-link>
+              <li class="menu-list-item" v-for="(item, index) in menus.left" :key="index">
+                <router-link class="text-link-white" :to="item.url">{{ item.name }}</router-link>
               </li>
             </ul>
           </el-col>
           <el-col :span="8">
             <ul class="flex unstyle-list justify-end menu-list">
-              <li
-                class="menu-list-item"
-                v-for="(item, index) in menus.right"
-                :key="index"
-              >
-                <router-link class="text-link-white" :to="item.url">{{
-                  item.name
-                }}</router-link>
+              <li class="menu-list-item" v-for="(item, index) in menus.right" :key="index">
+                <router-link class="text-link-white" :to="item.url">{{ item.name }}</router-link>
               </li>
             </ul>
           </el-col>
@@ -58,7 +46,7 @@ export default {
         right: [
           {
             name: '进入企业版',
-            url: '/'
+            url: '/admin/login'
           },
           {
             name: '我的',
@@ -79,21 +67,19 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-$menu-gap: 10px;
-
 .header-wrapper {
   color: #fff;
-  padding: 15px 0;
+  padding: $gap 0;
   background-color: #414a60;
 
   .menu-wrapper {
-    margin-left: (-$menu-gap);
-    margin-right: (-$menu-gap);
+    margin-left: $gap-sm;
+    margin-right: $gap-sm;
 
     .menu-list {
       &-item {
-        padding-left: $menu-gap;
-        padding-right: $menu-gap;
+        padding-left: $gap-sm;
+        padding-right: $gap-sm;
       }
     }
   }
