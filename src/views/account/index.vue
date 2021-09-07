@@ -6,11 +6,7 @@
           <h2 class="text-2xl menu-title">我的</h2>
           <el-menu class="account-menu" :default-active="activeIndex">
             <template v-for="(item, index) in accountMenus">
-              <el-menu-item
-                :key="index"
-                :index="item.name"
-                @click="setContent(item)"
-              >
+              <el-menu-item :key="index" :index="item.name" @click="setContent(item)">
                 <i :class="item.iconClass"></i>
                 <span slot="title">
                   {{ item.title }}
@@ -180,6 +176,7 @@ export default {
       this.$router.push({ name: menu.name })
     }
   },
+
   created() {
     if (this.$route.name !== 'account') {
       this.activeIndex = this.$route.name

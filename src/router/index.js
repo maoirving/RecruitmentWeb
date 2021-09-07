@@ -93,22 +93,27 @@ const routes = [
       {
         path: '/admin/job',
         name: 'AdminJob',
-        component: () => import('@/views/account/profile')
+        component: () => import('@/views/admin/job')
       },
       {
         path: '/admin/company',
         name: 'AdminCompany',
-        component: () => import('@/views/account/resume')
+        component: () => import('@/views/admin/company')
+      },
+      {
+        path: '/admin/message',
+        name: 'AdminMessage',
+        component: () => import('@/views/admin/message')
       },
       {
         path: '/admin/user',
         name: 'AdminUser',
-        component: () => import('@/views/account/application')
+        component: () => import('@/views/admin/user')
       },
       {
         path: '/admin/profile',
         name: 'AdminProfile',
-        component: () => import('@/views/account/application')
+        component: () => import('@/views/admin/profile')
       }
     ]
   }

@@ -58,15 +58,17 @@ export default {
 
   methods: {
     handleClick() {
-      if (this.isAdminType) {
-        this.$router.push('/admin')
-        return
-      }
-      if (this.type === 'login') {
-        this.$router.push('/home')
-      } else {
-        this.$router.push('/login')
-      }
+      this.$emit('btn-click')
+      //   if (this.isAdminType) {
+      //     this.$router.push('/admin')
+      //     return
+      //   }
+      //   if (this.type === 'login') {
+      //     this.$router.push('/home')
+      //   } else {
+      //     this.$router.push('/login')
+      //   }
+      // }
     }
   }
 }
