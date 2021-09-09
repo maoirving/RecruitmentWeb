@@ -37,7 +37,7 @@
       </div>
       <div v-if="!isSimpleType" class="company-card-footer">
         <p>
-          <span class="text-green-600">{{ company.jobNumber }}个 </span>
+          <span class="text-green-600">{{ company.jobCount }}个 </span>
           <span>在招岗位</span>
         </p>
       </div>

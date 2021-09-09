@@ -1,11 +1,23 @@
 <template>
-  <el-dialog title="个人信息修改" width="40%" v-bind="$attrs" :before-close="handleClose">
-    <el-form ref="form" :model="profileForm" label-width="80px">
-      <el-form-item label="姓名">
-        <el-input v-model="profileForm.name"></el-input>
+  <el-dialog
+    class="profile-dialog"
+    title="个人信息修改"
+    width="40%"
+    v-bind="$attrs"
+    :before-close="handleClose"
+  >
+    <el-form ref="profileForm" :model="profileForm" :rules="profileFormRules" label-width="80px">
+      <el-form-item label="用户名" prop="username">
+        <el-input v-model="profileForm.username"></el-input>
+      </el-form-item>
+      <el-form-item label="姓名" prop="trueName">
+        <el-input v-model="profileForm.trueName"></el-input>
       </el-form-item>
       <el-form-item label="性别">
-        <el-input v-model="profileForm.sex"></el-input>
+        <el-radio-group v-model="profileForm.sex">
+          <el-radio label="1" border>男</el-radio>
+          <el-radio label="2" border>女</el-radio>
+        </el-radio-group>
       </el-form-item>
       <el-form-item label="出生日期">
         <el-date-picker v-model="profileForm.birthday" type="date" placeholder="选择日期">
@@ -33,12 +45,20 @@ export default {
   data() {
     return {
       profileForm: {
-        name: '',
+        username: '',
+        trueName: '',
         sex: '',
         birthday: '',
         phoneNumber: '',
         email: '',
         currentAddress: ''
+      },
+      profileFormRules: {
+        username: [
+          { required: true, message: '用户名不能为空', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+        ],
+        trueName: [{ required: true, message: '真实姓名不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -48,16 +68,25 @@ export default {
       this.$emit('close-dialog')
     },
     handleEdit() {
-      this.$confirm('确认修改？', { type: 'warning' })
-        .then(() => {
-          this.$message.success('修改成功！')
-          this.$emit('close-dialog')
-        })
-        .catch(() => {})
+      this.$refs.profileForm.validate(async valid => {
+        if (!valid) return
+        this.$confirm('确认修改？', { type: 'warning' })
+          .then(() => {
+            this.$message.success('修改成功！')
+            this.$emit('close-dialog')
+          })
+          .catch(() => {})
+      })
     }
   },
   created() {}
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.profile-dialog {
+  .el-radio {
+    margin-right: $gap-sm;
+  }
+}
+</style>

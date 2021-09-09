@@ -8,11 +8,7 @@
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
       >
-        <el-avatar
-          v-if="profileForm.imageUrl"
-          :size="100"
-          :src="profileForm.imageUrl"
-        />
+        <el-avatar v-if="profileForm.imageUrl" :size="100" :src="profileForm.imageUrl" />
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
     </div>
@@ -33,10 +29,7 @@
       </el-button>
     </div>
     <div class="dialog-wrapper">
-      <profile-form-dialog
-        :visible.sync="dialogVisible"
-        @close-dialog="dialogVisible = false"
-      />
+      <profile-form-dialog :visible.sync="dialogVisible" @close-dialog="dialogVisible = false" />
     </div>
   </div>
 </template>
@@ -77,8 +70,7 @@ export default {
         }
       ],
       profileForm: {
-        imageUrl:
-          'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+        imageUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
         name: '毛欧文',
         sex: '男',
         birthday: '1999-01-16',

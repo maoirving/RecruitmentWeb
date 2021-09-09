@@ -36,7 +36,7 @@ export default {
         category: '游戏',
         financingStage: '已上市',
         staffCount: '1000人以上',
-        jobNumber: '10'
+        jobCount: '10'
       }
       for (let i = 0; i < 4; i++) {
         this.companys.push(company)

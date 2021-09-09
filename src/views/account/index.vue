@@ -21,7 +21,10 @@
           <h2 class="text-xl content-title">
             {{ titleText }}
           </h2>
-          <router-view />
+
+          <div class="content-container">
+            <router-view />
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -205,6 +208,10 @@ export default {
       padding-bottom: $gap;
       margin-bottom: $gap-lg;
       border-bottom: $solid-gray;
+    }
+
+    .content-container {
+      padding: $gap $gap-lg;
     }
   }
 }

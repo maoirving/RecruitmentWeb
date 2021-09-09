@@ -47,20 +47,27 @@ export default {
       this.getNewJobs()
     },
 
-    getCompanys() {
-      const company = {
-        id: 1,
-        name: '字节跳动科技有限公司',
-        jobNumber: '11',
-        imageUrl:
-          'https://img.bosszhipin.com/beijin/upload/com/workfeel/20210722/5a4f1e3b0ad261d54b110a73195759e0cc87ad5622462609c129bd8d4ad5c5ab.jpg',
-        category: '游戏',
-        financingStage: '已上市',
-        staffCount: '1000人以上'
-      }
-      for (let i = 0; i < 20; i++) {
-        this.companys.push(company)
-      }
+    async getCompanys() {
+      // const company = {
+      //   id: 1,
+      //   name: '字节跳动科技有限公司',
+      //   jobCount: '11',
+      //   imageUrl:
+      //     'https://img.bosszhipin.com/beijin/upload/com/workfeel/20210722/5a4f1e3b0ad261d54b110a73195759e0cc87ad5622462609c129bd8d4ad5c5ab.jpg',
+      //   category: '游戏',
+      //   financingStage: '已上市',
+      //   staffCount: '1000人以上'
+      // }
+      // for (let i = 0; i < 20; i++) {
+      //   this.companys.push(company)
+      // }
+      const { data: res } = await this.$axios.get('/companys', {
+        params: {
+          pagenum: 1,
+          pagesize: 10
+        }
+      })
+      this.companys = res.data.companys
     },
 
     getNewJobs() {

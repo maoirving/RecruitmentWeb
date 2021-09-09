@@ -106,7 +106,7 @@ export default {
         company: {
           id: 1,
           name: '字节跳动科技有限公司',
-          jobNumber: '11',
+          jobCount: '11',
           imageUrl:
             'https://img.bosszhipin.com/beijin/upload/com/workfeel/20210722/5a4f1e3b0ad261d54b110a73195759e0cc87ad5622462609c129bd8d4ad5c5ab.jpg',
           category: '游戏',

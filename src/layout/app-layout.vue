@@ -21,7 +21,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.main-wrapper{
-    min-height: 660px;
+.main-wrapper {
+  // height: 88vh;
+  min-height: 700px;
 }
 </style>
