@@ -77,6 +77,7 @@ export default {
 
   created() {
     console.log(this.$route.name)
+    console.log(new Date())
   }
 }
 </script>

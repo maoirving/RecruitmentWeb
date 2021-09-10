@@ -1,20 +1,19 @@
 <template>
   <div class="application-wrapper">
-    <el-row
-      slot="aside-content"
-      class="flex-wrap content-list"
-      type="flex"
-      :gutter="20"
-    >
-      <el-col
-        class="content-list-item"
-        :span="12"
-        v-for="(job, index) in appliedJobs"
-        :key="index"
-      >
-        <job-card is-simple-type :job="job" />
-      </el-col>
-    </el-row>
+    <el-tabs type="card">
+      <el-tab-pane v-for="(tab, index) in tabs" :key="index" :label="tab.label">
+        <el-row class="flex-wrap content-list" type="flex" :gutter="20">
+          <el-col
+            class="content-list-item"
+            :span="12"
+            v-for="(job, index) in appliedJobs"
+            :key="index"
+          >
+            <job-card is-simple-type :job="job" />
+          </el-col>
+        </el-row>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -28,6 +27,20 @@ export default {
 
   data() {
     return {
+      tabs: [
+        {
+          label: '全部'
+        },
+        {
+          label: '被查看'
+        },
+        {
+          label: '合适'
+        },
+        {
+          label: '不合适'
+        }
+      ],
       appliedJobs: []
     }
   },

@@ -7,11 +7,12 @@
             公司列表
           </h2>
           <company-search class="company-search" />
-          <el-row class="flex-wrap" type="flex" :gutter="15">
+          <el-row v-if="companys && companys.length" class="flex-wrap" type="flex" :gutter="15">
             <el-col class="mb-3" :span="8" v-for="(company, index) in companys" :key="index">
               <company-card :company="company" />
             </el-col>
           </el-row>
+          <el-empty v-else description="暂无公司" />
         </el-card>
       </el-col>
       <el-col class="aside-wrapper" :span="7">
