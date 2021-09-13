@@ -35,7 +35,7 @@ const routes = [
   },
   {
     path: '/company',
-    name: 'company',
+    name: 'Company',
     component: () => import('@/views/company/index')
   },
   {
@@ -45,7 +45,7 @@ const routes = [
   },
   {
     path: '/account',
-    name: 'account',
+    name: 'Account',
     component: () => import('@/views/account/index'),
     children: [
       {

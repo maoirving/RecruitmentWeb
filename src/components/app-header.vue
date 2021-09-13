@@ -6,14 +6,32 @@
           <el-col :span="16">
             <ul class="flex unstyle-list menu-list">
               <li class="menu-list-item" v-for="(item, index) in menus.left" :key="index">
-                <router-link class="text-link-white" :to="item.url">{{ item.name }}</router-link>
+                <router-link
+                  :class="[
+                    'text-link-white',
+                    {
+                      'text-link': isActive(item.name)
+                    }
+                  ]"
+                  :to="item.url"
+                  >{{ item.title }}</router-link
+                >
               </li>
             </ul>
           </el-col>
           <el-col :span="8">
             <ul class="flex unstyle-list justify-end menu-list">
               <li class="menu-list-item" v-for="(item, index) in menus.right" :key="index">
-                <router-link class="text-link-white" :to="item.url">{{ item.name }}</router-link>
+                <router-link
+                  :class="[
+                    'text-link-white',
+                    {
+                      'text-link': isActive(item.name)
+                    }
+                  ]"
+                  :to="item.url"
+                  >{{ item.title }}</router-link
+                >
               </li>
             </ul>
           </el-col>
@@ -26,43 +44,68 @@
 <script>
 export default {
   components: {},
+
   data() {
     return {
       menus: {
         left: [
           {
-            name: '首页',
+            title: '首页',
+            name: 'Home',
             url: '/'
           },
           {
-            name: '职位',
+            title: '职位',
+            name: 'Job',
             url: '/job'
           },
           {
-            name: '公司',
+            title: '公司',
+            name: 'Company',
             url: '/company'
           }
         ],
         right: [
           {
-            name: '进入企业版',
+            title: '进入企业版',
             url: '/admin/login'
           },
           {
-            name: '我的',
+            title: '我的',
+            name: 'Account',
             url: '/account/profile'
           },
           {
-            name: '注册',
+            title: '注册',
+            name: 'Register',
             url: '/register'
           },
           {
-            name: '登录',
+            title: '登录',
+            name: 'Login',
             url: '/login'
           }
         ]
       }
     }
+  },
+
+  computed: {
+    isActive() {
+      return name => {
+        if (name === this.$route.name) {
+          return true
+        } else if (name === this.$route.matched[0].name) {
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+  },
+
+  created() {
+    console.log(this.$route)
   }
 }
 </script>
@@ -80,6 +123,8 @@ export default {
       &-item {
         padding-left: $gap-sm;
         padding-right: $gap-sm;
+        .active {
+        }
       }
     }
   }

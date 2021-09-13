@@ -18,16 +18,19 @@
           ></el-input>
         </el-form-item>
       </el-form>
+      <Vcode :show="isShow" @success="success" @close="close" />
     </template>
   </simple-layout>
 </template>
 
 <script>
 import SimpleLayout from '@/layout/simple-layout'
+import Vcode from 'vue-puzzle-vcode'
 
 export default {
   components: {
-    SimpleLayout
+    SimpleLayout,
+    Vcode
   },
 
   data() {
@@ -48,7 +51,8 @@ export default {
           { required: true, message: '请输入登录密码', trigger: 'blur' },
           { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      isShow: false
     }
   },
 
@@ -60,18 +64,25 @@ export default {
 
   methods: {
     login() {
-      this.$refs.loginFormRef.validate(async valid => {
+      this.$refs.loginFormRef.validate(valid => {
         if (!valid) return
-        const { data: res } = await this.$axios.post('login', this.loginForm)
-        if (res.meta.status !== 200) return this.$message.error('登录失败！')
-        this.$message.success('登录成功')
-        // 1. 将登录成功之后的 token，保存到客户端的 sessionStorage 中
-        //   1.1 项目中出了登录之外的其他API接口，必须在登录之后才能访问
-        //   1.2 token 只应在当前网站打开期间生效，所以将 token 保存在 sessionStorage 中
-        window.sessionStorage.setItem('token', res.data.token)
-        // 2. 通过编程式导航跳转到后台主页，路由地址是 /home
-        this.$router.push('/home')
+        this.isShow = true
       })
+    },
+    async success() {
+      this.isShow = false // 通过验证后，需要手动隐藏模态框
+      const { data: res } = await this.$axios.post('login', this.loginForm)
+      if (res.meta.status !== 200) return this.$message.error('登录失败！')
+      this.$message.success('登录成功')
+      // 1. 将登录成功之后的 token，保存到客户端的 sessionStorage 中
+      //   1.1 项目中出了登录之外的其他API接口，必须在登录之后才能访问
+      //   1.2 token 只应在当前网站打开期间生效，所以将 token 保存在 sessionStorage 中
+      window.sessionStorage.setItem('token', res.data.token)
+      // 2. 通过编程式导航跳转到后台主页，路由地址是 /home
+      this.$router.push('/home')
+    },
+    close() {
+      this.isShow = false
     }
   },
 
