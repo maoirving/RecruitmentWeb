@@ -1,10 +1,12 @@
 <template>
   <el-dialog
-    class="profile-dialog"
+    class="awesome-scrollbar profile-dialog"
     title="个人信息修改"
     width="40%"
+    :center="true"
     v-bind="$attrs"
     :before-close="handleClose"
+    @closed="closed"
   >
     <el-form ref="profileForm" :model="profileForm" :rules="profileFormRules" label-width="80px">
       <el-form-item label="用户名" prop="username">
@@ -66,6 +68,9 @@ export default {
   methods: {
     handleClose() {
       this.$emit('close-dialog')
+    },
+    closed() {
+      this.$refs.profileForm.resetFields()
     },
     handleEdit() {
       this.$refs.profileForm.validate(async valid => {

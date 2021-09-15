@@ -22,7 +22,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .main-wrapper {
-  // height: 88vh;
-  min-height: 700px;
+  min-height: 87vh;
+  // min-height: 700px;
 }
 </style>

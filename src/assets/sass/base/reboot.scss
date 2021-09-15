@@ -1,5 +1,6 @@
 body {
   @extend .text-sm;
+  @extend .awesome-scrollbar;
   color: $c-gray-500;
   background-color: $c-gray-100;
 }

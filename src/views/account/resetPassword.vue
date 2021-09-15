@@ -8,13 +8,19 @@
       :validate-on-rule-change="false"
     >
       <el-form-item label="旧密码" prop="oldPassword">
-        <el-input type="password" v-model="form.oldPassword"></el-input>
+        <el-input type="password" v-model="form.oldPassword">
+          <i slot="suffix" class="icon-btn el-icon-view"></i>
+        </el-input>
       </el-form-item>
       <el-form-item label="新密码" prop="newPassword">
-        <el-input type="password" v-model="form.newPassword"></el-input>
+        <el-input type="password" v-model="form.newPassword">
+          <i slot="suffix" class="icon-btn el-icon-view"></i>
+        </el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="password2">
-        <el-input type="password" v-model="form.password2"></el-input>
+        <el-input type="password" v-model="form.password2">
+          <i slot="suffix" class="icon-btn el-icon-view"></i>
+        </el-input>
       </el-form-item>
       <el-form-item class="text-right">
         <el-button @click="onReset">取消</el-button>

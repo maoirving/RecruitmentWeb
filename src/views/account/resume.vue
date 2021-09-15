@@ -1,104 +1,46 @@
 <template>
   <div class="resume-wrapper">
-    <div class="header-holder">
-      <h4>
-        在线简历
-      </h4>
-      <div class="btn-holder">
-        <a class="text-btn" href="javascript:;"><i class="el-icon-edit icon"></i>编辑简历</a>
-      </div>
-    </div>
-    <div class="info-list">
-      <div class="info-list-item">
-        <h4 class="info-title">基本信息</h4>
-        <p class="info-content">
-          <span> {{ resume.trueName }}</span>
-          <el-divider direction="vertical" />
-          <span> {{ resume.age }}岁</span>
-          <el-divider direction="vertical" />
-          <span> {{ resume.eduction }}</span>
-        </p>
-      </div>
-      <div class="info-list-item">
-        <h4 class="info-title">求职期望</h4>
-        <p class="info-content">
-          <span> {{ resume.anticipant_job }}</span>
-          <el-divider direction="vertical" />
-          <span> {{ resume.anticipant_city }}</span>
-          <el-divider direction="vertical" />
-          <span> {{ resume.anticipant_salary }}</span>
-        </p>
-      </div>
-      <div class="info-list-item">
-        <h4 class="info-title">工作经历</h4>
-        <div class="info-content">
-          <ul class="unstyle-list">
-            <li class="mb-3" v-for="(work, index) in resume.works" :key="index">
-              <p><strong>公司名称：</strong>{{ work.company_name }}</p>
-              <p><strong>在职时间：</strong>{{ work.period }}</p>
-              <p><strong>工作内容：</strong>{{ work.content }}</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="info-list-item">
-        <h4 class="info-title">项目经历</h4>
-        <div class="info-content">
-          <ul class="unstyle-list">
-            <li class="mb-3" v-for="(project, index) in resume.projects" :key="index">
-              <p><strong>项目名称：</strong>{{ project.name }}</p>
-              <p><strong>项目时间：</strong>{{ project.period }}</p>
-              <p><strong>项目描述：</strong>{{ project.description }}</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="info-list-item">
-        <h4 class="info-title">教育经历</h4>
-        <div class="info-content">
-          <ul class="unstyle-list">
-            <li class="mb-3" v-for="(school, index) in resume.schools" :key="index">
-              <p><strong>学校名称：</strong>{{ school.name }}</p>
-              <p><strong>就读时间：</strong>{{ school.specialized_subject }}</p>
-              <p><strong>在校经历：</strong>{{ school.school_experience }}</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="info-list-item">
-        <h4 class="info-title">资格证书</h4>
-        <div class="info-content">
-          <ul class="certificate-list">
-            <li
-              class="mb-1 certificate-list-item"
-              v-for="(certificate, index) in resume.certificates"
-              :key="index"
-            >
-              {{ certificate.name }}
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="header-holder">
-      <h4>
-        附件简历
-      </h4>
-      <div class="btn-holder">
-        <a class="text-btn" href="javascript:;"><i class="el-icon-upload2 icon"></i>上传简历</a>
-      </div>
-    </div>
+    <el-collapse v-model="activeNames">
+      <el-collapse-item title="在线简历" name="1">
+        <resume-table :resume="resume" />
+      </el-collapse-item>
+      <el-collapse-item title="附件简历" name="2">
+        <ul class="unstyle-list file-list">
+          <li class="file-list-item" v-for="(file, index) in files" :key="index">
+            <router-link class="text-link-black" :to="file.url">{{
+              `${index + 1}. ${file.name}`
+            }}</router-link>
+            <div class="btn-holder">
+              <el-button size="mini" round>查看</el-button>
+              <el-button type="danger" size="mini" round>删除</el-button>
+            </div>
+          </li>
+        </ul>
+      </el-collapse-item>
+    </el-collapse>
   </div>
 </template>
 
 <script>
+import ResumeTable from '@/components/account/resume-table'
+
 export default {
+  components: {
+    ResumeTable
+  },
+
   data() {
     return {
+      activeNames: ['1'],
       resume: {
         trueName: '洪铭娟',
+        imageUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+        sex: '女',
         age: '21',
         eduction: '本科',
+        phoneNumber: '18352728292',
+        email: 'eje@dk.com',
+        currentAdress: '福建厦门',
         anticipant_job: 'Ui设计师',
         anticipant_city: '厦门',
         anticipant_salary: '7-12k',
@@ -111,7 +53,8 @@ export default {
           {
             name: '厉害的项目',
             period: '2021.02-2021.09',
-            description: '这是一个很厉害的项目'
+            description:
+              '这是一个很厉害的项目，这是一个很厉害的项目，这是一个很厉害的项目，这是一个很厉害的项目，这是一个很厉害的项目'
           }
         ],
         works: [
@@ -129,8 +72,10 @@ export default {
         schools: [
           {
             name: '闽南师范大学',
+            period: '2018.09 - 2022.06',
             specialized_subject: '计算机科学与技术',
-            school_experience: '这是在校经历'
+            school_experience:
+              '这是在校经历，这是在校经历，这是在校经历，这是在校经历，这是在校经历，这是在校经历，这是在校经历'
           }
         ],
         certificates: [
@@ -141,7 +86,17 @@ export default {
             name: '英语六级证书'
           }
         ]
-      }
+      },
+      files: [
+        {
+          name: 'web前端开发工程师',
+          url: 'hjkjdfkjdkf'
+        },
+        {
+          name: 'UI设计师',
+          url: 'hjkjdfkjdkf'
+        }
+      ]
     }
   }
 }
@@ -149,46 +104,21 @@ export default {
 
 <style lang="scss" scoped>
 .resume-wrapper {
-  .header-holder {
-    display: flex;
-    align-items: flex-end;
-    padding-bottom: $gap;
+  .file-list {
+    margin-left: -40px;
+    margin-right: -40px;
     margin-bottom: $gap-lg;
-    .content-title {
-    }
-    .btn-holder {
-      margin-left: auto;
-      .text-btn {
-        color: $c-green-600;
-
-        &:not(:last-child) {
-          margin-right: $gap-lg;
-        }
-        .icon {
-          margin-right: $gap-xs;
-        }
-      }
-    }
-  }
-  .info-list {
     &-item {
-      padding-top: $gap;
-      padding-bottom: $gap-lg;
-      border-bottom: $solid-gray;
-      .info-title {
-        font-size: 1.25rem;
-        font-weight: 400;
-        color: $c-green-600;
-        padding-left: $gap-sm;
-        margin-bottom: $gap;
-        border-left: 3px solid $c-green-600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: $gap-lg 40px;
+      transition: all 0.3s;
+      &:hover {
+        background-color: #f2f5fa;
       }
-      .info-content {
-      }
-      .certificate-list {
-        list-style-type: circle;
-        &-item {
-        }
+      &:not(:last-child) {
+        border-bottom: $solid-gray;
       }
     }
   }
