@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import ResumeDialog from '@/components/account/dialog/resume-dialog'
+import ResumeDialog from '@/components/account/resume/resume-dialog'
 
 export default {
   components: {
@@ -234,13 +234,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-collapse {
-  margin-left: -20px;
-  margin-right: -20px;
-  .el-collapse-item__header {
-    font-size: 14px;
-  }
-}
 ::v-deep .el-descriptions-item__label {
   &.is-bordered-label {
     font-weight: 400;

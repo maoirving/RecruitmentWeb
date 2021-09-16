@@ -8,7 +8,7 @@
     :before-close="handleClose"
     @closed="closed"
   >
-    <el-form ref="profileForm" :model="profileForm" :rules="profileFormRules" label-width="80px">
+    <el-form ref="profileFormRef" :model="profileForm" :rules="profileFormRules" label-width="80px">
       <el-form-item label="用户名" prop="username">
         <el-input v-model="profileForm.username"></el-input>
       </el-form-item>
@@ -67,13 +67,19 @@ export default {
 
   methods: {
     handleClose() {
-      this.$emit('close-dialog')
+      this.$confirm('填写内容不会保存，确认关闭？', { type: 'warning' })
+        .then(() => {
+          this.$emit('close-dialog')
+        })
+        .catch(() => {})
     },
+
     closed() {
-      this.$refs.profileForm.resetFields()
+      this.$refs.profileFormRef.resetFields()
     },
+
     handleEdit() {
-      this.$refs.profileForm.validate(async valid => {
+      this.$refs.profileFormRef.validate(async valid => {
         if (!valid) return
         this.$confirm('确认修改？', { type: 'warning' })
           .then(() => {

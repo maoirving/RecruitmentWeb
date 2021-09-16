@@ -1,32 +1,24 @@
 <template>
   <div class="resume-wrapper">
-    <el-collapse v-model="activeNames">
+    <el-collapse class="resume-collapse" v-model="activeNames">
       <el-collapse-item title="在线简历" name="1">
         <resume-table :resume="resume" />
       </el-collapse-item>
       <el-collapse-item title="附件简历" name="2">
-        <ul class="unstyle-list file-list">
-          <li class="file-list-item" v-for="(file, index) in files" :key="index">
-            <router-link class="text-link-black" :to="file.url">{{
-              `${index + 1}. ${file.name}`
-            }}</router-link>
-            <div class="btn-holder">
-              <el-button size="mini" round>查看</el-button>
-              <el-button type="danger" size="mini" round>删除</el-button>
-            </div>
-          </li>
-        </ul>
+        <file-list :files="files" />
       </el-collapse-item>
     </el-collapse>
   </div>
 </template>
 
 <script>
-import ResumeTable from '@/components/account/resume-table'
+import ResumeTable from '@/components/account/resume/resume-table'
+import FileList from '@/components/account/resume/file-list'
 
 export default {
   components: {
-    ResumeTable
+    ResumeTable,
+    FileList
   },
 
   data() {
@@ -89,37 +81,31 @@ export default {
       },
       files: [
         {
-          name: 'web前端开发工程师',
+          id: '1',
+          name: 'web前端开发工程师.pdf',
           url: 'hjkjdfkjdkf'
         },
         {
-          name: 'UI设计师',
+          id: '2',
+          name: 'UI设计师.pdf',
           url: 'hjkjdfkjdkf'
         }
       ]
     }
-  }
+  },
+
+  methods: {}
 }
 </script>
 
 <style lang="scss" scoped>
 .resume-wrapper {
-  .file-list {
-    margin-left: -40px;
-    margin-right: -40px;
-    margin-bottom: $gap-lg;
-    &-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: $gap-lg 40px;
-      transition: all 0.3s;
-      &:hover {
-        background-color: #f2f5fa;
-      }
-      &:not(:last-child) {
-        border-bottom: $solid-gray;
-      }
+  .resume-collapse {
+    ::v-deep .el-collapse-item__header {
+      font-size: 14px;
+    }
+    ::v-deep .el-collapse-item__content {
+      padding-top: 10px;
     }
   }
 }

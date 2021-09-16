@@ -9,7 +9,7 @@
             v-for="(job, index) in appliedJobs"
             :key="index"
           >
-            <job-card is-simple-type :job="job" />
+            <job-card is-simple-type :job="job" with-date />
           </el-col>
         </el-row>
       </el-tab-pane>
@@ -47,22 +47,21 @@ export default {
 
   methods: {
     getAppliedJobs() {
-      const job = {
+      const appliedJob = {
+        date: '2021-07-08 16:00',
+        reviewDate: '2021-07-08 17:00',
         name: '高级前端开发工程师',
         salary: '12-20k',
         city: '厦门',
         experience: '经验不限',
         education: '本科',
-
         company: {
           name: '字节跳动科技有限公司',
           imageUrl:
             'https://img.bosszhipin.com/beijin/upload/com/logo/20210525/77d60eae41e48b90df64951371a7a07a19f97e2c258c6cead07beaf11928d91b.png?x-oss-process=image/resize,w_120,limit_0'
         }
       }
-      for (let i = 0; i < 4; i++) {
-        this.appliedJobs.push(job)
-      }
+      this.appliedJobs = Array(10).fill(appliedJob)
     }
   },
 
@@ -72,4 +71,10 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.application-wrapper {
+  ::v-deep .el-tabs__content {
+    padding-top: 5px;
+  }
+}
+</style>

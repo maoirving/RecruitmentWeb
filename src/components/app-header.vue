@@ -30,8 +30,9 @@
                     }
                   ]"
                   :to="item.url"
-                  >{{ item.title }}</router-link
                 >
+                  {{ item.title }}
+                </router-link>
               </li>
             </ul>
           </el-col>
@@ -102,10 +103,6 @@ export default {
         }
       }
     }
-  },
-
-  created() {
-    console.log(this.$route)
   }
 }
 </script>

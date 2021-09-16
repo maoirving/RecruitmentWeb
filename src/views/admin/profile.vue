@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import ProfileFormDialog from '@/components/account/dialog/profile-form-dialog'
+import ProfileFormDialog from '@/components/account/profile/profile-form-dialog'
 
 export default {
   components: {
