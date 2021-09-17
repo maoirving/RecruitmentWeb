@@ -24,7 +24,7 @@
       </el-col>
     </el-row>
     <div class="text-right btn-holder">
-      <el-button @click="showDialog" round>
+      <el-button size="small" round @click="showDialog">
         修改个人信息
       </el-button>
     </div>

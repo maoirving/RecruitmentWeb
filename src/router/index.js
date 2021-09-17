@@ -9,6 +9,11 @@ const routes = [
     redirect: '/home'
   },
   {
+    path: '/demo',
+    name: 'Demo',
+    component: () => import('@/views/demo/index')
+  },
+  {
     path: '/home',
     name: 'Home',
     component: () => import('@/views/home/index')

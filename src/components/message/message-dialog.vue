@@ -1,14 +1,8 @@
 <template>
   <el-dialog title="消息处理" width="40%" v-bind="$attrs" :before-close="handleClose">
     <div class="dialog-content">
-      <el-form label-width="80px">
-        <el-form-item label="公司名称">
-          <el-input v-model="message.company_name" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="消息内容">
-          <el-input type="textarea" v-model="message.content" rows="4" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="面试时间">
+      <m-form :form-items="formItems" :form-data="message">
+        <template slot="interviewDate">
           <el-col :span="10">
             <el-date-picker
               type="date"
@@ -32,21 +26,10 @@
             >
             </el-time-select>
           </el-col>
-        </el-form-item>
-        <el-form-item label="面试地点">
-          <el-input v-model="message.interview_address" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="回复">
-          <el-input
-            type="textarea"
-            placeholder="请输入内容（改时间，拒绝的理由等）"
-            v-model="reply"
-            rows="4"
-          ></el-input>
-        </el-form-item>
-      </el-form>
+        </template>
+      </m-form>
     </div>
-    <div class="text-right">
+    <div slot="footer" class="text-right">
       <el-button @click="handeRefuse">拒绝</el-button>
       <el-button type="primary" @click="handleAccept">接受</el-button>
     </div>
@@ -54,7 +37,13 @@
 </template>
 
 <script>
+import MForm from '@/components/module/m-form'
+
 export default {
+  components: {
+    MForm
+  },
+
   data() {
     return {
       resumes: [],
@@ -64,9 +53,56 @@ export default {
         company_name: '厉害的公司',
         interview_date: '2021-09-15',
         interview_time: '23:00',
-        interview_address: '厦门市 思明区 软件园二期'
+        interview_address: '厦门市 思明区 软件园二期',
+        reply: ''
       },
-      reply: ''
+
+      formItems: [
+        {
+          label: '公司名称',
+          prop: 'company_name',
+          control: {
+            attrs: {
+              disabled: true
+            }
+          }
+        },
+        {
+          label: '消息内容',
+          prop: 'content',
+          control: {
+            attrs: {
+              type: 'textarea',
+              rows: 4,
+              disabled: true
+            }
+          }
+        },
+        {
+          label: '面试时间',
+          slot: 'interviewDate'
+        },
+        {
+          label: '面试地点',
+          prop: 'interview_address',
+          control: {
+            attrs: {
+              disabled: true
+            }
+          }
+        },
+        {
+          label: '回复',
+          prop: 'reply',
+          control: {
+            attrs: {
+              type: 'textarea',
+              rows: 4,
+              placeholder: '请输入内容（改时间，拒绝的理由等）'
+            }
+          }
+        }
+      ]
     }
   },
 

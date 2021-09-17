@@ -1,6 +1,6 @@
 <template>
   <div class="sign-wrapper">
-    <router-link to="/">
+    <router-link to="/home">
       <div class="image-hoder">
         <img :src="require('@/assets/images/logo.png')" alt="" />
       </div>
@@ -9,61 +9,37 @@
     <div class="form-wrapper">
       <slot name="form-content" />
     </div>
+    <p class="tip">
+      <slot name="tip" />
+    </p>
     <div class="btn-holder">
       <el-button type="primary" @click="handleClick">{{ btnText }}</el-button>
     </div>
+    <slot name="popup" />
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    type: {
+    title: {
       type: String,
-      default: 'login'
+      default: ''
     },
-    isAdminType: {
-      type: Boolean,
-      default: false
+
+    btnText: {
+      type: String,
+      default: ''
     }
   },
 
   data() {
-    return {
-      loginForm: {
-        username: '',
-        password: ''
-      },
-      checked: false
-    }
-  },
-
-  computed: {
-    typeText() {
-      return this.type === 'login' ? '登录' : '注册'
-    },
-    title() {
-      let text = this.isAdminType ? '管理员' : '欢迎'
-      return text + this.typeText
-    },
-    btnText() {
-      return `立即${this.typeText}`
-    }
+    return {}
   },
 
   methods: {
     handleClick() {
       this.$emit('btn-click')
-      //   if (this.isAdminType) {
-      //     this.$router.push('/admin')
-      //     return
-      //   }
-      //   if (this.type === 'login') {
-      //     this.$router.push('/home')
-      //   } else {
-      //     this.$router.push('/login')
-      //   }
-      // }
     }
   }
 }

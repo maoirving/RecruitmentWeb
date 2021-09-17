@@ -1,35 +1,35 @@
 <template>
-  <simple-layout class="login-page" :is-admin-type="isAdminType" @btn-click="login">
-    <template slot="form-content">
-      <el-form class="form-content" ref="loginFormRef" :model="loginForm" :rules="loginFormRules">
-        <el-form-item prop="username">
-          <el-input
-            prefix-icon="el-icon-user"
-            placeholder="请输入用户名"
-            v-model="loginForm.username"
-          ></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input
-            prefix-icon="el-icon-lock"
-            v-model="loginForm.password"
-            type="password"
-            placeholder="请输入密码"
-          ></el-input>
-        </el-form-item>
-      </el-form>
-      <Vcode :show="isShow" @success="success" @close="close" />
-    </template>
+  <simple-layout class="login-page">
+    <sign-wrapper :title="title" btn-text="立即登录" @btn-click="login">
+      <template slot="form-content">
+        <m-form
+          ref="loginFormRef"
+          label-width="auto"
+          :form-items="formItems"
+          :form-data="loginForm"
+        />
+      </template>
+      <template v-if="!isAdmin" slot="tip">
+        还没有账号？去<router-link class="text-link" to="/register">注册</router-link>
+      </template>
+      <template slot="popup">
+        <Vcode :show="isShow" @success="success" @close="close" />
+      </template>
+    </sign-wrapper>
   </simple-layout>
 </template>
 
 <script>
 import SimpleLayout from '@/layout/simple-layout'
+import SignWrapper from '@/components/sign/sign-wrapper'
+import MForm from '@/components/module/m-form'
 import Vcode from 'vue-puzzle-vcode'
 
 export default {
   components: {
     SimpleLayout,
+    SignWrapper,
+    MForm,
     Vcode
   },
 
@@ -39,36 +39,53 @@ export default {
         username: '',
         password: ''
       },
-      // 这是表单的验证规则对象
-      loginFormRules: {
-        // 验证用户名是否合法
-        username: [
-          { required: true, message: '请输入用户名称', trigger: 'blur' },
-          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
-        ],
-        // 验证密码是否合法
-        password: [
-          { required: true, message: '请输入登录密码', trigger: 'blur' },
-          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
-        ]
-      },
+
+      formItems: [
+        {
+          prop: 'username',
+          rule: 'required',
+          control: {
+            attrs: {
+              'prefix-icon': 'el-icon-user',
+              placeholder: '请输入用户名'
+            }
+          }
+        },
+        {
+          prop: 'password',
+          rule: 'required',
+          control: {
+            attrs: {
+              'prefix-icon': 'el-icon-lock',
+              type: 'password',
+              placeholder: '请输入密码'
+            }
+          }
+        }
+      ],
       isShow: false
     }
   },
 
   computed: {
-    isAdminType() {
-      return this.$route.name === 'AdminLogin' ? true : false
+    isAdmin() {
+      return this.$route.name === 'AdminLogin'
+    },
+
+    title() {
+      const prefix = this.isAdmin ? '管理员' : '欢迎'
+      return prefix + '登录'
     }
   },
 
   methods: {
     login() {
-      this.$refs.loginFormRef.validate(valid => {
+      this.$refs.loginFormRef.$refs['form'].validate(valid => {
         if (!valid) return
         this.isShow = true
       })
     },
+
     async success() {
       this.isShow = false // 通过验证后，需要手动隐藏模态框
       const { data: res } = await this.$axios.post('login', this.loginForm)
@@ -81,6 +98,7 @@ export default {
       // 2. 通过编程式导航跳转到后台主页，路由地址是 /home
       this.$router.push('/home')
     },
+
     close() {
       this.isShow = false
     }

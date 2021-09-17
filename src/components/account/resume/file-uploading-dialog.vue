@@ -22,7 +22,7 @@
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       <div class="el-upload__tip" slot="tip">只能上传pdf文件，且不超过500kb</div>
     </el-upload>
-    <div class="form-btn-wrapper">
+    <div slot="footer" class="text-right">
       <el-button @click="handleClose">取消</el-button>
       <el-button type="primary" @click="handleUpload">上传</el-button>
     </div>

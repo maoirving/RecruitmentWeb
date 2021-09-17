@@ -1,18 +1,11 @@
 <template>
-  <el-dialog
-    title="选择需要投递的简历"
-    width="40%"
-    v-bind="$attrs"
-    :before-close="handleClose"
-  >
+  <el-dialog title="选择需要投递的简历" width="40%" v-bind="$attrs" :before-close="handleClose">
     <div class="dialog-content">
       <ul>
-        <li v-for="(resume, index) in resumes" :key="index">
-          {{ index + 1 }}.{{ resume.name }}
-        </li>
+        <li v-for="(resume, index) in resumes" :key="index">{{ index + 1 }}.{{ resume.name }}</li>
       </ul>
     </div>
-    <div class="text-right">
+    <div slot="footer" class="text-right">
       <el-button @click="handleClose">取消</el-button>
       <el-button type="primary" @click="applyJob">投递简历</el-button>
     </div>

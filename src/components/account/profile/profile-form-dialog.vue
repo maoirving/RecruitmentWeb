@@ -8,60 +8,89 @@
     :before-close="handleClose"
     @closed="closed"
   >
-    <el-form ref="profileFormRef" :model="profileForm" :rules="profileFormRules" label-width="80px">
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="profileForm.username"></el-input>
-      </el-form-item>
-      <el-form-item label="姓名" prop="trueName">
-        <el-input v-model="profileForm.trueName"></el-input>
-      </el-form-item>
-      <el-form-item label="性别">
-        <el-radio-group v-model="profileForm.sex">
-          <el-radio label="1" border>男</el-radio>
-          <el-radio label="2" border>女</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="出生日期">
-        <el-date-picker v-model="profileForm.birthday" type="date" placeholder="选择日期">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="手机号码">
-        <el-input v-model="profileForm.phoneNumber"></el-input>
-      </el-form-item>
-      <el-form-item label="电子邮箱">
-        <el-input v-model="profileForm.email"></el-input>
-      </el-form-item>
-      <el-form-item label="当前住址">
-        <el-input v-model="profileForm.currentAddress"></el-input>
-      </el-form-item>
-      <el-form-item class="text-right">
-        <el-button @click="handleClose">取消</el-button>
-        <el-button type="primary" @click="handleEdit">修改</el-button>
-      </el-form-item>
-    </el-form>
+    <m-form ref="profileFormRef" :form-items="formItems" :form-data="profileForm" />
+    <div slot="footer" class="text-right">
+      <el-button @click="handleClose">取消</el-button>
+      <el-button type="primary" @click="handleEdit">修改</el-button>
+    </div>
   </el-dialog>
 </template>
 
 <script>
+import MForm from '@/components/module/m-form'
+
 export default {
+  components: {
+    MForm
+  },
+
   data() {
     return {
       profileForm: {
         username: '',
         trueName: '',
-        sex: '',
+        sex: 'male',
         birthday: '',
         phoneNumber: '',
         email: '',
         currentAddress: ''
       },
-      profileFormRules: {
-        username: [
-          { required: true, message: '用户名不能为空', trigger: 'blur' },
-          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
-        ],
-        trueName: [{ required: true, message: '真实姓名不能为空', trigger: 'blur' }]
-      }
+      formItems: [
+        {
+          label: '用户名',
+          prop: 'username',
+          rule: 'required|username'
+        },
+        {
+          label: '姓名',
+          prop: 'trueName',
+          rule: 'required'
+        },
+        {
+          label: '性别',
+          prop: 'sex',
+          control: {
+            component: 'm-radio-group',
+            attrs: {
+              options: [
+                {
+                  label: '男',
+                  key: 'male'
+                },
+                {
+                  label: '女',
+                  key: 'female'
+                }
+              ]
+            }
+          }
+        },
+        {
+          label: '出生日期',
+          prop: 'birthday',
+          control: {
+            component: 'el-date-picker',
+            attrs: {
+              type: 'date',
+              placeholder: '请选择日期'
+            }
+          }
+        },
+        {
+          label: '手机号码',
+          prop: 'phoneNumber',
+          rule: 'phone'
+        },
+        {
+          label: '电子邮箱',
+          prop: 'email',
+          rule: 'email'
+        },
+        {
+          label: '当前住址',
+          prop: 'currentAddress'
+        }
+      ]
     }
   },
 
@@ -75,11 +104,11 @@ export default {
     },
 
     closed() {
-      this.$refs.profileFormRef.resetFields()
+      this.$refs.profileFormRef.$refs['form'].resetFields()
     },
 
     handleEdit() {
-      this.$refs.profileFormRef.validate(async valid => {
+      this.$refs.profileFormRef.$refs['form'].validate(async valid => {
         if (!valid) return
         this.$confirm('确认修改？', { type: 'warning' })
           .then(() => {
@@ -89,8 +118,7 @@ export default {
           .catch(() => {})
       })
     }
-  },
-  created() {}
+  }
 }
 </script>
 

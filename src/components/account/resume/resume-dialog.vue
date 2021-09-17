@@ -21,47 +21,22 @@
           <ul class="form-list">
             <li class="form-list-item" v-for="(form, i) in resumeForm[collapse.prop]" :key="i">
               <span v-if="resumeForm[collapse.prop].length > 1" class="number">{{ i + 1 }}</span>
-              <div class="form-item-wrapper">
-                <el-form-item
-                  v-for="(formItem, k) in collapse.form"
-                  :key="k"
-                  :label="formItem.label"
-                >
-                  <el-input
-                    v-if="formItem.type === 'text' || formItem.type === 'textarea'"
-                    :type="formItem.type"
-                    :rows="formItem.type === 'textarea' ? 6 : undefined"
-                    v-model="form[formItem.prop]"
-                    :placeholder="`请输入${formItem.label}`"
-                  >
-                  </el-input>
-                  <div v-if="formItem.type === 'input-number'">
-                    <el-input-number
-                      v-model="form[formItem.prop[0]]"
-                      :step="1"
-                      :min="1"
-                    ></el-input-number>
+              <m-form class="resume-form" :form-items="collapse.formItems" :form-data="form">
+                <div slot="salary">
+                  <div>
+                    <el-input-number v-model="form.minSalary" :step="1" :min="1"></el-input-number>
                     <span class="horizontal-line"> - </span>
                     <el-input-number
-                      v-model="form[formItem.prop[1]]"
+                      v-model="form.maxSalary"
                       :step="1"
-                      :min="form[formItem.prop[0]] + 1"
+                      :min="form.minSalary + 1"
                     ></el-input-number>
                     <span class="suffix">
                       K
                     </span>
                   </div>
-                  <el-date-picker
-                    v-if="formItem.type === 'date-range'"
-                    v-model="form[formItem.prop]"
-                    type="daterange"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                  >
-                  </el-date-picker>
-                </el-form-item>
-              </div>
+                </div>
+              </m-form>
             </li>
           </ul>
           <div v-if="collapse.withBtn" class="btn-holder text-right">
@@ -86,63 +61,75 @@
           </div>
         </el-collapse-item>
       </el-collapse>
-
-      <el-form-item class="text-right mt-2">
-        <el-button @click="handleClose">取消</el-button>
-        <el-button type="primary" @click="handleEdit">修改</el-button>
-      </el-form-item>
     </el-form>
+    <div slot="footer" class="text-right">
+      <el-button @click="handleClose">取消</el-button>
+      <el-button type="primary" @click="handleEdit">修改</el-button>
+    </div>
   </el-dialog>
 </template>
 
 <script>
+import MForm from '@/components/module/m-form'
 import { cloneDeep } from 'lodash'
 
 export default {
+  components: {
+    MForm
+  },
+
   data() {
     return {
       activeNames: ['1'],
       collapseList: [
         {
           title: '求职期望',
-          prop: 'anticipant',
-          form: [
+          prop: 'expectation',
+          formItems: [
             {
               label: '期望职位',
-              type: 'text',
               prop: 'job'
             },
             {
               label: '期望工资',
-              type: 'input-number',
-              prop: ['minSalary', 'maxSalary']
+              slot: 'salary'
             },
             {
               label: '期望城市',
-              type: 'text',
               prop: 'city'
             }
-          ],
-          withBtn: false
+          ]
         },
         {
           title: '工作经历',
           prop: 'works',
-          form: [
+          formItems: [
             {
               label: '公司名称',
-              type: 'text',
               prop: 'companyName'
             },
             {
               label: '在职时间',
-              type: 'date-range',
-              prop: 'period'
+              prop: 'period',
+              control: {
+                component: 'el-date-picker',
+                attrs: {
+                  type: 'daterange',
+                  'range-separator': '至',
+                  'start-placeholder': '开始日期',
+                  'end-placeholder': '结束日期'
+                }
+              }
             },
             {
               label: '工作内容',
-              type: 'textarea',
-              prop: 'content'
+              prop: 'content',
+              control: {
+                attrs: {
+                  type: 'textarea',
+                  rows: 6
+                }
+              }
             }
           ],
           withBtn: true
@@ -150,21 +137,33 @@ export default {
         {
           title: '项目经历',
           prop: 'projects',
-          form: [
+          formItems: [
             {
               label: '项目名称',
-              type: 'text',
               prop: 'name'
             },
             {
               label: '项目时间',
-              type: 'date-range',
-              prop: 'period'
+              prop: 'period',
+              control: {
+                component: 'el-date-picker',
+                attrs: {
+                  type: 'daterange',
+                  'range-separator': '至',
+                  'start-placeholder': '开始日期',
+                  'end-placeholder': '结束日期'
+                }
+              }
             },
             {
               label: '项目描述',
-              type: 'textarea',
-              prop: 'description'
+              prop: 'description',
+              control: {
+                attrs: {
+                  type: 'textarea',
+                  rows: 6
+                }
+              }
             }
           ],
           withBtn: true
@@ -172,26 +171,37 @@ export default {
         {
           title: '教育背景',
           prop: 'schools',
-          form: [
+          formItems: [
             {
               label: '学校名称',
-              type: 'text',
               prop: 'name'
             },
             {
               label: '专业',
-              type: 'text',
               prop: 'specialized_subject'
             },
             {
               label: '就读时间',
-              type: 'date-range',
-              prop: 'period'
+              prop: 'period',
+              control: {
+                component: 'el-date-picker',
+                attrs: {
+                  type: 'daterange',
+                  'range-separator': '至',
+                  'start-placeholder': '开始日期',
+                  'end-placeholder': '结束日期'
+                }
+              }
             },
             {
               label: '在校经历',
-              type: 'textarea',
-              prop: 'school_experience'
+              prop: 'school_experience',
+              control: {
+                attrs: {
+                  type: 'textarea',
+                  rows: 6
+                }
+              }
             }
           ],
           withBtn: true
@@ -199,10 +209,9 @@ export default {
         {
           title: '资格证书',
           prop: 'certificates',
-          form: [
+          formItems: [
             {
               label: '证书名称',
-              type: 'text',
               prop: 'name'
             }
           ],
@@ -210,7 +219,7 @@ export default {
         }
       ],
       resumeForm: {
-        anticipant: [
+        expectation: [
           {
             job: '',
             city: '',
@@ -252,8 +261,8 @@ export default {
   watch: {
     resumeForm: {
       handler(newObj) {
-        if (newObj.anticipant[0].maxSalary < newObj.anticipant[0].minSalary + 1) {
-          newObj.anticipant[0].maxSalary = newObj.anticipant[0].minSalary + 1
+        if (newObj.expectation[0].maxSalary < newObj.expectation[0].minSalary + 1) {
+          newObj.expectation[0].maxSalary = newObj.expectation[0].minSalary + 1
         }
       },
       deep: true
@@ -316,12 +325,16 @@ export default {
       }
       .form-list {
         &-item {
+          position: relative;
           display: flex;
 
           &:not(:last-child) {
             margin-bottom: 30px;
           }
           .number {
+            position: absolute;
+            top: 8px;
+            left: -30px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -329,12 +342,10 @@ export default {
             height: 20px;
             font-size: 12px;
             color: #fff;
-            margin-top: 8px;
-            margin-left: -20px;
             border-radius: 50%;
             background-color: #ebb563;
           }
-          .form-item-wrapper {
+          .resume-form {
             width: 80%;
             .el-form-item {
               &:last-child {
