@@ -7,28 +7,18 @@
             {{ job.name }}
           </h2>
           <div class="info-list">
-            <div
-              class="info-list-item"
-              v-for="(info, index) in job.infos"
-              :key="index"
-            >
+            <div class="info-list-item" v-for="(info, index) in job.infos" :key="index">
               <h4 class="text-lg info-title">{{ info.title }}</h4>
               <div class="content-list">
-                <div
-                  class="content-list-item"
-                  v-for="(item, i) in info.children"
-                  :key="i"
-                >
-                  <h5 class="text-sm content-title" v-if="item.name">
-                    {{ item.name }}：
-                  </h5>
+                <div class="content-list-item" v-for="(item, i) in info.children" :key="i">
+                  <h5 class="text-sm content-title" v-if="item.name">{{ item.name }}：</h5>
                   <p class="info-content" v-html="item.content"></p>
                 </div>
               </div>
             </div>
           </div>
           <div class="btn-holder">
-            <el-button type="primary" round @click="showDialog">
+            <el-button type="primary" size="small" round @click="showDialog">
               立即申请
             </el-button>
           </div>
@@ -43,10 +33,7 @@
       </el-col>
     </el-row>
     <div class="dialog-wrapper">
-      <job-apply-dialog
-        :visible.sync="dialogVisible"
-        @close-dialog="dialogVisible = false"
-      />
+      <job-apply-dialog :visible.sync="dialogVisible" @close-dialog="dialogVisible = false" />
     </div>
   </app-layout>
 </template>
@@ -93,8 +80,7 @@ export default {
             children: [
               {
                 name: '公司地址',
-                content:
-                  '厦门市湖滨东路11号邮电广通大厦22楼及同安、集美、海沧、翔安办事处'
+                content: '厦门市湖滨东路11号邮电广通大厦22楼及同安、集美、海沧、翔安办事处'
               },
               {
                 name: '电话',

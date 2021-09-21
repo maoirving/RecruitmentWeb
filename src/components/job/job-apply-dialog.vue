@@ -1,13 +1,19 @@
 <template>
-  <el-dialog title="选择需要投递的简历" width="40%" v-bind="$attrs" :before-close="handleClose">
+  <el-dialog
+    title="选择需要投递的简历"
+    width="30%"
+    :center="true"
+    v-bind="$attrs"
+    :before-close="handleClose"
+  >
     <div class="dialog-content">
       <ul>
         <li v-for="(resume, index) in resumes" :key="index">{{ index + 1 }}.{{ resume.name }}</li>
       </ul>
     </div>
     <div slot="footer" class="text-right">
-      <el-button @click="handleClose">取消</el-button>
-      <el-button type="primary" @click="applyJob">投递简历</el-button>
+      <el-button size="small" @click="handleClose">取消</el-button>
+      <el-button type="primary" size="small" @click="applyJob">投递简历</el-button>
     </div>
   </el-dialog>
 </template>
@@ -27,7 +33,7 @@ export default {
 
     getResumes() {
       const resume = {
-        name: '毛欧文-web前端开发工程师'
+        name: 'web前端开发工程师'
       }
       for (let i = 0; i < 3; i++) {
         this.resumes.push(resume)
