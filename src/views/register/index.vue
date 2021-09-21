@@ -2,7 +2,7 @@
   <simple-layout class="login-page">
     <sign-wrapper title="欢迎注册" btn-text="立即注册" @btn-click="handleRegister">
       <template slot="form-content">
-        <m-form
+        <base-form
           ref="registerRef"
           label-width="auto"
           :form-items="formItems"
@@ -15,7 +15,7 @@
               <a class="text-link" href="#"> 隐私条款</a>
             </el-checkbox>
           </template>
-        </m-form>
+        </base-form>
       </template>
       <template slot="tip">
         已有账号？去<router-link class="text-link" to="/login">登录</router-link>
@@ -27,13 +27,13 @@
 <script>
 import SimpleLayout from '@/layout/simple-layout'
 import SignWrapper from '@/components/sign/sign-wrapper'
-import MForm from '@/components/module/m-form'
+import BaseForm from '@/components/base/base-form'
 
 export default {
   components: {
     SimpleLayout,
     SignWrapper,
-    MForm
+    BaseForm
   },
 
   data() {
@@ -59,7 +59,7 @@ export default {
         {
           prop: 'user_type',
           control: {
-            component: 'm-radio-group',
+            component: 'base-radio-group',
             attrs: {
               options: [
                 {
@@ -94,7 +94,7 @@ export default {
               validator: (rule, value, callback) => {
                 if (value) {
                   if (value !== this.registerForm.password) {
-                    callback(new Error('两次输入不一致'))
+                    callback(new Error('两次密码输入不一致'))
                   } else {
                     callback()
                   }
@@ -148,7 +148,7 @@ export default {
           password: this.registerForm.password
         }
         const { data: res } = await this.$axios.post('users', form)
-        if (res.meta.status !== 201) return this.$message.error('注册失败！')
+        if (res.meta.status !== 201) return this.$message.error(res.meta.msg)
         this.$message({
           type: 'success',
           message: '注册成功，请登录！'

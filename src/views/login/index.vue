@@ -2,7 +2,7 @@
   <simple-layout class="login-page">
     <sign-wrapper :title="title" btn-text="立即登录" @btn-click="login">
       <template slot="form-content">
-        <m-form
+        <base-form
           ref="loginFormRef"
           label-width="auto"
           :form-items="formItems"
@@ -22,14 +22,14 @@
 <script>
 import SimpleLayout from '@/layout/simple-layout'
 import SignWrapper from '@/components/sign/sign-wrapper'
-import MForm from '@/components/module/m-form'
+import BaseForm from '@/components/base/base-form'
 import Vcode from 'vue-puzzle-vcode'
 
 export default {
   components: {
     SimpleLayout,
     SignWrapper,
-    MForm,
+    BaseForm,
     Vcode
   },
 
@@ -83,6 +83,7 @@ export default {
       this.$refs.loginFormRef.$refs['form'].validate(valid => {
         if (!valid) return
         this.isShow = true
+        this.$message.info('请先进行安全验证')
       })
     },
 

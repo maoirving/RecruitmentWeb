@@ -1,71 +1,91 @@
 <template>
   <div class="resetPassword-wrapper">
-    <el-form
-      ref="form"
-      :model="form"
-      :rules="rules"
-      label-width="100px"
-      :validate-on-rule-change="false"
-    >
-      <el-form-item label="旧密码" prop="oldPassword">
-        <el-input type="password" v-model="form.oldPassword">
-          <i slot="suffix" class="icon-btn el-icon-view"></i>
-        </el-input>
-      </el-form-item>
-      <el-form-item label="新密码" prop="newPassword">
-        <el-input type="password" v-model="form.newPassword">
-          <i slot="suffix" class="icon-btn el-icon-view"></i>
-        </el-input>
-      </el-form-item>
-      <el-form-item label="确认密码" prop="password2">
-        <el-input type="password" v-model="form.password2">
-          <i slot="suffix" class="icon-btn el-icon-view"></i>
-        </el-input>
-      </el-form-item>
-      <el-form-item class="text-right">
-        <el-button @click="onReset">取消</el-button>
-        <el-button type="primary" @click="onSubmit">保存密码</el-button>
-      </el-form-item>
-    </el-form>
+    <base-form ref="passwordFormRef" :form-items="formItems" :form-data="passwordForm" />
+    <div class="text-right">
+      <el-button type="primary" size="small" @click="onSubmit">修改</el-button>
+    </div>
   </div>
 </template>
 
 <script>
+import BaseForm from '@/components/base/base-form'
+
 export default {
+  components: {
+    BaseForm
+  },
+
   data() {
     return {
-      form: {
+      passwordForm: {
         oldPassword: '',
         newPassword: '',
         password2: ''
       },
-      rules: {
-        oldPassword: [
-          { required: true, message: '请输入旧密码', trigger: 'blur' },
-          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
-        ],
-        newPassword: [
-          { required: true, message: '请输入新密码', trigger: 'blur' },
-          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
-        ],
-        password2: [
-          { required: true, message: '请再次输入新密码', trigger: 'blur' },
-          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
-        ]
-      }
+      formItems: [
+        {
+          label: '旧密码',
+          prop: 'oldPassword',
+          rule: 'required',
+          control: {
+            attrs: {
+              type: 'password',
+              placeholder: '请输入旧密码'
+            }
+          }
+        },
+        {
+          label: '新密码',
+          prop: 'newPassword',
+          rule: 'required|password',
+          control: {
+            attrs: {
+              type: 'password',
+              placeholder: '请设置新密码'
+            }
+          }
+        },
+        {
+          label: '确认密码',
+          prop: 'password2',
+          rule: [
+            {
+              required: true,
+              trigger: 'blur',
+              validator: (rule, value, callback) => {
+                if (value) {
+                  if (value !== this.passwordForm.newPassword) {
+                    callback(new Error('两次密码输入不一致'))
+                  } else {
+                    callback()
+                  }
+                } else {
+                  callback('必填')
+                }
+              }
+            }
+          ],
+          control: {
+            attrs: {
+              type: 'password',
+              placeholder: '请再次输入新密码'
+            }
+          }
+        }
+      ]
     }
   },
 
   methods: {
     onSubmit() {
-      this.$refs.form.validate(valid => {
+      this.$refs.passwordFormRef.$refs['form'].validate(valid => {
         if (!valid) return
-        this.$message.success('密码修改成功！')
+        this.$confirm('确认修改密码？', { type: 'warning' })
+          .then(() => {
+            this.$message.success('密码修改成功！')
+          })
+          .catch(() => {})
       })
-    },
-
-    onReset() {
-      this.$refs.form.resetFields()
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="admin-job">
-    <m-table
+    <base-table
       :buttons="buttons"
       :filter-items="filters"
       :columns="columns"
@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import MTable from '@/components/module/m-table'
+import BaseTable from '@/components/base/base-table'
 
 export default {
   components: {
-    MTable
+    BaseTable
   },
   data() {
     return {

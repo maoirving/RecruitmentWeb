@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="消息处理" width="40%" v-bind="$attrs" :before-close="handleClose">
     <div class="dialog-content">
-      <m-form :form-items="formItems" :form-data="message">
+      <base-form :form-items="formItems" :form-data="message">
         <template slot="interviewDate">
           <el-col :span="10">
             <el-date-picker
@@ -27,7 +27,7 @@
             </el-time-select>
           </el-col>
         </template>
-      </m-form>
+      </base-form>
     </div>
     <div slot="footer" class="text-right">
       <el-button @click="handeRefuse">拒绝</el-button>
@@ -37,11 +37,11 @@
 </template>
 
 <script>
-import MForm from '@/components/module/m-form'
+import BaseForm from '@/components/base/base-form'
 
 export default {
   components: {
-    MForm
+    BaseForm
   },
 
   data() {

@@ -68,7 +68,7 @@ import { cloneDeep, omit } from 'lodash'
 import EventMixin from '@/utils/event-mixin'
 
 export default {
-  name: 'TableSearchBar',
+  name: 'TableBaseSearchBar',
   components: {},
   mixins: [EventMixin],
   props: {

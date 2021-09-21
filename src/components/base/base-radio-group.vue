@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'MRadioGroup',
+  name: 'BaseRadioGroup',
   model: {
     prop: 'value',
     event: 'change'

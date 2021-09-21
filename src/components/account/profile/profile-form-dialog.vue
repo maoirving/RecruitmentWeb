@@ -8,7 +8,7 @@
     :before-close="handleClose"
     @closed="closed"
   >
-    <m-form ref="profileFormRef" :form-items="formItems" :form-data="profileForm" />
+    <base-form ref="profileFormRef" :form-items="formItems" :form-data="profileForm" />
     <div slot="footer" class="text-right">
       <el-button @click="handleClose">取消</el-button>
       <el-button type="primary" @click="handleEdit">修改</el-button>
@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import MForm from '@/components/module/m-form'
+import BaseForm from '@/components/base/base-form'
 
 export default {
   components: {
-    MForm
+    BaseForm
   },
 
   data() {
@@ -50,7 +50,7 @@ export default {
           label: '性别',
           prop: 'sex',
           control: {
-            component: 'm-radio-group',
+            component: 'base-radio-group',
             attrs: {
               options: [
                 {

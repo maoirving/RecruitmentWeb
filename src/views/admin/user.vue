@@ -1,15 +1,15 @@
 <template>
   <div class="admin-user">
-    <m-table :columns="columns" :data="users" :actions="actions" />
+    <base-table :columns="columns" :data="users" :actions="actions" />
   </div>
 </template>
 
 <script>
-import MTable from '@/components/module/m-table'
+import BaseTable from '@/components/base/base-table'
 
 export default {
   components: {
-    MTable
+    BaseTable
   },
   data() {
     return {

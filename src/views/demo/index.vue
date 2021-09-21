@@ -1,7 +1,7 @@
 <template>
   <div class="demo-page">
     <div class="demo-content">
-      <m-form :form-items="formItems" :form-data="formData">
+      <base-form :form-items="formItems" :form-data="formData">
         <div slot="salary">
           <div>
             <el-input-number v-model="formData.minSalary" :step="1" :min="1"></el-input-number>
@@ -16,7 +16,7 @@
             </span>
           </div>
         </div>
-      </m-form>
+      </base-form>
       <el-button @click="show">
         show
       </el-button>
@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import MForm from '@/components/module/m-form'
+import BaseForm from '@/components/base/base-form'
 
 export default {
   components: {
-    MForm
+    BaseForm
   },
 
   data() {
@@ -70,7 +70,7 @@ export default {
           label: '性别',
           prop: 'sex',
           control: {
-            component: 'm-radio-group',
+            component: 'base-radio-group',
             attrs: {
               options: [
                 {

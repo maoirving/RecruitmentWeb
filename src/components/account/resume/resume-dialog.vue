@@ -9,59 +9,57 @@
     :before-close="handleClose"
     @closed="closed"
   >
-    <el-form ref="resumeFormRef" :model="resumeForm" label-width="80px">
-      <el-collapse class="resume-collapse" v-model="activeNames">
-        <el-collapse-item
-          class="resume-collapse-item"
-          v-for="(collapse, index) in collapseList"
-          :key="index"
-          :title="collapse.title"
-          :name="`${index + 1}`"
-        >
-          <ul class="form-list">
-            <li class="form-list-item" v-for="(form, i) in resumeForm[collapse.prop]" :key="i">
-              <span v-if="resumeForm[collapse.prop].length > 1" class="number">{{ i + 1 }}</span>
-              <m-form class="resume-form" :form-items="collapse.formItems" :form-data="form">
-                <div slot="salary">
-                  <div>
-                    <el-input-number v-model="form.minSalary" :step="1" :min="1"></el-input-number>
-                    <span class="horizontal-line"> - </span>
-                    <el-input-number
-                      v-model="form.maxSalary"
-                      :step="1"
-                      :min="form.minSalary + 1"
-                    ></el-input-number>
-                    <span class="suffix">
-                      K
-                    </span>
-                  </div>
+    <el-collapse class="resume-collapse" v-model="activeNames">
+      <el-collapse-item
+        class="resume-collapse-item"
+        v-for="(collapse, index) in collapseList"
+        :key="index"
+        :title="collapse.title"
+        :name="`${index + 1}`"
+      >
+        <ul class="form-list">
+          <li class="form-list-item" v-for="(form, i) in resumeForm[collapse.prop]" :key="i">
+            <span v-if="resumeForm[collapse.prop].length > 1" class="number">{{ i + 1 }}</span>
+            <base-form class="resume-form" :form-items="collapse.formItems" :form-data="form">
+              <div slot="salary">
+                <div>
+                  <el-input-number v-model="form.minSalary" :step="1" :min="1"></el-input-number>
+                  <span class="horizontal-line"> - </span>
+                  <el-input-number
+                    v-model="form.maxSalary"
+                    :step="1"
+                    :min="form.minSalary + 1"
+                  ></el-input-number>
+                  <span class="suffix">
+                    K
+                  </span>
                 </div>
-              </m-form>
-            </li>
-          </ul>
-          <div v-if="collapse.withBtn" class="btn-holder text-right">
-            <el-button
-              v-if="resumeForm[collapse.prop].length > 1"
-              type="danger"
-              size="small"
-              icon="el-icon-minus"
-              plain
-              circle
-              @click="subAddition(collapse.prop)"
-            />
-            <el-button
-              v-if="resumeForm[collapse.prop].length < 5"
-              type="success"
-              size="small"
-              icon="el-icon-plus"
-              plain
-              circle
-              @click="addAddition(collapse.prop)"
-            />
-          </div>
-        </el-collapse-item>
-      </el-collapse>
-    </el-form>
+              </div>
+            </base-form>
+          </li>
+        </ul>
+        <div v-if="collapse.withBtn" class="btn-holder text-right">
+          <el-button
+            v-if="resumeForm[collapse.prop].length > 1"
+            type="danger"
+            size="small"
+            icon="el-icon-minus"
+            plain
+            circle
+            @click="subAddition(collapse.prop)"
+          />
+          <el-button
+            v-if="resumeForm[collapse.prop].length < 5"
+            type="success"
+            size="small"
+            icon="el-icon-plus"
+            plain
+            circle
+            @click="addAddition(collapse.prop)"
+          />
+        </div>
+      </el-collapse-item>
+    </el-collapse>
     <div slot="footer" class="text-right">
       <el-button @click="handleClose">取消</el-button>
       <el-button type="primary" @click="handleEdit">修改</el-button>
@@ -70,12 +68,12 @@
 </template>
 
 <script>
-import MForm from '@/components/module/m-form'
+import BaseForm from '@/components/base/base-form'
 import { cloneDeep } from 'lodash'
 
 export default {
   components: {
-    MForm
+    BaseForm
   },
 
   data() {
@@ -297,7 +295,7 @@ export default {
     },
 
     closed() {
-      this.$refs.resumeFormRef.resetFields()
+      // this.$refs.resumeFormRef.resetFields()
     },
 
     handleEdit() {
@@ -334,7 +332,7 @@ export default {
           .number {
             position: absolute;
             top: 8px;
-            left: -30px;
+            left: -20px;
             display: flex;
             justify-content: center;
             align-items: center;

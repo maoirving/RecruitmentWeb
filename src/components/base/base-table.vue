@@ -1,7 +1,7 @@
 <template>
-  <div class="m-table">
-    <search-bar
-      class="search-bar"
+  <div class="base-table">
+    <base-search-bar
+      class="base-search-bar"
       ref="search"
       :filter-items="filterItems"
       :buttons="buttons"
@@ -84,7 +84,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <m-pagination
+    <base-pagination
       v-if="pageInfo.total"
       :total="pageInfo.total"
       :page.sync="pageInfo.page"
@@ -97,13 +97,13 @@
 <script>
 import { cloneDeep, omit, omitBy, pick } from 'lodash'
 import actionMixin from '@/utils/event-mixin'
-import SearchBar from '@/components/module/search-bar'
-import MPagination from '@/components/module/m-pagination'
+import BaseSearchBar from '@/components/base/base-search-bar'
+import BasePagination from '@/components/base/base-pagination'
 
 export default {
   components: {
-    SearchBar,
-    MPagination
+    BaseSearchBar,
+    BasePagination
   },
 
   mixins: [actionMixin],
@@ -352,8 +352,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.m-table {
-  .search-bar {
+.base-table {
+  .base-search-bar {
     margin-bottom: $gap-lg;
   }
   .pagination-wrapper {

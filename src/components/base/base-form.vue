@@ -17,7 +17,7 @@
 <script>
 export default {
   components: {
-    MRadioGroup: () => import('@/components/module/m-radio-group')
+    BaseRadioGroup: () => import('@/components/base/base-radio-group')
   },
 
   props: {

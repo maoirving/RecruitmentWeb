@@ -28,7 +28,7 @@
             </div>
           </div>
           <div class="btn-holder">
-            <el-button type="primary" @click="showDialog">
+            <el-button type="primary" round @click="showDialog">
               立即申请
             </el-button>
           </div>
