@@ -16,7 +16,7 @@
         </el-card>
       </el-col>
       <el-col class="aside-box" :span="7">
-        <job-aside :applied-jobs="appliedJobs" />
+        <job-aside />
       </el-col>
     </el-row>
   </app-layout>
@@ -37,61 +37,135 @@ export default {
   },
   data() {
     return {
-      jobs: [],
-      appliedJobs: []
+      jobs: []
     }
   },
   methods: {
-    async init() {
-      await this.getJobs()
-      this.getAppliedJobs()
-    },
-
     async getJobs() {
-      // const job = {
-      //   name: '高级前端开发工程师',
-      //   salary: '12-20k',
-      //   city: '厦门',
-      //   experience: '经验不限',
-      //   education: '本科',
-      //   company: {
-      //     name: '字节跳动科技有限公司',
-      //     imageUrl:
-      //       'https://img.bosszhipin.com/beijin/upload/com/logo/20210525/77d60eae41e48b90df64951371a7a07a19f97e2c258c6cead07beaf11928d91b.png?x-oss-process=image/resize,w_120,limit_0',
-      //     category: '计算机',
-      //     financingStage: '已上市'
-      //   }
-      // }
-      // for (let i = 0; i < 20; i++) {
-      //   this.jobs.push(job)
-      // }
-      const { data: res } = await this.$axios.get('/jobs?pagenum=1&pagesize=10')
+      const res = await this.$axios.get('/jobs')
       this.jobs = res.data.jobs
-      console.log(this.jobs)
-    },
-
-    getAppliedJobs() {
-      const job = {
-        name: '高级前端开发工程师',
-        salary: '12-20k',
-        city: '厦门',
-        experience: '经验不限',
-        education: '本科',
-
-        company: {
-          name: '字节跳动科技有限公司',
-          imageUrl:
-            'https://img.bosszhipin.com/beijin/upload/com/logo/20210525/77d60eae41e48b90df64951371a7a07a19f97e2c258c6cead07beaf11928d91b.png?x-oss-process=image/resize,w_120,limit_0'
-        }
-      }
-      for (let i = 0; i < 4; i++) {
-        this.appliedJobs.push(job)
-      }
     }
   },
 
   created() {
-    this.init()
+    this.getJobs()
+    const arr = ['mao', 'hello', 'hi']
+    const json = [
+      {
+        facets: [
+          {
+            name: 'hello'
+          },
+          {
+            name: 'maoen'
+          }
+        ]
+      },
+      {
+        facets: [
+          {
+            name: 'kjdk'
+          },
+          {
+            name: 'mao'
+          }
+        ]
+      },
+      {
+        facets: [
+          {
+            name: 'hello'
+          },
+          {
+            name: 'mao'
+          }
+        ]
+      },
+      {
+        facets: [
+          {
+            name: 'kjdk'
+          },
+          {
+            name: 'mao'
+          }
+        ]
+      },
+      {
+        facets: [
+          {
+            name: 'hello'
+          },
+          {
+            name: 'mao'
+          }
+        ]
+      },
+      {
+        facets: [
+          {
+            name: 'mao'
+          }
+        ]
+      },
+      {
+        facets: [
+          {
+            name: 'mao'
+          }
+        ]
+      },
+      {
+        facets: [
+          {
+            name: 'mao'
+          }
+        ]
+      },
+      {
+        facets: [
+          {
+            name: 'mao'
+          }
+        ]
+      },
+      {
+        facets: [
+          {
+            name: 'mao'
+          }
+        ]
+      },
+      {
+        facets: [
+          {
+            name: 'mao'
+          }
+        ]
+      },
+      {
+        facets: [
+          {
+            name: 'mao'
+          }
+        ]
+      },
+      {
+        facets: []
+      }
+    ]
+    json.some(item => {
+      const result = item.facets.every(i => {
+        const name = i.name
+        const nameEn = name.substring(0, name.length - 2)
+        console.log(nameEn)
+        return arr.indexOf(name) !== -1 || arr.indexOf(nameEn) !== -1
+      })
+      if (result) {
+        console.log(item)
+      }
+      return result
+    })
   }
 }
 </script>

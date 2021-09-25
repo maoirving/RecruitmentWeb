@@ -18,11 +18,21 @@ export default {
     JobCard
   },
 
-  props: {
-    jobs: {
-      type: Array,
-      default: () => []
+  data() {
+    return {
+      jobs: []
     }
+  },
+
+  methods: {
+    async getJobs() {
+      const res = await this.$axios.get('/jobs')
+      this.jobs = res.data.jobs
+    }
+  },
+
+  created() {
+    this.getJobs()
   }
 }
 </script>

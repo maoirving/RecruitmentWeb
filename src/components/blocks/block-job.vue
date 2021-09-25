@@ -27,24 +27,9 @@ export default {
   },
 
   methods: {
-    getJobs() {
-      const job = {
-        name: '高级前端开发工程师',
-        salary: '12-20k',
-        city: '厦门',
-        experience: '经验不限',
-        education: '本科',
-        company: {
-          name: '字节跳动科技有限公司',
-          imageUrl:
-            'https://img.bosszhipin.com/beijin/upload/com/workfeel/20210722/5a4f1e3b0ad261d54b110a73195759e0cc87ad5622462609c129bd8d4ad5c5ab.jpg',
-          category: '计算机',
-          financingStage: '已上市'
-        }
-      }
-      for (let i = 0; i < 6; i++) {
-        this.jobs.push(job)
-      }
+    async getJobs() {
+      const res = await this.$axios.get('/jobs?limit=6')
+      this.jobs = res.data.jobs
     }
   },
 

@@ -7,8 +7,8 @@
             公司列表
           </h2>
           <company-search class="company-search" />
-          <el-row v-if="companys && companys.length" class="flex-wrap" type="flex" :gutter="15">
-            <el-col class="mb-3" :span="8" v-for="(company, index) in companys" :key="index">
+          <el-row v-if="companies && companies.length" class="flex-wrap" type="flex" :gutter="15">
+            <el-col class="mb-3" :span="8" v-for="(company, index) in companies" :key="index">
               <company-card :company="company" />
             </el-col>
           </el-row>
@@ -16,7 +16,7 @@
         </el-card>
       </el-col>
       <el-col class="aside-wrapper" :span="7">
-        <company-aside :jobs="jobs" />
+        <company-aside />
       </el-col>
     </el-row>
   </app-layout>
@@ -37,62 +37,19 @@ export default {
   },
   data() {
     return {
-      companys: [],
-      jobs: []
+      companies: []
     }
   },
 
   methods: {
-    async init() {
-      await this.getCompanys()
-      this.getNewJobs()
-    },
-
-    async getCompanys() {
-      // const company = {
-      //   id: 1,
-      //   name: '字节跳动科技有限公司',
-      //   jobCount: '11',
-      //   imageUrl:
-      //     'https://img.bosszhipin.com/beijin/upload/com/workfeel/20210722/5a4f1e3b0ad261d54b110a73195759e0cc87ad5622462609c129bd8d4ad5c5ab.jpg',
-      //   category: '游戏',
-      //   financingStage: '已上市',
-      //   staffCount: '1000人以上'
-      // }
-      // for (let i = 0; i < 20; i++) {
-      //   this.companys.push(company)
-      // }
-      const { data: res } = await this.$axios.get('/companys', {
-        params: {
-          pagenum: 1,
-          pagesize: 10
-        }
-      })
-      this.companys = res.data.companys
-    },
-
-    getNewJobs() {
-      const job = {
-        name: '高级前端开发工程师',
-        salary: '12-20k',
-        city: '厦门',
-        experience: '经验不限',
-        education: '本科',
-
-        company: {
-          name: '字节跳动科技有限公司',
-          imageUrl:
-            'https://img.bosszhipin.com/beijin/upload/com/logo/20210525/77d60eae41e48b90df64951371a7a07a19f97e2c258c6cead07beaf11928d91b.png?x-oss-process=image/resize,w_120,limit_0'
-        }
-      }
-      for (let i = 0; i < 4; i++) {
-        this.jobs.push(job)
-      }
+    async getCompanies() {
+      const res = await this.$axios.get('/companies')
+      this.companies = res.data.companies
     }
   },
 
   created() {
-    this.init()
+    this.getCompanies()
   }
 }
 </script>

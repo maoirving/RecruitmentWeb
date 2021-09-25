@@ -10,23 +10,23 @@
     </div>
     <div class="job-card-body">
       <p v-if="!isSimpleType" class="body-content">
-        <span class="text-xs">{{ job.city }}</span>
+        <span class="text-xs">{{ job.workLocation }}</span>
         <el-divider direction="vertical" />
-        <span class="text-xs">{{ job.experience }}</span>
+        <span class="text-xs">{{ job.workExperience }}</span>
         <el-divider direction="vertical" />
-        <span class="text-xs">{{ job.education }}</span>
+        <span class="text-xs">{{ job.educationBackground }}</span>
       </p>
       <p v-if="withDate" class="description">
-        <span class="date"> 申请于 {{ job.date }}</span>
-        <span class="date" v-if="job.reviewDate">（于 {{ job.reviewDate }} 被查看） </span>
+        <span class="date"> 申请于 {{ application.createAt }}</span>
+        <span class="date" v-if="application.readAt">（于 {{ application.readAt }} 被查看） </span>
       </p>
     </div>
-    <div class="job-card-footer">
+    <div v-if="job.Company" class="job-card-footer">
       <el-row type="flex" align="middle" :gutter="10">
         <el-col :span="4">
           <base-aspect data-ratio="1:1" is-circle with-shadow>
             <div class="image-holder" @click.stop="toCompanyDetail">
-              <img :src="job.company.imageUrl" />
+              <img :src="job.Company.imageUrl" />
             </div>
           </base-aspect>
         </el-col>
@@ -36,16 +36,16 @@
               class="truncate text-gray-600 footer-text main-text"
               :class="{ 'max-w-full': isSimpleType }"
             >
-              {{ job.company.name }}
+              {{ job.Company.name }}
             </span>
             <template v-if="!isSimpleType">
               <el-divider direction="vertical" />
               <span class="truncate footer-text short-text">
-                {{ job.company.category }}
+                {{ job.Company.type }}
               </span>
               <el-divider direction="vertical" />
               <span class="truncate footer-text short-text">
-                {{ job.company.financingStage }}
+                {{ job.Company.financingStage }}
               </span>
             </template>
           </div>
@@ -56,7 +56,7 @@
             size="mini"
             plain
             round
-            @click.stop="handleDelete(job.id)"
+            @click.stop="handleDelete(application.id)"
           >
             撤销申请
           </el-button>
@@ -85,6 +85,11 @@ export default {
     },
 
     job: {
+      type: Object,
+      default: () => {}
+    },
+
+    application: {
       type: Object,
       default: () => {}
     }
