@@ -189,8 +189,8 @@ export default {
 
 <style lang="scss" scoped>
 .register-page {
-  .form-content {
-  }
+  // .form-content {
+  // }
 }
 ::v-deep .el-checkbox {
   color: inherit;
