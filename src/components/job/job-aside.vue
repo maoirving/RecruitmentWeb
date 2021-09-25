@@ -3,7 +3,7 @@
     <template slot="aside-content">
       <el-row v-if="isLogined" class="flex-wrap content-list" type="flex" :gutter="20">
         <el-col class="content-list-item" v-for="(application, index) in applications" :key="index">
-          <job-card is-simple-type :job="application.Job" :application="application" />
+          <job-card :job="application.Job" is-simple-type />
         </el-col>
       </el-row>
       <el-empty v-else description="请先登录" />
@@ -35,7 +35,7 @@ export default {
 
   methods: {
     async getApplications() {
-      const res = await this.$axios.get('/applications')
+      const res = await this.$axios.get('/applications?limit=4')
       this.applications = res.data.applications
     }
   },

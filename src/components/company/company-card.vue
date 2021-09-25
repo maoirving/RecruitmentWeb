@@ -1,12 +1,20 @@
 <template>
   <div class="company-card">
-    <router-link class="link" :to="`/company/detail?companyId=${company.id}`">
+    <router-link
+      class="link"
+      :to="{
+        path: '/company/detail',
+        query: {
+          companyId: company.id
+        }
+      }"
+    >
       <div class="company-card-header">
         <el-row type="flex" align="middle" :gutter="20">
           <el-col :span="8">
             <base-aspect data-ratio="1:1" is-rounded-rectangle with-shadow>
               <div class="image-holder">
-                <img :src="company.imageUrl" alt="" />
+                <img :src="company.imageUrl" :alt="company.name" />
               </div>
             </base-aspect>
           </el-col>

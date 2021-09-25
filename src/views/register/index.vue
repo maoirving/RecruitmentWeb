@@ -40,7 +40,7 @@ export default {
     return {
       registerForm: {
         username: '',
-        user_type: 'worker',
+        type: 'worker',
         password: '',
         password2: '',
         checked: false
@@ -48,7 +48,24 @@ export default {
       formItems: [
         {
           prop: 'username',
-          rule: 'required|username',
+          rule: [
+            {
+              required: true,
+              trigger: 'blur',
+              validator: async (rule, value, callback) => {
+                if (value) {
+                  const isExist = await this.checkUsername()
+                  if (isExist) {
+                    callback(new Error('用户名已存在'))
+                  } else {
+                    callback()
+                  }
+                } else {
+                  callback('必填')
+                }
+              }
+            }
+          ],
           control: {
             attrs: {
               'prefix-icon': 'el-icon-user',
@@ -57,7 +74,7 @@ export default {
           }
         },
         {
-          prop: 'user_type',
+          prop: 'type',
           control: {
             component: 'base-radio-group',
             attrs: {
@@ -139,21 +156,31 @@ export default {
   },
 
   methods: {
+    async checkUsername() {
+      const res = await this.$axios.post('/users/check', { username: this.registerForm.username })
+      return res.data.success === true
+    },
+
     handleRegister() {
       this.$refs.registerRef.$refs['form'].validate(async valid => {
         if (!valid) return
         const form = {
           username: this.registerForm.username,
-          user_type: this.registerForm.user_type,
+          type: this.registerForm.type,
           password: this.registerForm.password
         }
-        const { data: res } = await this.$axios.post('users', form)
-        if (res.meta.status !== 201) return this.$message.error(res.meta.msg)
+        const res = await this.$axios.post('/users', form)
+        if (!res.data.success) return this.$message.error('注册失败！')
         this.$message({
           type: 'success',
           message: '注册成功，请登录！'
         })
-        this.$router.push('/login')
+        this.$router.push({
+          name: 'Login',
+          params: {
+            username: form.username
+          }
+        })
       })
     }
   }

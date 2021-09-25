@@ -26,7 +26,7 @@ export default {
 
   methods: {
     async getJobs() {
-      const res = await this.$axios.get('/jobs')
+      const res = await this.$axios.get('/jobs?limit=4')
       this.jobs = res.data.jobs
     }
   },

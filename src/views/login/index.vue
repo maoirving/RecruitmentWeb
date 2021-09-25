@@ -89,9 +89,8 @@ export default {
 
     async success() {
       this.isShow = false // 通过验证后，需要手动隐藏模态框
-      const res = await this.$axios.post('/users/login', this.loginForm)
-      console.log(res)
-      if (res.status !== 200) return this.$message.error('登录失败，请检查账号密码是否正确！')
+      const res = await this.$axios.post('/users/check', this.loginForm)
+      if (!res.data.success) return this.$message.error('登录失败，请检查账号密码是否正确！')
       this.$message.success('登录成功')
       // 1. 将登录成功之后的 token，保存到客户端的 sessionStorage 中
       //   1.1 项目中出了登录之外的其他API接口，必须在登录之后才能访问
@@ -103,6 +102,12 @@ export default {
 
     close() {
       this.isShow = false
+    }
+  },
+
+  mounted() {
+    if (this.$route.params && this.$route.params.username) {
+      this.loginForm.username = this.$route.params.username
     }
   }
 }

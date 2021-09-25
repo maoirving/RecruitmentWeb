@@ -10,15 +10,17 @@
     </div>
     <div class="job-card-body">
       <p v-if="!isSimpleType" class="body-content">
-        <span class="text-xs">{{ job.workLocation }}</span>
+        <span class="text-xs">{{ job.workLocation | city }}</span>
         <el-divider direction="vertical" />
         <span class="text-xs">{{ job.workExperience }}</span>
         <el-divider direction="vertical" />
         <span class="text-xs">{{ job.educationBackground }}</span>
       </p>
-      <p v-if="withDate" class="description">
-        <span class="date"> 申请于 {{ application.createAt }}</span>
-        <span class="date" v-if="application.readAt">（于 {{ application.readAt }} 被查看） </span>
+      <p v-if="application" class="description">
+        <span class="date"> 申请于 {{ application.createdAt | dateFormat }}</span>
+        <span class="date" v-if="application.readAt">
+          （于 {{ application.readAt | dateFormat() }} 被查看）
+        </span>
       </p>
     </div>
     <div v-if="job.Company" class="job-card-footer">
@@ -30,7 +32,7 @@
             </div>
           </base-aspect>
         </el-col>
-        <el-col class="flex items-center" :span="withDate ? 14 : 20">
+        <el-col class="flex items-center" :span="application ? 14 : 20">
           <div class="truncate text-holder" @click.stop="toCompanyDetail">
             <span
               class="truncate text-gray-600 footer-text main-text"
@@ -50,7 +52,7 @@
             </template>
           </div>
         </el-col>
-        <el-col v-if="withDate" :span="6" class="btn-col">
+        <el-col v-if="application" :span="6" class="btn-col">
           <el-button
             class="friendly-danger-btn"
             size="mini"
@@ -68,6 +70,7 @@
 
 <script>
 import BaseAspect from '@/components/base/base-aspect'
+import moment from 'moment'
 
 export default {
   components: {
@@ -79,11 +82,6 @@ export default {
       default: false
     },
 
-    withDate: {
-      type: Boolean,
-      default: false
-    },
-
     job: {
       type: Object,
       default: () => {}
@@ -91,17 +89,27 @@ export default {
 
     application: {
       type: Object,
-      default: () => {}
+      default: null
     }
   },
 
   methods: {
     toJobDetail() {
-      this.$router.push(`/job/detail?jobId=${this.job.id}`)
+      this.$router.push({
+        path: '/job/detail',
+        query: {
+          jobId: this.job.id
+        }
+      })
     },
 
     toCompanyDetail() {
-      this.$router.push(`/company/detail?companyId=${this.job.company.id}`)
+      this.$router.push({
+        path: '/company/detail',
+        query: {
+          companyId: this.job.companyId
+        }
+      })
     },
 
     handleDelete(id) {
@@ -111,6 +119,15 @@ export default {
           console.log(id)
         })
         .catch(() => {})
+    }
+  },
+
+  filters: {
+    dateFormat(val, formatStr = 'MM-DD HH:mm') {
+      return moment(val).format(formatStr)
+    },
+    city(val) {
+      return val.substr(0, 2)
     }
   }
 }

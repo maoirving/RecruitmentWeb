@@ -6,10 +6,10 @@
           <el-col
             class="content-list-item"
             :span="12"
-            v-for="(job, index) in appliedJobs"
+            v-for="(application, index) in applications"
             :key="index"
           >
-            <job-card is-simple-type :job="job" with-date />
+            <job-card :job="application.Job" :application="application" is-simple-type />
           </el-col>
         </el-row>
       </el-tab-pane>
@@ -41,32 +41,19 @@ export default {
           label: '不合适'
         }
       ],
-      appliedJobs: []
+      applications: []
     }
   },
 
   methods: {
-    getAppliedJobs() {
-      const appliedJob = {
-        date: '2021-07-08 16:00',
-        reviewDate: '2021-07-08 17:00',
-        name: '高级前端开发工程师',
-        salary: '12-20k',
-        city: '厦门',
-        experience: '经验不限',
-        education: '本科',
-        company: {
-          name: '字节跳动科技有限公司',
-          imageUrl:
-            'https://img.bosszhipin.com/beijin/upload/com/logo/20210525/77d60eae41e48b90df64951371a7a07a19f97e2c258c6cead07beaf11928d91b.png?x-oss-process=image/resize,w_120,limit_0'
-        }
-      }
-      this.appliedJobs = Array(10).fill(appliedJob)
+    async getApplications() {
+      const res = await this.$axios.get('/applications')
+      this.applications = res.data.applications
     }
   },
 
   created() {
-    this.getAppliedJobs()
+    this.getApplications()
   }
 }
 </script>
