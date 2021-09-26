@@ -119,7 +119,9 @@ export default {
 
   filters: {
     dateFormat(val, formatStr = 'MM-DD HH:mm') {
-      return moment(val).format(formatStr)
+      return moment(val)
+        .utcOffset(0)
+        .format(formatStr)
     },
     city(val) {
       return val.substr(0, 2)
