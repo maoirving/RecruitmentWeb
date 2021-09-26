@@ -1,59 +1,36 @@
 <template>
   <div class="search-wrapper">
-    <div class="input-btn-holder">
-      <el-input class="search-input" placeholder="请输入职位名称" v-model="searchForm.name">
-      </el-input>
-      <el-button
-        class="search-btn"
-        type="primary"
-        icon="el-icon-search"
-        @click="searchJobs(searchForm.name)"
-      >
-        搜索
-      </el-button>
-    </div>
-
-    <el-form class="filter-list" :inline="true" :model="searchForm">
-      <el-form-item class="filter-list-item" v-for="(filter, index) in filters" :key="index">
-        <el-select
-          size="small"
-          v-model="searchForm[filter.prop]"
-          :placeholder="filter.name"
-          clearable
-        >
-          <el-option
-            v-for="(option, i) in filter.options"
-            :key="i"
-            :label="option.label"
-            :value="option.value"
-          />
-        </el-select>
-      </el-form-item>
-    </el-form>
+    <base-search
+      :filterData="searchForm"
+      :filterItems="filters"
+      v-bind="$attrs"
+      v-on="$listeners"
+    />
   </div>
 </template>
 
 <script>
+import BaseSearch from '@/components/base/base-search.vue'
 export default {
+  components: {
+    BaseSearch
+  },
+
   data() {
     return {
       searchForm: {
         name: '',
         type: '',
-        education: '',
-        experience: '',
+        educationBackground: '',
+        workExperience: '',
         financingStage: '',
-        staffCount: ''
+        scale: ''
       },
       filters: [
         {
           name: '招聘类型',
           prop: 'type',
           options: [
-            {
-              label: '不限',
-              value: 'all'
-            },
             {
               label: '校园招聘',
               value: 'school'
@@ -66,11 +43,11 @@ export default {
         },
         {
           name: '学历要求',
-          prop: 'education',
+          prop: 'educationBackground',
           options: [
             {
               label: '不限',
-              value: 'all'
+              value: '不限'
             },
             {
               label: '大专',
@@ -78,41 +55,41 @@ export default {
             },
             {
               label: '本科',
-              value: '大专'
+              value: '本科'
             },
             {
               label: '硕士',
-              value: '大专'
+              value: '硕士'
             },
             {
               label: '博士',
-              value: '大专'
+              value: '博士'
             }
           ]
         },
         {
           name: '工作经验',
-          prop: 'experience',
+          prop: 'workExperience',
           options: [
             {
               label: '不限',
-              value: 'all'
+              value: '不限'
             },
             {
               label: '1年以内',
               value: '1年以内'
             },
             {
-              label: '1~3年',
-              value: '1~3年'
+              label: '1-3年',
+              value: '1-3年'
             },
             {
-              label: '3~5年',
-              value: '3~5年'
+              label: '3-5年',
+              value: '3-5年'
             },
             {
-              label: '5~10年',
-              value: '5~10年'
+              label: '5-10年',
+              value: '5-10年'
             }
           ]
         },
@@ -122,7 +99,7 @@ export default {
           options: [
             {
               label: '不限',
-              value: 'all'
+              value: '不限'
             },
             {
               label: '未融资',
@@ -130,7 +107,7 @@ export default {
             },
             {
               label: '天使轮',
-              value: '大天使轮专'
+              value: '天使轮'
             },
             {
               label: 'A轮',
@@ -160,11 +137,11 @@ export default {
         },
         {
           name: '公司规模',
-          prop: 'staffCount',
+          prop: 'scale',
           options: [
             {
               label: '不限',
-              value: 'all'
+              value: '不限'
             },
             {
               label: '0-20人',
@@ -193,12 +170,6 @@ export default {
           ]
         }
       ]
-    }
-  },
-
-  methods: {
-    searchJobs() {
-      console.log('hello')
     }
   }
 }

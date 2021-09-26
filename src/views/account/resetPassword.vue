@@ -20,7 +20,7 @@ export default {
       passwordForm: {
         oldPassword: '',
         newPassword: '',
-        password2: ''
+        repeatPassword: ''
       },
       formItems: [
         {
@@ -39,6 +39,7 @@ export default {
           prop: 'newPassword',
           rule: 'required|password',
           control: {
+            component: 'base-password-input',
             attrs: {
               type: 'password',
               placeholder: '请设置新密码'
@@ -47,7 +48,7 @@ export default {
         },
         {
           label: '确认密码',
-          prop: 'password2',
+          prop: 'repeatPassword',
           rule: [
             {
               required: true,
@@ -66,6 +67,7 @@ export default {
             }
           ],
           control: {
+            component: 'base-password-input',
             attrs: {
               type: 'password',
               placeholder: '请再次输入新密码'

@@ -17,7 +17,8 @@
 <script>
 export default {
   components: {
-    BaseRadioGroup: () => import('@/components/base/base-radio-group')
+    BaseRadioGroup: () => import('@/components/base/base-radio-group'),
+    BasePasswordInput: () => import('@/components/base/base-password-input')
   },
 
   props: {

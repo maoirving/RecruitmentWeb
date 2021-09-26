@@ -1,12 +1,13 @@
 <template>
-  <div :class="{ hidden: hidden }" class="pagination-container">
+  <div class="pagination-container">
     <el-pagination
-      :background="background"
-      :current-page.sync="currentPage"
-      :page-size.sync="pageSize"
+      :current-page.sync="pageInfo.currentPage"
+      :page-size.sync="pageInfo.pageSize"
       :layout="layout"
-      :page-sizes="pageSizes"
-      :total="total"
+      :pager-count="5"
+      :total="pageInfo.total"
+      background
+      hide-on-single-page
       v-bind="$attrs"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -15,75 +16,45 @@
 </template>
 
 <script>
-import { scrollTo } from '@/utils/scroll-to'
-
 export default {
   name: 'Pagination',
   props: {
-    total: {
-      required: true,
-      type: Number
-    },
-    page: {
-      type: Number,
-      default: 1
-    },
-    limit: {
-      type: Number,
-      default: 20
-    },
-    pageSizes: {
-      type: Array,
-      default() {
-        return [10, 20, 30, 50]
+    pageInfo: {
+      type: Object,
+      default: () => {
+        return {
+          currentPage: 1,
+          pageSize: 10,
+          total: 0
+        }
       }
     },
     layout: {
       type: String,
-      default: 'total, sizes, prev, pager, next, jumper'
-    },
-    background: {
-      type: Boolean,
-      default: true
+      default: 'prev, pager, next'
     },
     autoScroll: {
       type: Boolean,
       default: true
-    },
-    hidden: {
-      type: Boolean,
-      default: false
-    }
-  },
-  computed: {
-    currentPage: {
-      get() {
-        return this.page
-      },
-      set(val) {
-        this.$emit('update:page', val)
-      }
-    },
-    pageSize: {
-      get() {
-        return this.limit
-      },
-      set(val) {
-        this.$emit('update:limit', val)
-      }
     }
   },
   methods: {
     handleSizeChange(val) {
       this.$emit('pagination', { page: this.currentPage, limit: val })
       if (this.autoScroll) {
-        scrollTo(0, 800)
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        })
       }
     },
     handleCurrentChange(val) {
-      this.$emit('pagination', { page: val, limit: this.pageSize })
+      this.$emit('pagination')
       if (this.autoScroll) {
-        scrollTo(0, 800)
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        })
       }
     }
   }
@@ -94,8 +65,5 @@ export default {
 .pagination-container {
   text-align: center;
   padding: $gap-lg 0 $gap-xs;
-}
-.pagination-container.hidden {
-  display: none;
 }
 </style>

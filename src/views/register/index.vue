@@ -42,7 +42,7 @@ export default {
         username: '',
         type: 'worker',
         password: '',
-        password2: '',
+        repeatPassword: '',
         checked: false
       },
       formItems: [
@@ -95,6 +95,7 @@ export default {
           prop: 'password',
           rule: 'required|password',
           control: {
+            component: 'base-password-input',
             attrs: {
               'prefix-icon': 'el-icon-lock',
               type: 'password',
@@ -103,7 +104,7 @@ export default {
           }
         },
         {
-          prop: 'password2',
+          prop: 'repeatPassword',
           rule: [
             {
               required: true,
@@ -122,6 +123,7 @@ export default {
             }
           ],
           control: {
+            component: 'base-password-input',
             attrs: {
               'prefix-icon': 'el-icon-key',
               type: 'password',
@@ -140,7 +142,7 @@ export default {
                 if (
                   this.registerForm.username &&
                   this.registerForm.password &&
-                  this.registerForm.password2 &&
+                  this.registerForm.repeatPassword &&
                   !value
                 ) {
                   callback(new Error('请先勾选此项'))

@@ -1,7 +1,7 @@
 <template>
   <div class="base-table">
-    <base-search-bar
-      class="base-search-bar"
+    <base-table-search
+      class="base-table-search"
       ref="search"
       :filter-items="filterItems"
       :buttons="buttons"
@@ -97,12 +97,12 @@
 <script>
 import { cloneDeep, omit, omitBy, pick } from 'lodash'
 import actionMixin from '@/utils/event-mixin'
-import BaseSearchBar from '@/components/base/base-search-bar'
+import BaseTableSearch from '@/components/base/base-table-search'
 import BasePagination from '@/components/base/base-pagination'
 
 export default {
   components: {
-    BaseSearchBar,
+    BaseTableSearch,
     BasePagination
   },
 
@@ -353,7 +353,7 @@ export default {
 
 <style lang="scss" scoped>
 .base-table {
-  .base-search-bar {
+  .base-table-search {
     margin-bottom: $gap-lg;
   }
   .pagination-wrapper {
