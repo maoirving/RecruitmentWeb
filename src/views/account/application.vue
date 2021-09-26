@@ -1,7 +1,7 @@
 <template>
   <div class="application-wrapper">
-    <el-tabs type="card">
-      <el-tab-pane v-for="(tab, index) in tabs" :key="index" :label="tab.label">
+    <el-tabs v-model="currentTab" type="card" @tab-click="getApplications">
+      <el-tab-pane v-for="(tab, index) in tabs" :key="index" :label="tab.label" :name="tab.name">
         <el-row class="flex-wrap content-list" type="flex" :gutter="20">
           <el-col
             class="content-list-item"
@@ -9,7 +9,12 @@
             v-for="(application, index) in applications"
             :key="index"
           >
-            <job-card :job="application.Job" :application="application" is-simple-type />
+            <job-card
+              :job="application.Job"
+              :application="application"
+              is-simple-type
+              @delete-application="handleDelete"
+            />
           </el-col>
         </el-row>
       </el-tab-pane>
@@ -27,18 +32,23 @@ export default {
 
   data() {
     return {
+      currentTab: 'all',
       tabs: [
         {
-          label: '全部'
+          label: '全部',
+          name: 'all'
         },
         {
-          label: '被查看'
+          label: '被查看',
+          name: 'isRead'
         },
         {
-          label: '合适'
+          label: '合适',
+          name: 'pass'
         },
         {
-          label: '不合适'
+          label: '不合适',
+          name: 'notPass'
         }
       ],
       applications: []
@@ -47,12 +57,41 @@ export default {
 
   methods: {
     async getApplications() {
-      const res = await this.$axios.get('/applications')
+      let params = {}
+      switch (this.currentTab) {
+        case 'isRead':
+          params.isRead = 1
+          break
+        case 'pass':
+          params.status = 1
+          break
+        case 'notPass':
+          params.status = 0
+          break
+        default:
+          break
+      }
+      const res = await this.$axios.get('/applications', {
+        params: params
+      })
       this.applications = res.data.applications
+    },
+
+    handleDelete(id) {
+      this.$confirm('确认撤销该申请？', { type: 'warning' })
+        .then(async () => {
+          const res = await this.$axios.delete(`/applications/${id}`)
+          if (!(res.data && res.data.success)) {
+            return this.$message.console.error('撤销失败！')
+          }
+          await this.getApplications()
+          this.$message.success('撤销成功！')
+        })
+        .catch(() => {})
     }
   },
 
-  created() {
+  mounted() {
     this.getApplications()
   }
 }

@@ -112,13 +112,8 @@ export default {
       })
     },
 
-    handleDelete(id) {
-      this.$confirm('确认撤销该申请？', { type: 'warning' })
-        .then(() => {
-          this.$message.success('撤销成功！')
-          console.log(id)
-        })
-        .catch(() => {})
+    handleDelete(applicationId) {
+      this.$emit('delete-application', applicationId)
     }
   },
 
