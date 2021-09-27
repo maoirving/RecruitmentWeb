@@ -29,13 +29,21 @@
       </el-button>
     </div>
     <div class="dialog-wrapper">
-      <profile-form-dialog :visible.sync="dialogVisible" @close-dialog="dialogVisible = false" />
+      <profile-form-dialog
+        ref="profileDialogRef"
+        :user-id="profileForm.id"
+        :visible.sync="dialogVisible"
+        @close-dialog="dialogVisible = false"
+        @reload="handleReload"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import ProfileFormDialog from '@/components/account/profile/profile-form-dialog'
+import moment from 'moment'
+import { cloneDeep } from 'lodash'
 
 export default {
   components: {
@@ -46,7 +54,7 @@ export default {
       profileList: [
         {
           label: '姓名',
-          model: 'name'
+          model: 'realName'
         },
         {
           label: '性别',
@@ -69,31 +77,40 @@ export default {
           model: 'currentAddress'
         }
       ],
-      profileForm: {
-        imageUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        name: '毛欧文',
-        sex: '男',
-        birthday: '1999-01-16',
-        phoneNumber: '18359404948',
-        email: 'eje@dk.com',
-        currentAddress: '福建厦门'
-      },
+      profileForm: {},
       dialogVisible: false
     }
   },
 
   methods: {
+    async getUser() {
+      const userId = window.sessionStorage.getItem('userId')
+      const res = await this.$axios.get(`/users/${userId}`)
+      if (res.data.user) {
+        this.profileForm = res.data.user
+        this.profileForm.birthday = moment(this.profileForm.birthday)
+          .utcOffset(0)
+          .format('YYYY-MM-DD')
+      }
+    },
     beforeAvatarUpload() {
       console.log('beforeAvatarUpload')
     },
-
     handleAvatarSuccess() {
       console.log('handleAvatarSuccess')
     },
-
     showDialog() {
       this.dialogVisible = true
+      this.$refs.profileDialogRef.profileForm = cloneDeep(this.profileForm)
+    },
+    handleReload() {
+      this.dialogVisible = false
+      this.getUser()
     }
+  },
+
+  mounted() {
+    this.getUser()
   }
 }
 </script>

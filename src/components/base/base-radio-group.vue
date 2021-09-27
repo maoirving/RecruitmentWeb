@@ -9,10 +9,12 @@
 <script>
 export default {
   name: 'BaseRadioGroup',
+
   model: {
     prop: 'value',
     event: 'change'
   },
+
   props: {
     value: {
       type: [String, Number],
@@ -31,11 +33,13 @@ export default {
       default: 'label'
     }
   },
+
   data() {
     return {
       innerValue: this.value
     }
   },
+
   watch: {
     innerValue(value) {
       this.$emit('change', value)

@@ -5,6 +5,7 @@
     width="40%"
     :center="true"
     v-bind="$attrs"
+    destroy-on-close
     :before-close="handleClose"
     @closed="closed"
   >
@@ -24,17 +25,11 @@ export default {
     BaseForm
   },
 
+  props: {},
+
   data() {
     return {
-      profileForm: {
-        username: '',
-        trueName: '',
-        sex: 'male',
-        birthday: '',
-        phoneNumber: '',
-        email: '',
-        currentAddress: ''
-      },
+      profileForm: {},
       formItems: [
         {
           label: '用户名',
@@ -43,7 +38,7 @@ export default {
         },
         {
           label: '姓名',
-          prop: 'trueName',
+          prop: 'realName',
           rule: 'required'
         },
         {
@@ -55,11 +50,11 @@ export default {
               options: [
                 {
                   label: '男',
-                  key: 'male'
+                  key: '男'
                 },
                 {
                   label: '女',
-                  key: 'female'
+                  key: '女'
                 }
               ]
             }
@@ -111,9 +106,17 @@ export default {
       this.$refs.profileFormRef.$refs['form'].validate(async valid => {
         if (!valid) return
         this.$confirm('确认修改？', { type: 'warning' })
-          .then(() => {
+          .then(async () => {
+            const res = await this.$axios.put(`/users/${this.profileForm.id}`, {
+              username: this.profileForm.username,
+              realName: this.profileForm.realName,
+              imageUrl: this.profileForm.imageUrl,
+              sex: this.profileForm.sex,
+              phoneNumber: this.profileForm.phoneNumber,
+              email: this.profileForm.email
+            })
             this.$message.success('修改成功！')
-            this.$emit('close-dialog')
+            this.$emit('reload')
           })
           .catch(() => {})
       })
