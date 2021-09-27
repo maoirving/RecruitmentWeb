@@ -6,7 +6,7 @@
           <h2 class="text-2xl main-title">
             职位列表
           </h2>
-          <job-search class="job-search" @filter="handleFilter" />
+          <job-search class="mb-3" @filter="handleFilter" />
           <el-row
             v-if="jobs && jobs.length"
             v-loading="isLoading"
@@ -18,7 +18,7 @@
               <job-card :job="job" />
             </el-col>
           </el-row>
-          <el-empty v-else description="暂无职位" />
+          <el-empty v-else description="未找到相关职位" />
           <base-pagination :pageInfo="pageInfo" @pagination="handlePaginate" />
         </el-card>
       </el-col>
@@ -31,7 +31,7 @@
 
 <script>
 import AppLayout from '@/layout/app-layout'
-import JobSearch from '@/components/search/job-search'
+import JobSearch from '@/components/job/job-search'
 import JobCard from '@/components/job/job-card'
 import BasePagination from '@/components/base/base-pagination'
 import JobAside from '@/components/job/job-aside'
@@ -73,6 +73,7 @@ export default {
     handleFilter(params) {
       this.pageInfo.currentPage = 1
       this.filterParams = omitBy(params, val => val === '')
+      console.log(this.filterParams)
       this.getJobs()
     },
 
@@ -97,9 +98,6 @@ export default {
   .content-wrapper {
     .main-content {
       .main-title {
-        margin-bottom: $gap;
-      }
-      .job-search {
         margin-bottom: $gap;
       }
     }

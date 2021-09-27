@@ -40,7 +40,7 @@
 
 <script>
 import AppLayout from '@/layout/app-layout'
-import JobSearch from '@/components/search/job-search'
+import JobSearch from '@/components/job/job-search'
 import JobCard from '@/components/job/job-card'
 import AsideWrapper from '@/components/aside/aside-wrapper'
 import CompanyCard from '@/components/company/company-card'

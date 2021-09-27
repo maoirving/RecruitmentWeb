@@ -7,7 +7,7 @@
       :pager-count="5"
       :total="pageInfo.total"
       background
-      hide-on-single-page
+      :hide-on-single-page="hideOnSinglePage"
       v-bind="$attrs"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -17,7 +17,8 @@
 
 <script>
 export default {
-  name: 'Pagination',
+  name: 'BasePagination',
+
   props: {
     pageInfo: {
       type: Object,
@@ -36,8 +37,13 @@ export default {
     autoScroll: {
       type: Boolean,
       default: true
+    },
+    hideOnSinglePage: {
+      type: Boolean,
+      default: true
     }
   },
+
   methods: {
     handleSizeChange(val) {
       this.$emit('pagination', { page: this.currentPage, limit: val })

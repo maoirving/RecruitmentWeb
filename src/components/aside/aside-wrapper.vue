@@ -51,7 +51,7 @@ export default {
     }
   }
   .aside-content {
-    max-height: 400px;
+    max-height: 500px;
     overflow-x: hidden;
     overflow-y: auto;
     padding-top: $gap-xs;

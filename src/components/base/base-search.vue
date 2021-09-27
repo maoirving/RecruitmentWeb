@@ -1,7 +1,7 @@
 <template>
   <div class="base-search">
     <div class="input-btn-holder">
-      <el-input class="search-input" placeholder="请输入职位名称" v-model="filterData.name">
+      <el-input class="search-input" :placeholder="inputPlaceholder" v-model="filterData.name">
       </el-input>
       <el-button
         class="search-btn"
@@ -14,9 +14,13 @@
     </div>
 
     <el-form class="filter-list" :inline="true" :model="filterData">
-      <el-form-item class="filter-list-item" v-for="(filter, index) in filterItems" :key="index">
+      <el-form-item
+        class="filter-list-item"
+        size="small"
+        v-for="(filter, index) in filterItems"
+        :key="index"
+      >
         <el-select
-          size="small"
           v-model="filterData[filter.prop]"
           :placeholder="filter.name"
           @change="$emit('filter', filterData)"
@@ -37,27 +41,24 @@
 <script>
 export default {
   props: {
+    inputPlaceholder: {
+      type: String,
+      default: ''
+    },
     filterData: {
       type: Object,
       default: () => {}
     },
-
     filterItems: {
       type: Array,
       default: () => []
-    }
-  },
-
-  methods: {
-    searchJobs() {
-      console.log('hello')
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.search-wrapper {
+.base-search {
   .input-btn-holder {
     display: flex;
     margin-bottom: $gap;

@@ -1,6 +1,7 @@
 <template>
-  <div class="search-wrapper">
+  <div class="job-search">
     <base-search
+      input-placeholder="请输入职位名称"
       :filterData="searchForm"
       :filterItems="filters"
       v-bind="$attrs"
@@ -11,6 +12,7 @@
 
 <script>
 import BaseSearch from '@/components/base/base-search.vue'
+
 export default {
   components: {
     BaseSearch
@@ -98,10 +100,6 @@ export default {
           prop: 'financingStage',
           options: [
             {
-              label: '不限',
-              value: '不限'
-            },
-            {
               label: '未融资',
               value: '未融资'
             },
@@ -140,10 +138,6 @@ export default {
           prop: 'scale',
           options: [
             {
-              label: '不限',
-              value: '不限'
-            },
-            {
               label: '0-20人',
               value: '0-20人'
             },
@@ -174,29 +168,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.search-wrapper {
-  .input-btn-holder {
-    display: flex;
-    margin-bottom: $gap;
-    .search-input ::v-deep {
-      .el-input__inner {
-        border-right: none;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-    }
-    .search-btn {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  }
-  .filter-list {
-    &-item {
-      width: 130px;
-      margin-bottom: $gap-sm;
-    }
-  }
-}
-</style>
