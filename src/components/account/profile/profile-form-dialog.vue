@@ -30,6 +30,16 @@ export default {
   data() {
     return {
       profileForm: {},
+      options: [
+        {
+          label: '男',
+          key: '男'
+        },
+        {
+          label: '女',
+          key: '女'
+        }
+      ],
       formItems: [
         {
           label: '用户名',

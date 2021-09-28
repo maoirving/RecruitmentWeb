@@ -19,11 +19,26 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
+  props: {
+    jobId: {
+      type: String,
+      default: ''
+    }
+  },
+
   data() {
     return {
       resumes: []
     }
+  },
+
+  computed: {
+    ...mapState('user', {
+      userId: state => state.id
+    })
   },
 
   methods: {
@@ -40,13 +55,18 @@ export default {
       }
     },
 
-    applyJob() {
-      this.$confirm('确认申请该职位并投递简历？', { type: 'warning' })
-        .then(() => {
-          this.$message.success('申请成功')
-          this.$emit('close-dialog')
+    async applyJob() {
+      this.$confirm('确认申请该职位并投递简历？', { type: 'warning' }).then(async () => {
+        const response = await this.$axios.post('/applications', {
+          userId: this.userId,
+          jobId: this.jobId
         })
-        .catch(() => {})
+        if (!response.data.success) {
+          return this.$message.error('申请失败，请重试')
+        }
+        this.$message.success('申请成功')
+        this.$emit('close-dialog')
+      })
     }
   },
   created() {

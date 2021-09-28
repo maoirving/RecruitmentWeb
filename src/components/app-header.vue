@@ -69,7 +69,7 @@ export default {
         right: [
           {
             title: '进入企业版',
-            url: '/admin/login'
+            url: '/management/login'
           },
           {
             title: '我的',

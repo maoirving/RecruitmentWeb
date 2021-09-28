@@ -1,6 +1,6 @@
 <template>
   <simple-layout class="login-page">
-    <sign-wrapper :title="title" btn-text="立即登录" @btn-click="login">
+    <sign-wrapper :title="title" btn-text="立即登录" @btn-click="handleLogin">
       <template slot="form-content">
         <base-form
           ref="loginFormRef"
@@ -9,7 +9,7 @@
           :form-data="loginForm"
         />
       </template>
-      <template v-if="!isAdmin" slot="tip">
+      <template v-if="!isManagement" slot="tip">
         还没有账号？去<router-link class="text-link" to="/register">注册</router-link>
       </template>
       <template slot="popup">
@@ -24,6 +24,7 @@ import SimpleLayout from '@/layout/simple-layout'
 import SignWrapper from '@/components/sign/sign-wrapper'
 import BaseForm from '@/components/base/base-form'
 import Vcode from 'vue-puzzle-vcode'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -73,40 +74,51 @@ export default {
       return this.$route.name === 'Login'
     },
 
-    isAdmin() {
-      return this.$route.name === 'AdminLogin'
+    isManagement() {
+      return this.$route.name === 'LoginManagement'
     },
 
     title() {
-      const prefix = this.isAdmin ? '管理员' : '欢迎'
+      const prefix = this.isManagement ? '管理员' : '欢迎'
       return prefix + '登录'
     }
   },
 
   methods: {
-    login() {
+    ...mapActions('user', ['login']),
+    handleLogin() {
       this.$refs.loginFormRef.$refs['form'].validate(valid => {
         if (!valid) return
         this.isShow = true
         this.$message.info('请先进行安全验证')
       })
     },
-
     async success() {
       this.isShow = false // 通过验证后，需要手动隐藏模态框
-      const res = await this.$axios.post('/users/check', this.loginForm)
-      if (!res.data.success) return this.$message.error('登录失败，请检查账号密码是否正确！')
-      this.$message.success('登录成功')
-      // 1. 将登录成功之后的 token，保存到客户端的 sessionStorage 中
-      //   1.1 项目中出了登录之外的其他API接口，必须在登录之后才能访问
-      //   1.2 token 只应在当前网站打开期间生效，所以将 token 保存在 sessionStorage 中
-      window.sessionStorage.setItem('token', res.data.user.token)
-      window.sessionStorage.setItem('userId', res.data.user.id)
+      this.login(this.loginForm)
+        .then(() => {
+          this.$message.success('登录成功')
+          if (this.isWorker) {
+            return this.$router.push('/home')
+          }
+          return this.$router.push('/management/job')
+        })
+        .catch(() => {
+          this.$message.error('登录失败，请检查账号密码是否正确！')
+        })
+      // const res = await this.$axios.post('/users/check', this.loginForm)
+      // if (!res.data.success) return this.$message.error('登录失败，请检查账号密码是否正确！')
+      // this.$message.success('登录成功')
+      // // 1. 将登录成功之后的 token，保存到客户端的 sessionStorage 中
+      // //   1.1 项目中出了登录之外的其他API接口，必须在登录之后才能访问
+      // //   1.2 token 只应在当前网站打开期间生效，所以将 token 保存在 sessionStorage 中
+      // window.sessionStorage.setItem('token', res.data.user.token)
+      // window.sessionStorage.setItem('userId', res.data.user.id)
       // 2. 通过编程式导航跳转到后台主页，路由地址是 /home
-      if (this.isWorker) {
-        return this.$router.push('/home')
-      }
-      return this.$router.push('/admin/job')
+      // if (this.isWorker) {
+      //   return this.$router.push('/home')
+      // }
+      // return this.$router.push('/management/job')
     },
 
     close() {

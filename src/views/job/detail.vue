@@ -33,7 +33,11 @@
       </el-col>
     </el-row>
     <div class="dialog-wrapper">
-      <job-apply-dialog :visible.sync="dialogVisible" @close-dialog="dialogVisible = false" />
+      <job-apply-dialog
+        :job-id="jobId"
+        :visible.sync="dialogVisible"
+        @close-dialog="dialogVisible = false"
+      />
     </div>
   </app-layout>
 </template>
@@ -45,6 +49,7 @@ import JobCard from '@/components/job/job-card'
 import AsideWrapper from '@/components/aside/aside-wrapper'
 import CompanyCard from '@/components/company/company-card'
 import JobApplyDialog from '@/components/job/job-apply-dialog'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -55,6 +60,7 @@ export default {
     CompanyCard,
     JobApplyDialog
   },
+
   data() {
     return {
       infos: [
@@ -95,14 +101,28 @@ export default {
   },
 
   computed: {
+    ...mapState('user', {
+      userId: state => state.id
+    }),
     jobId() {
       return this.$route.query.jobId
     }
   },
 
   methods: {
-    showDialog() {
-      this.dialogVisible = true
+    async showDialog() {
+      const res = await this.$axios.get('/applications', {
+        params: {
+          userId: this.userId,
+          jobId: this.jobId
+        }
+      })
+      const count = res.data.pagination && res.data.pagination.total
+      if (count > 0) {
+        this.$message.info('您已申请过该职位，请勿重复申请')
+      } else {
+        this.dialogVisible = true
+      }
     },
     async getJob() {
       const res = await this.$axios.get(`/jobs/${this.jobId}`)

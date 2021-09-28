@@ -13,7 +13,7 @@ export default {
       type: String,
       default: 'login'
     },
-    isAdminType: {
+    isManagementType: {
       type: Boolean,
       default: false
     }
@@ -34,7 +34,7 @@ export default {
       return this.type === 'login' ? '登录' : '注册'
     },
     title() {
-      let text = this.isAdminType ? '管理员' : '欢迎'
+      let text = this.isManagementType ? '管理员' : '欢迎'
       return text + this.typeText
     },
     btnText() {
@@ -45,8 +45,8 @@ export default {
   methods: {
     handleClick() {
       this.$emit('btn-click')
-      //   if (this.isAdminType) {
-      //     this.$router.push('/admin')
+      //   if (this.isManagementType) {
+      //     this.$router.push('/management')
       //     return
       //   }
       //   if (this.type === 'login') {

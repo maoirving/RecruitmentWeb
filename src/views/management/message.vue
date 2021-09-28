@@ -1,6 +1,6 @@
 <template>
-  <div class="admin-company">
-    <base-table :columns="columns" :data="companys" :actions="actions" />
+  <div class="management-message">
+    <base-table :columns="columns" :data="messages" :actions="actions" />
   </div>
 </template>
 
@@ -15,32 +15,28 @@ export default {
     return {
       columns: [
         {
-          label: '公司名称',
+          label: '消息名称',
           prop: 'name'
         },
         {
-          label: '行业类别',
+          label: '消息类别',
           prop: 'type'
         },
         {
-          label: '融资阶段',
+          label: '消息主体',
           prop: 'financingStage'
         },
         {
-          label: '公司地址',
+          label: '用户',
           prop: 'address'
         },
         {
-          label: '法定代表人',
+          label: '消息内容',
           prop: 'legalRepresentative'
         },
         {
-          label: '注册资本',
-          prop: 'registeredCapital'
-        },
-        {
-          label: '成立日期',
-          prop: 'establishmentDate'
+          label: '发送时间',
+          prop: 'sendTime'
         }
       ],
       actions: [
@@ -63,27 +59,26 @@ export default {
           }
         }
       ],
-      companys: []
+      messages: []
     }
   },
 
   methods: {
-    getCompanys() {
-      const company = {
-        name: '阿里巴巴科技有限公司',
-        type: '互联网',
+    getMessages() {
+      const message = {
+        name: '面试邀请',
+        type: '面试邀请',
         financingStage: '已上市',
         address: '厦门思明区厦门市软件园望海路8号楼1楼',
         legalRepresentative: '张某人',
-        registeredCapital: '10000万',
-        establishmentDate: '2011-02-21'
+        sendTime: '2011-02-21'
       }
-      this.companys = Array(10).fill(company)
+      this.messages = Array(10).fill(message)
     }
   },
 
   created() {
-    this.getCompanys()
+    this.getMessages()
   }
 }
 </script>

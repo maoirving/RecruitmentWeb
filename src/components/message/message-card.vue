@@ -38,6 +38,7 @@ export default {
     BaseAspect,
     MessageDialog
   },
+
   props: {
     message: {
       type: Object,

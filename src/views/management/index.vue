@@ -1,5 +1,5 @@
 <template>
-  <el-container class="admin-container">
+  <el-container class="management-container">
     <el-header>
       <app-header class="header" />
     </el-header>
@@ -65,36 +65,43 @@ export default {
         {
           id: '1',
           title: '职位管理',
-          name: 'AdminJob',
-          url: '/admin/job',
+          name: 'JobManagement',
+          url: '/management/job',
           iconClass: 'el-icon-s-promotion'
         },
         {
           id: '2',
           title: '公司管理',
-          name: 'AdminCompany',
-          url: '/admin/company',
+          name: 'CompanyManagement',
+          url: '/management/company',
           iconClass: 'el-icon-office-building'
         },
         {
           id: '3',
-          title: '消息管理',
-          name: 'AdminMessage',
-          url: '/admin/message',
-          iconClass: 'el-icon-chat-dot-round'
+          title: '申请管理',
+          name: 'ApplicationManagement',
+          url: '/management/application',
+          iconClass: 'el-icon-s-claim'
         },
         {
           id: '4',
-          title: '用户管理',
-          name: 'AdminUser',
-          url: '/admin/user',
-          iconClass: 'el-icon-user'
+          title: '消息管理',
+          name: 'MessageManagement',
+          url: '/management/message',
+          iconClass: 'el-icon-chat-dot-round'
         },
         {
           id: '5',
+          title: '用户管理',
+          name: 'UserManagement',
+          url: '/management/user',
+          iconClass: 'el-icon-user'
+        },
+        {
+          id: '6',
           title: '我的信息',
-          name: 'AdminProfile',
-          url: '/admin/profile',
+          name: 'ProfileManagement',
+          url: '/management/profile',
           iconClass: 'el-icon-set-up'
         }
       ]
@@ -121,7 +128,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.admin-container {
+.management-container {
   height: 100vh;
   .el-header {
     height: auto !important;

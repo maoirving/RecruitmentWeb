@@ -7,21 +7,14 @@
       :buttons="buttons"
       :default-criteria="criteria"
       :selected="selected"
-      @search="search"
-      @reload="reload"
+      @search="handleSearch"
     />
     <el-table
       ref="table"
       v-loading="loading"
-      :max-height="maxHeight"
       :data="tableData"
-      :row-key="tree ? 'id' : undefined"
-      :stripe="isStripe"
       border
-      :default-expand-all="isExpansile"
       v-bind="$attrs"
-      @select="selectCheckbox"
-      @select-all="selectAllCheckbox"
       @selection-change="selectionChange"
       v-on="$listeners"
     >
@@ -64,12 +57,7 @@
         </el-table-column>
       </template>
 
-      <el-table-column
-        align="center"
-        label="操作"
-        fixed="right"
-        :width="operationWidth || actionsLength"
-      >
+      <el-table-column align="center" label="操作" fixed="right" :width="columnWidth">
         <template slot-scope="scope">
           <template v-for="(action, i) in getVisibleActions(scope)">
             <el-button
@@ -84,13 +72,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <base-pagination
-      v-if="pageInfo.total"
-      :total="pageInfo.total"
-      :page.sync="pageInfo.page"
-      :limit.sync="pageInfo.pageSize"
-      @pagination="pageChanged"
-    />
+    <base-pagination :page-info="pageInfo" @pagination="reload" />
   </div>
 </template>
 
@@ -109,57 +91,27 @@ export default {
   mixins: [actionMixin],
 
   props: {
-    tree: {
-      type: Boolean,
-      default: false
-    },
     columns: {
       type: Array,
       required: true
     },
-    data: {
-      type: Array,
-      default: () => undefined
-    },
-    actions: {
+    extraActions: {
       type: Array,
       default: () => []
     },
-    operationWidth: {
-      type: [Number, String],
-      default: null
-    },
-    fetchData: {
-      type: Function,
-      default: undefined
+    defaultActions: {
+      type: Array,
+      default: () => {
+        return ['edit', 'delete']
+      }
     },
     filterItems: {
       type: Array,
       default: () => []
     },
-    totalItems: {
+    defaultButtons: {
       type: Array,
-      default: () => []
-    },
-    maxHeight: {
-      type: [String, Number],
-      default: undefined
-    },
-    buttons: {
-      type: Array,
-      default: () => []
-    },
-    isStripe: {
-      type: Boolean,
-      default: true
-    },
-    isSub: {
-      type: Boolean,
-      default: false
-    },
-    syncParamsToQuery: {
-      type: Boolean,
-      default: true
+      default: () => ['add']
     },
     criteria: {
       type: Object,
@@ -167,89 +119,139 @@ export default {
         return {}
       }
     },
-    isExpansile: {
-      type: Boolean,
-      default: false
+    fetchData: {
+      type: Function,
+      default: undefined
     }
   },
 
   data() {
     return {
+      tableData: [],
       loading: false,
       items: [],
       query: {},
       pageInfo: {
-        total: 0,
-        page: 1,
-        pageSize: 10
+        currentPage: 1,
+        limit: 10,
+        total: 0
       },
-      selected: []
-    }
-  },
-
-  watch: {
-    tableData: {
-      handler(newVal) {
-        this.$emit('table-data', newVal)
-      },
-      deep: true
+      filterParams: {},
+      selected: [],
+      routeMap: {
+        JobManagement: {
+          text: '职位',
+          key: 'jobs'
+        },
+        CompanyManagement: {
+          text: '公司',
+          key: 'companies'
+        },
+        ApplicationManagement: {
+          text: '申请',
+          key: 'applications'
+        },
+        MessageManagement: {
+          text: '消息',
+          key: 'messages'
+        },
+        UserManagement: {
+          text: '用户',
+          key: 'users'
+        }
+      }
     }
   },
 
   computed: {
-    actionsLength() {
-      return this.actions.length > 2 ? '280px' : '180px'
+    columnWidth() {
+      return this.extraActions.length ? '240px' : '180px'
     },
-    tableData() {
-      return this.data || this.items
+    routeText() {
+      return this.routeMap[this.$route.name].text
+    },
+    routeKey() {
+      return this.routeMap[this.$route.name].key
+    },
+    buttons() {
+      console.log()
+      const newButtons = []
+      this.defaultButtons.forEach(button => {
+        if (button === 'add') {
+          newButtons.unshift({
+            label: `新增${this.routeText}`,
+            key: 'addCoupon',
+            span: 12,
+            events: {
+              click() {
+                this.$emit('add')
+              }
+            }
+          })
+        }
+      })
+      return newButtons
     }
   },
 
   methods: {
     getVisibleActions(scope) {
-      return this.actions
+      let newActions = this.extraActions
         .filter(action => {
           return action.visible ? action.visible(scope) : true
         })
         .map(it => this.bindAttrs(it, scope, scope))
-    },
 
-    reload() {
-      this.queryData({})
-    },
-    pageChanged({ page, limit }) {
-      this.queryData({
-        page,
-        pageSize: limit
-      })
-    },
-    queryData(criteria) {
-      const params = omitBy(Object.assign({}, this.$route.query, criteria), value => value === '')
-      if (this.fetchData) {
-        this.loading = true
-
-        this.fetchData(params)
-          .then(({ data: { list = [], total = 0 } }) => {
-            this.items = list
-            this.pageInfo.total = total
-            if (this.syncParamsToQuery && !this.isSub) {
-              const query = Object.assign({}, params, pick(this.pageInfo, ['page', 'pageSize']))
-              this.$router.replace({
-                query: omitBy(query, value => value === '')
-              })
+      this.defaultActions.forEach(action => {
+        if (action === 'edit') {
+          newActions.unshift({
+            label: scope.row.status ? '查看' : '编辑',
+            type: 'primary',
+            events: {
+              click(scope) {
+                this.$emit('edit', scope.row, scope._self, !scope.row.status)
+              }
             }
-            this.loading = false
           })
-          .catch(error => {
-            this.$message.error({ message: error })
-            this.loading = false
+        }
+        if (action === 'delete') {
+          newActions.push({
+            label: '删除',
+            type: 'danger',
+            disabled: scope.row.status,
+            events: {
+              click({ row }) {
+                this.$confirm(`确认删除该${this.routeText}？`, { type: 'warning' })
+                  .then(async () => {
+                    const res = await this.$axios.delete(`/${this.routeKey}/${row.id}`)
+                    if (!res.data.success) {
+                      return this.$message.error('删除失败')
+                    }
+                    this.$message.success('删除成功')
+                    this.reload()
+                  })
+                  .catch(() => {})
+              }
+            }
           })
-      }
-      this.$emit('query-data', criteria)
+        }
+      })
+
+      return newActions
     },
-    search(criteria) {
-      this.queryData(criteria)
-      this.$emit('search', criteria)
+    reload() {
+      const params = omitBy(Object.assign(this.pageInfo, this.filterParams), val => val === '')
+      this.loading = true
+      setTimeout(async () => {
+        const res = await this.fetchData(params)
+        this.tableData = res.list
+        this.pageInfo.total = res.total
+        this.loading = false
+      }, 800)
+    },
+    handleSearch(params) {
+      this.filterParams = params
+      this.reload()
     },
     actionAttrs(action, scope) {
       const attrs = Object.assign(
@@ -312,23 +314,9 @@ export default {
       const actionEvents = column.component && column.component.events
       return this.bindEvents(actionEvents, scope, column)
     },
-    selectCheckbox(selection, row) {
-      const isSelected = selection.length && selection.indexOf(row) !== -1
-      this.$emit('judge-select', isSelected, row)
-    },
-    selectAllCheckbox(selection) {
-      this.$emit('judge-selectAll', selection)
-    },
     selectionChange(selected) {
       this.selected = selected
       this.$emit('judge-selection-change', selected)
-    },
-
-    toggleRowSelection(row, bool) {
-      const vm = this
-      this.$nextTick(() => {
-        vm.$refs.table.toggleRowSelection(vm.tableData[row], bool)
-      })
     },
     onActionCommand(action, scope) {
       const { click } = this.actionEvents(action, scope)
@@ -338,15 +326,8 @@ export default {
     }
   },
 
-  created() {
-    const { page, pageSize } = this.$route.query
-    this.pageInfo.page = +(page || '1')
-    this.pageInfo.pageSize = +(pageSize || '10')
-    if (this.syncParamsToQuery && !this.isSub && this.$route.query.page === undefined) {
-      this.$router.replace({ query: { ...this.$route.query, page: 1, pageSize: 10 } })
-    }
-    const criteria = Object.assign({}, this.$route.query)
-    this.queryData(criteria)
+  mounted() {
+    this.reload()
   }
 }
 </script>

@@ -9,7 +9,6 @@
       background
       :hide-on-single-page="hideOnSinglePage"
       v-bind="$attrs"
-      @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
   </div>
@@ -45,15 +44,6 @@ export default {
   },
 
   methods: {
-    handleSizeChange(val) {
-      this.$emit('pagination', { page: this.currentPage, limit: val })
-      if (this.autoScroll) {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        })
-      }
-    },
     handleCurrentChange(val) {
       this.$emit('pagination')
       if (this.autoScroll) {

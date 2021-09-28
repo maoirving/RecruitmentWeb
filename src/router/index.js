@@ -86,39 +86,44 @@ const routes = [
     ]
   },
   {
-    path: '/admin/login',
-    name: 'AdminLogin',
+    path: '/management/login',
+    name: 'LoginManagement',
     component: () => import('@/views/login/index')
   },
   {
-    path: '/admin',
-    name: 'Admin',
-    component: () => import('@/views/admin/index'),
+    path: '/management',
+    name: 'Management',
+    component: () => import('@/views/management/index'),
     children: [
       {
-        path: '/admin/job',
-        name: 'AdminJob',
-        component: () => import('@/views/admin/job')
+        path: '/management/job',
+        name: 'JobManagement',
+        component: () => import('@/views/management/job')
       },
       {
-        path: '/admin/company',
-        name: 'AdminCompany',
-        component: () => import('@/views/admin/company')
+        path: '/management/application',
+        name: 'ApplicationManagement',
+        component: () => import('@/views/management/application')
       },
       {
-        path: '/admin/message',
-        name: 'AdminMessage',
-        component: () => import('@/views/admin/message')
+        path: '/management/company',
+        name: 'CompanyManagement',
+        component: () => import('@/views/management/company')
       },
       {
-        path: '/admin/user',
-        name: 'AdminUser',
-        component: () => import('@/views/admin/user')
+        path: '/management/message',
+        name: 'MessageManagement',
+        component: () => import('@/views/management/message')
       },
       {
-        path: '/admin/profile',
-        name: 'AdminProfile',
-        component: () => import('@/views/admin/profile')
+        path: '/management/user',
+        name: 'UserManagement',
+        component: () => import('@/views/management/user')
+      },
+      {
+        path: '/management/profile',
+        name: 'ProfileManagement',
+        component: () => import('@/views/management/profile')
       }
     ]
   }
@@ -128,4 +133,8 @@ const router = new VueRouter({
   routes
 })
 
+export function resetRouter() {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
+}
 export default router
