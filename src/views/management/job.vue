@@ -129,7 +129,7 @@ export default {
         },
         {
           key: 'name',
-          span: 4,
+          span: 5,
           attrs: {
             clearable: true,
             placeholder: '搜索职位名称'

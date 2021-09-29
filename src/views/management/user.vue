@@ -116,7 +116,7 @@ export default {
         },
         {
           key: 'realName',
-          span: 4,
+          span: 5,
           attrs: {
             clearable: true,
             placeholder: '搜索用户'

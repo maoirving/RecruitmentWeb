@@ -63,10 +63,10 @@ export default {
           params.isRead = 1
           break
         case 'pass':
-          params.status = 1
+          params.handledStatus = 1
           break
         case 'notPass':
-          params.status = 0
+          params.handledStatus = -1
           break
         default:
           break

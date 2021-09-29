@@ -10,7 +10,7 @@
           </el-col>
         </el-row>
       </el-col>
-      <el-col :span="19" class="filter-option-wrapper">
+      <el-col :span="19" class="ml-auto">
         <el-row type="flex" justify="end" :gutter="10" class="wrap">
           <el-col v-for="(item, i) in filterItems" :key="i" :span="item.span">
             <el-input

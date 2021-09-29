@@ -23,21 +23,8 @@
           <el-table-column v-if="!column.component" :key="i" v-bind="columnAttrs(column)" />
           <el-table-column v-else :key="i" v-bind="columnAttrs(column)">
             <template slot-scope="scope">
-              <template v-if="column.component.attrs && column.component.attrs.value !== undefined">
-                <component
-                  :is="column.component.control"
-                  v-bind="componentAttrs(column, scope)"
-                  :columns="columns"
-                  v-on="componentEvents(column, scope)"
-                >
-                  <template v-if="column.component.slot">{{
-                    item[column.component.slot]
-                  }}</template>
-                </component>
-              </template>
               <component
                 :is="column.component.control"
-                v-else
                 v-model="scope.row[column.prop]"
                 v-bind="componentAttrs(column, scope)"
                 :columns="columns"
@@ -48,13 +35,6 @@
             </template>
           </el-table-column>
         </template>
-        <el-table-column v-else :key="i" v-bind="columnAttrs(column)">
-          <slot
-            :name="column.slot"
-            v-bind="slotAttrs(column, i)"
-            v-on="componentEvents(column, items[i])"
-          />
-        </el-table-column>
       </template>
 
       <el-table-column align="center" label="操作" fixed="right" :width="columnWidth">
@@ -65,7 +45,6 @@
               v-bind="actionAttrs(action, scope)"
               v-on="actionEvents(action, scope)"
             >
-              <ns-icon v-if="action.icon" :type="action.icon" />
               {{ action.label }}
             </el-button>
           </template>
@@ -81,11 +60,13 @@ import { cloneDeep, omit, omitBy, pick } from 'lodash'
 import actionMixin from '@/utils/event-mixin'
 import BaseTableSearch from '@/components/base/base-table-search'
 import BasePagination from '@/components/base/base-pagination'
+import BaseTag from '@/components/base/base-tag'
 
 export default {
   components: {
     BaseTableSearch,
-    BasePagination
+    BasePagination,
+    BaseTag
   },
 
   mixins: [actionMixin],
@@ -165,7 +146,7 @@ export default {
 
   computed: {
     columnWidth() {
-      return this.extraActions.length ? '240px' : '180px'
+      return this.extraActions.length ? '260px' : '180px'
     },
     routeText() {
       return this.routeMap[this.$route.name].text

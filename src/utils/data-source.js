@@ -171,3 +171,19 @@ export const sexOptions = [
     value: '女'
   }
 ]
+
+// application
+export const statusOptions = [
+  {
+    label: '未处理',
+    value: 0
+  },
+  {
+    label: '通过初筛',
+    value: 1
+  },
+  {
+    label: '不合适',
+    value: -1
+  }
+]
