@@ -44,6 +44,7 @@
 import ProfileFormDialog from '@/components/account/profile/profile-form-dialog'
 import moment from 'moment'
 import { cloneDeep } from 'lodash'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -82,10 +83,15 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState('user', {
+      userId: state => state.id
+    })
+  },
+
   methods: {
     async getUser() {
-      const userId = window.sessionStorage.getItem('userId')
-      const res = await this.$axios.get(`/users/${userId}`)
+      const res = await this.$axios.get(`/users/${this.userId}`)
       if (res.data.user) {
         this.profileForm = res.data.user
         this.profileForm.birthday = moment(this.profileForm.birthday)

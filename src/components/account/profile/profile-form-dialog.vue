@@ -19,6 +19,7 @@
 
 <script>
 import BaseForm from '@/components/base/base-form'
+import { sexOptions } from '@/utils/data-source'
 
 export default {
   components: {
@@ -30,16 +31,6 @@ export default {
   data() {
     return {
       profileForm: {},
-      options: [
-        {
-          label: '男',
-          key: '男'
-        },
-        {
-          label: '女',
-          key: '女'
-        }
-      ],
       formItems: [
         {
           label: '用户名',
@@ -57,16 +48,7 @@ export default {
           control: {
             component: 'base-radio-group',
             attrs: {
-              options: [
-                {
-                  label: '男',
-                  key: '男'
-                },
-                {
-                  label: '女',
-                  key: '女'
-                }
-              ]
+              options: sexOptions
             }
           }
         },

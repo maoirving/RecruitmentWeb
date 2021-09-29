@@ -172,8 +172,19 @@ export const sexOptions = [
   }
 ]
 
+export const registerTypeOptions = [
+  {
+    label: '我要找工作',
+    value: 'worker'
+  },
+  {
+    label: '我要招聘',
+    value: 'recruiter'
+  }
+]
+
 // application
-export const statusOptions = [
+export const handledStatusOptions = [
   {
     label: '未处理',
     value: 0
@@ -184,6 +195,17 @@ export const statusOptions = [
   },
   {
     label: '不合适',
+    value: -1
+  }
+]
+
+export const applicationHandleOptions = [
+  {
+    label: '通过初筛',
+    value: 1
+  },
+  {
+    label: '标为不合适',
     value: -1
   }
 ]

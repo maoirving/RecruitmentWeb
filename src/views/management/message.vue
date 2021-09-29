@@ -1,11 +1,12 @@
 <template>
   <div class="management-message">
-    <base-table :columns="columns" :data="messages" :actions="actions" />
+    <base-table :columns="columns" :fetch-data="getMessages" @add="handleAdd" @edit="handleEdit" />
   </div>
 </template>
 
 <script>
 import BaseTable from '@/components/base/base-table'
+import moment from 'moment'
 
 export default {
   components: {
@@ -15,28 +16,31 @@ export default {
     return {
       columns: [
         {
-          label: '消息名称',
-          prop: 'name'
+          label: '消息id',
+          prop: 'id'
         },
         {
-          label: '消息类别',
-          prop: 'type'
+          label: '发送方',
+          prop: 'senderId'
         },
         {
-          label: '消息主体',
-          prop: 'financingStage'
-        },
-        {
-          label: '用户',
-          prop: 'address'
+          label: '接收方',
+          prop: 'receiverId'
         },
         {
           label: '消息内容',
-          prop: 'legalRepresentative'
+          prop: 'content'
         },
         {
           label: '发送时间',
-          prop: 'sendTime'
+          prop: 'createdAt',
+          formatter() {
+            return row => {
+              return moment(row.createdAt)
+                .utcOffset(0)
+                .format('YYYY-MM-DD HH:mm')
+            }
+          }
         }
       ],
       actions: [
@@ -58,27 +62,33 @@ export default {
             }
           }
         }
-      ],
-      messages: []
+      ]
     }
   },
 
   methods: {
-    getMessages() {
-      const message = {
-        name: '面试邀请',
-        type: '面试邀请',
-        financingStage: '已上市',
-        address: '厦门思明区厦门市软件园望海路8号楼1楼',
-        legalRepresentative: '张某人',
-        sendTime: '2011-02-21'
+    async getMessages(params = {}) {
+      const res = await this.$axios.get('/messages', {
+        params: params
+      })
+      const list = res.data.messages
+      const newRes = {
+        list: list,
+        total: res.data.pagination && res.data.pagination.total
       }
-      this.messages = Array(10).fill(message)
+      return newRes
+    },
+    handleAdd() {
+      console.log('add')
+    },
+    handleEdit(row, vm, isEdit) {
+      if (isEdit) {
+        console.log('编辑', row.id)
+        vm.reload()
+      } else {
+        console.log('查看')
+      }
     }
-  },
-
-  created() {
-    this.getMessages()
   }
 }
 </script>

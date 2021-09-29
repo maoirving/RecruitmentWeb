@@ -9,6 +9,16 @@
       @add="handleAdd"
       @edit="handleEdit"
     />
+    <application-handle-dialog
+      ref="applicationHandleDialogRef"
+      :visible.sync="dialogVisible"
+      @close-dialog="dialogVisible = false"
+    />
+    <pdf-dialog
+      ref="resumeReadRef"
+      :visible.sync="resumeDialogVisible"
+      @close-dialog="handleRead"
+    />
   </div>
 </template>
 
@@ -19,18 +29,23 @@ import {
   jobTypeOptions,
   educationBackgroundOptions,
   workExperienceOptions,
-  statusOptions
+  handledStatusOptions
 } from '@/utils/data-source'
 import moment from 'moment'
+import ApplicationHandleDialog from '@/components/management/application/application-handle-dialog'
+import PdfDialog from '@/components/account/resume/pdf-dialog'
 
 export default {
   components: {
-    BaseTable
+    BaseTable,
+    ApplicationHandleDialog,
+    PdfDialog
   },
   data() {
     const vm = this
     return {
-      statusClass: '',
+      dialogVisible: false,
+      resumeDialogVisible: false,
       columns: [
         {
           label: '职位名称',
@@ -93,8 +108,9 @@ export default {
         {
           label: '查看简历',
           events: {
-            click(scope) {
-              console.log('编辑')
+            click({ row }) {
+              vm.$refs.resumeReadRef.applicationId = row.id
+              vm.resumeDialogVisible = true
             }
           }
         },
@@ -102,17 +118,11 @@ export default {
           label: '处理',
           type: 'warning',
           events: {
-            click(scope) {
-              this.$confirm(`处理求职申请`, { type: 'warning' })
-                .then(async () => {
-                  const res = await this.$axios.delete(`/${this.routeKey}/${row.id}`)
-                  if (!res.data.success) {
-                    return this.$message.error('删除失败')
-                  }
-                  this.$message.success('删除成功')
-                  this.reload()
-                })
-                .catch(() => {})
+            click({ row }) {
+              vm.dialogVisible = true
+              vm.$refs.applicationHandleDialogRef.applicationId = row.id
+              vm.$refs.applicationHandleDialogRef.receiverId = row.userId
+              vm.$refs.applicationHandleDialogRef.tableThis = this
             }
           }
         }
@@ -173,7 +183,7 @@ export default {
             clearable: true,
             placeholder: '处理状态'
           },
-          options: statusOptions
+          options: handledStatusOptions
         },
         {
           key: 'userRealName',
@@ -218,6 +228,12 @@ export default {
     },
     handleAdd() {
       console.log('add')
+    },
+    async handleRead(applicationId) {
+      const res = await this.$axios.put(`/applications/${applicationId}`, {
+        readAt: new Date()
+      })
+      this.resumeDialogVisible = false
     },
     handleEdit(row, vm, isEdit) {
       if (isEdit) {

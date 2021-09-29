@@ -32,7 +32,8 @@ export default {
       src: loadingTask,
       numPages: undefined,
       currentPage: 0,
-      pageCount: 0
+      pageCount: 0,
+      applicationId: ''
     }
   },
 
@@ -40,7 +41,7 @@ export default {
 
   methods: {
     handleClose() {
-      this.$emit('close-dialog')
+      this.$emit('close-dialog', this.applicationId)
     }
   },
 

@@ -1,6 +1,6 @@
 <template>
-  <el-radio-group v-model="innerValue" v-bind="$attrs">
-    <el-radio v-for="(option, i) in options" :key="i" :label="option[optionKey]" border>
+  <el-radio-group class="base-radio-group" v-model="innerValue" v-bind="$attrs">
+    <el-radio v-for="(option, i) in options" :key="i" :label="option[optionValue]" border>
       {{ option[optionLabel] }}
     </el-radio>
   </el-radio-group>
@@ -24,9 +24,9 @@ export default {
       type: Array,
       required: true
     },
-    optionKey: {
+    optionValue: {
       type: String,
-      default: 'key'
+      default: 'value'
     },
     optionLabel: {
       type: String,
@@ -47,3 +47,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.base-radio-group {
+  .el-radio {
+    margin-right: 10px;
+  }
+}
+</style>

@@ -24,6 +24,7 @@
 
 <script>
 import JobCard from '@/components/job/job-card'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -55,6 +56,12 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState('user', {
+      userId: state => state.id
+    })
+  },
+
   methods: {
     async getApplications() {
       let params = {}
@@ -72,7 +79,10 @@ export default {
           break
       }
       const res = await this.$axios.get('/applications', {
-        params: params
+        params: {
+          userId: this.userId,
+          ...params
+        }
       })
       this.applications = res.data.applications
     },

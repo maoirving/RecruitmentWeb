@@ -28,6 +28,7 @@
 import SimpleLayout from '@/layout/simple-layout'
 import SignWrapper from '@/components/sign/sign-wrapper'
 import BaseForm from '@/components/base/base-form'
+import { registerTypeOptions } from '@/utils/data-source'
 
 export default {
   components: {
@@ -78,16 +79,7 @@ export default {
           control: {
             component: 'base-radio-group',
             attrs: {
-              options: [
-                {
-                  label: '我要找工作',
-                  key: 'worker'
-                },
-                {
-                  label: '我要招聘',
-                  key: 'recruiter'
-                }
-              ]
+              options: registerTypeOptions
             }
           }
         },

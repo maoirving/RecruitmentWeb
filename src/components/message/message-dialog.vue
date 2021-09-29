@@ -1,33 +1,8 @@
 <template>
   <el-dialog title="消息处理" width="40%" v-bind="$attrs" :before-close="handleClose">
     <div class="dialog-content">
-      <base-form :form-items="formItems" :form-data="message">
-        <template slot="interviewDate">
-          <el-col :span="10">
-            <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="message.interview_date"
-              style="width: 100%;"
-              disabled
-            ></el-date-picker>
-          </el-col>
-          <el-col class="line" :span="2">-</el-col>
-          <el-col :span="10">
-            <el-time-select
-              placeholder="起始时间"
-              v-model="message.interview_time"
-              :picker-options="{
-                start: '09:00',
-                step: '00:30',
-                end: '18:00'
-              }"
-              disabled
-            >
-            </el-time-select>
-          </el-col>
-        </template>
-      </base-form>
+      <interview-form :interview="InterviewForm" disabled />
+      <base-form :form-items="formItems" :form-data="message"> </base-form>
     </div>
     <div slot="footer" class="text-right">
       <el-button @click="handeRefuse">拒绝</el-button>
@@ -38,35 +13,29 @@
 
 <script>
 import BaseForm from '@/components/base/base-form'
+import InterviewForm from '@/components/interview/interview-form.vue'
 
 export default {
   components: {
-    BaseForm
+    BaseForm,
+    InterviewForm
   },
 
   data() {
     return {
       resumes: [],
+      InterviewForm: {
+        interviewDate: '',
+        interviewTime: '',
+        address: '',
+        tip: ''
+      },
       message: {
-        recruiter: '林女士',
         content: '恭喜您通过我们公司的一轮筛选，现邀请您到我司参加面试',
-        company_name: '厉害的公司',
-        interview_date: '2021-09-15',
-        interview_time: '23:00',
-        interview_address: '厦门市 思明区 软件园二期',
         reply: ''
       },
 
       formItems: [
-        {
-          label: '公司名称',
-          prop: 'company_name',
-          control: {
-            attrs: {
-              disabled: true
-            }
-          }
-        },
         {
           label: '消息内容',
           prop: 'content',
@@ -74,19 +43,6 @@ export default {
             attrs: {
               type: 'textarea',
               rows: 4,
-              disabled: true
-            }
-          }
-        },
-        {
-          label: '面试时间',
-          slot: 'interviewDate'
-        },
-        {
-          label: '面试地点',
-          prop: 'interview_address',
-          control: {
-            attrs: {
               disabled: true
             }
           }
