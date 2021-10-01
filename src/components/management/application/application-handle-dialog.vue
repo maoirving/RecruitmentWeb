@@ -43,6 +43,7 @@ export default {
     return {
       applicationId: '',
       receiverId: '',
+      companyId: '',
       applicationForm: {
         handledStatus: '',
         content: ''
@@ -109,7 +110,6 @@ export default {
             const res = await this.$axios.put(`/applications/${this.applicationId}`, {
               handledStatus: this.applicationForm.handledStatus
             })
-            let messageId = ''
             if (this.applicationForm.content) {
               const messageRes = await this.$axios.post(`/messages`, {
                 content: this.applicationForm.content,
@@ -120,8 +120,6 @@ export default {
               if (!messageRes.data.success) {
                 return
               }
-              messageId = messageRes.data.messages.id
-              console.log(messageId)
             }
 
             this.tableThis.reload()
@@ -130,7 +128,7 @@ export default {
             } else {
               this.$confirm('处理成功！是否立即邀请面试？', { type: 'success' })
                 .then(() => {
-                  this.$refs.interviewDialogRef.messageId = messageId
+                  this.$refs.interviewDialogRef.applicationId = this.applicationId
                   this.interviewDialogVisible = true
                 })
                 .catch(() => {})

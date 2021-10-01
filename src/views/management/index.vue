@@ -30,7 +30,7 @@
           active-text-color="#409EFF"
         >
           <el-menu-item
-            v-for="(menu, index) in adminMenus"
+            v-for="(menu, index) in managementMenus"
             :index="menu.name"
             :key="index"
             @click="setContent(menu)"
@@ -61,7 +61,7 @@ export default {
     return {
       isCollapse: false,
 
-      adminMenus: [
+      managementMenus: [
         {
           id: '1',
           title: '职位管理',
@@ -85,20 +85,27 @@ export default {
         },
         {
           id: '4',
+          title: '面试管理',
+          name: 'InterviewManagement',
+          url: '/management/interview',
+          iconClass: 'el-icon-notebook-1'
+        },
+        {
+          id: '5',
           title: '消息管理',
           name: 'MessageManagement',
           url: '/management/message',
           iconClass: 'el-icon-chat-dot-round'
         },
         {
-          id: '5',
+          id: '6',
           title: '用户管理',
           name: 'UserManagement',
           url: '/management/user',
           iconClass: 'el-icon-user'
         },
         {
-          id: '6',
+          id: '7',
           title: '我的信息',
           name: 'ProfileManagement',
           url: '/management/profile',
@@ -121,7 +128,6 @@ export default {
   created() {
     if (this.$route.name !== 'admin') {
       this.activeIndex = this.$route.name
-      console.log(this.activeIndex)
     }
   }
 }

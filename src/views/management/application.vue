@@ -119,9 +119,11 @@ export default {
           type: 'warning',
           events: {
             click({ row }) {
+              console.log(row)
               vm.dialogVisible = true
               vm.$refs.applicationHandleDialogRef.applicationId = row.id
               vm.$refs.applicationHandleDialogRef.receiverId = row.userId
+              vm.$refs.applicationHandleDialogRef.companyId = row.companyId
               vm.$refs.applicationHandleDialogRef.tableThis = this
             }
           }
@@ -219,6 +221,7 @@ export default {
         item.userAge = new Date().getFullYear() - new Date(user.birthday).getFullYear() + '岁'
         item.jobName = job.name
         item.jobType = job.type
+        item.companyId = job.companyId
       })
       const newRes = {
         list: list,

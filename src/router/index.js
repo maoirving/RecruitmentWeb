@@ -101,14 +101,19 @@ const routes = [
         component: () => import('@/views/management/job')
       },
       {
+        path: '/management/company',
+        name: 'CompanyManagement',
+        component: () => import('@/views/management/company')
+      },
+      {
         path: '/management/application',
         name: 'ApplicationManagement',
         component: () => import('@/views/management/application')
       },
       {
-        path: '/management/company',
-        name: 'CompanyManagement',
-        component: () => import('@/views/management/company')
+        path: '/management/interview',
+        name: 'InterviewManagement',
+        component: () => import('@/views/management/interview')
       },
       {
         path: '/management/message',

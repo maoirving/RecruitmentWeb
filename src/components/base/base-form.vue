@@ -18,7 +18,8 @@
 export default {
   components: {
     BaseRadioGroup: () => import('@/components/base/base-radio-group'),
-    BasePasswordInput: () => import('@/components/base/base-password-input')
+    BasePasswordInput: () => import('@/components/base/base-password-input'),
+    BaseSelect: () => import('@/components/base/base-select')
   },
 
   props: {
@@ -153,7 +154,7 @@ export default {
       }
       const placeholderPrefixs = {
         'el-input': '请输入',
-        'el-select': '请选择',
+        'base-select': '请选择',
         'el-date-picker': '请选择'
       }
 

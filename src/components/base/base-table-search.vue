@@ -2,8 +2,8 @@
   <div v-if="(filterItems && filterItems.length) || (buttons && buttons.length)">
     <el-row type="flex" align="middle">
       <el-col v-if="buttons.length" :span="5">
-        <el-row type="flex">
-          <el-col v-for="(item, index) in buttons" :key="index">
+        <el-row type="flex" :gutter="10">
+          <el-col v-for="(item, index) in buttons" :key="index" :span="item.span">
             <el-button v-bind="actionAttrs(item.attrs)" v-on="actionEvents(item)">
               {{ item.label }}
             </el-button>

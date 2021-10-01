@@ -87,11 +87,11 @@ export default {
           prop: 'password',
           rule: 'required|password',
           control: {
-            component: 'base-password-input',
             attrs: {
               'prefix-icon': 'el-icon-lock',
               type: 'password',
-              placeholder: '请输入密码'
+              placeholder: '请输入密码',
+              'show-password': true
             }
           }
         },
@@ -115,11 +115,11 @@ export default {
             }
           ],
           control: {
-            component: 'base-password-input',
             attrs: {
               'prefix-icon': 'el-icon-key',
               type: 'password',
-              placeholder: '请再次输入密码'
+              placeholder: '请再次输入密码',
+              'show-password': true
             }
           }
         },

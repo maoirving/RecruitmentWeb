@@ -8,6 +8,11 @@
       @add="handleAdd"
       @edit="handleEdit"
     />
+    <job-edit-dialog
+      ref="jobEditRef"
+      :visible.sync="dialogVisible"
+      @close-dialog="dialogVisible = false"
+    />
   </div>
 </template>
 
@@ -19,20 +24,21 @@ import {
   educationBackgroundOptions,
   workExperienceOptions
 } from '@/utils/data-source'
+import JobEditDialog from '@/components/job/job-edit-dialog'
 import moment from 'moment'
+import { pick } from 'lodash'
+import { parseToText } from '@/utils/html-text'
 
 export default {
   components: {
-    BaseTable
+    BaseTable,
+    JobEditDialog
   },
   data() {
     const vm = this
     return {
+      dialogVisible: false,
       columns: [
-        {
-          type: 'selection',
-          label: ''
-        },
         {
           label: '职位名称',
           prop: 'name'
@@ -73,8 +79,15 @@ export default {
           },
           type: 'success',
           events: {
-            click(scope) {
-              console.log('编辑')
+            click({ row }) {
+              const handleText = row.status ? '下架' : '发布'
+              this.$confirm(`确认${handleText}该职位？`, { type: 'warning' }).then(async () => {
+                await this.$axios.put(`/jobs/${row.id}`, {
+                  status: !row.status
+                })
+                vm.$message.success(`${handleText}成功`)
+                this.reload()
+              })
             }
           }
         }
@@ -151,16 +164,32 @@ export default {
       }
       return newRes
     },
-    handleAdd() {
-      console.log('add')
+    handleAdd(vm) {
+      this.$refs.jobEditRef.tableThis = vm
+      this.dialogVisible = true
     },
     handleEdit(row, vm, isEdit) {
-      if (isEdit) {
-        console.log('编辑', row.id)
-        vm.reload()
-      } else {
-        console.log('查看')
-      }
+      this.dialogVisible = true
+      this.$refs.jobEditRef.tableThis = vm
+      this.$refs.jobEditRef.jobId = row.id
+      this.$refs.jobEditRef.isEdit = isEdit
+      this.$refs.jobEditRef.jobForm = pick(row, [
+        'name',
+        'type',
+        'recruitingNnumbers',
+        'workLocation',
+        'workExperience',
+        'educationBackground',
+        'description',
+        'skill',
+        'companyId',
+        'status'
+      ])
+      this.$refs.jobEditRef.jobForm.description = parseToText(row.description)
+      this.$refs.jobEditRef.jobForm.skill = parseToText(row.skill)
+      let salaryArr = row.salary.substr(0, row.salary.length - 1).split('-')
+      this.$refs.jobEditRef.jobForm.minSalary = parseInt(salaryArr[0])
+      this.$refs.jobEditRef.jobForm.maxSalary = parseInt(salaryArr[1])
     }
   }
 }

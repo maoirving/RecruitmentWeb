@@ -28,7 +28,7 @@ export default {
 
   data() {
     return {
-      messageId: '',
+      applicationId: '',
       InterviewForm: {
         interviewDate: '',
         interviewTime: '',
@@ -53,7 +53,7 @@ export default {
             interviewAt: new Date(interviewAt),
             address: this.InterviewForm.address,
             tip: this.InterviewForm.tip,
-            messageId: this.messageId
+            applicationId: this.applicationId
           }
 
           const res = await this.$axios.post(

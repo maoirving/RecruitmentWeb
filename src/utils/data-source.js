@@ -1,3 +1,15 @@
+// common
+export const whetherOptions = [
+  {
+    label: '是',
+    value: true
+  },
+  {
+    label: '否',
+    value: false
+  }
+]
+
 // job
 export const jobTypeOptions = [
   {

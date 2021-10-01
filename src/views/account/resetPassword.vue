@@ -30,7 +30,8 @@ export default {
           control: {
             attrs: {
               type: 'password',
-              placeholder: '请输入旧密码'
+              placeholder: '请输入旧密码',
+              'show-password': true
             }
           }
         },
@@ -39,10 +40,10 @@ export default {
           prop: 'newPassword',
           rule: 'required|password',
           control: {
-            component: 'base-password-input',
             attrs: {
               type: 'password',
-              placeholder: '请设置新密码'
+              placeholder: '请设置新密码',
+              'show-password': true
             }
           }
         },
@@ -67,10 +68,10 @@ export default {
             }
           ],
           control: {
-            component: 'base-password-input',
             attrs: {
               type: 'password',
-              placeholder: '请再次输入新密码'
+              placeholder: '请再次输入新密码',
+              'show-password': true
             }
           }
         }

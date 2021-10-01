@@ -6,7 +6,7 @@
       :filter-items="filterItems"
       :buttons="buttons"
       :default-criteria="criteria"
-      :selected="selected"
+      :selectedArr="selectedArr"
       @search="handleSearch"
     />
     <el-table
@@ -92,7 +92,7 @@ export default {
     },
     defaultButtons: {
       type: Array,
-      default: () => ['add']
+      default: () => ['add', 'deleteMany']
     },
     criteria: {
       type: Object,
@@ -118,7 +118,7 @@ export default {
         total: 0
       },
       filterParams: {},
-      selected: [],
+      selectedArr: [],
       routeMap: {
         JobManagement: {
           text: '职位',
@@ -131,6 +131,10 @@ export default {
         ApplicationManagement: {
           text: '申请',
           key: 'applications'
+        },
+        InterviewManagement: {
+          text: '面试',
+          key: 'interviews'
         },
         MessageManagement: {
           text: '消息',
@@ -155,17 +159,41 @@ export default {
       return this.routeMap[this.$route.name].key
     },
     buttons() {
-      console.log()
+      const vm = this
       const newButtons = []
       this.defaultButtons.forEach(button => {
         if (button === 'add') {
-          newButtons.unshift({
+          newButtons.push({
             label: `新增${this.routeText}`,
-            key: 'addCoupon',
-            span: 12,
+            span: 10,
             events: {
               click() {
-                this.$emit('add')
+                vm.$emit('add', vm)
+              }
+            }
+          })
+        }
+        if (button === 'deleteMany') {
+          if (this.columns[0].type !== 'selection') {
+            this.columns.unshift({
+              type: 'selection',
+              label: ''
+            })
+          }
+
+          newButtons.push({
+            label: `批量删除`,
+            span: 10,
+            events: {
+              click() {
+                console.log(vm.selectedArr)
+                vm.$confirm('确认批量删除选中项？', { type: 'warning' })
+                  .then(async () => {
+                    // await this.$axios.delete(`/${this.routeKey}`)
+                    vm.$message.success('批量删除成功')
+                    vm.reload()
+                  })
+                  .catch(() => {})
               }
             }
           })
@@ -295,9 +323,8 @@ export default {
       const actionEvents = column.component && column.component.events
       return this.bindEvents(actionEvents, scope, column)
     },
-    selectionChange(selected) {
-      this.selected = selected
-      this.$emit('judge-selection-change', selected)
+    selectionChange(selectedArr) {
+      this.selectedArr = selectedArr
     },
     onActionCommand(action, scope) {
       const { click } = this.actionEvents(action, scope)

@@ -56,11 +56,10 @@ export default {
           prop: 'password',
           rule: 'required',
           control: {
-            component: 'base-password-input',
             attrs: {
               'prefix-icon': 'el-icon-lock',
-              type: 'password',
-              placeholder: '请输入密码'
+              placeholder: '请输入密码',
+              'show-password': true
             }
           }
         }
