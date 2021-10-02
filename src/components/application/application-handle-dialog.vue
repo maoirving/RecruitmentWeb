@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      class="awesome-scrollbar profile-dialog"
+      class="awesome-scrollbar application-handle-dialog"
       title="处理求职申请"
       width="40%"
       :center="true"
@@ -140,11 +140,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.profile-dialog {
-  .el-radio {
-    margin-right: $gap-sm;
-  }
-}
-</style>

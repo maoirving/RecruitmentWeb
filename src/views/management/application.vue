@@ -5,10 +5,10 @@
       :columns="columns"
       :extra-actions="actions"
       :fetch-data="getApplications"
-      :default-actions="['delete']"
       @add="handleAdd"
       @edit="handleEdit"
     />
+    <application-edit-dialog ref="editDialogRef" />
     <application-handle-dialog
       ref="applicationHandleDialogRef"
       :visible.sync="dialogVisible"
@@ -32,14 +32,16 @@ import {
   handledStatusOptions
 } from '@/utils/data-source'
 import moment from 'moment'
-import ApplicationHandleDialog from '@/components/management/application/application-handle-dialog'
+import ApplicationHandleDialog from '@/components/application/application-handle-dialog'
 import PdfDialog from '@/components/account/resume/pdf-dialog'
+import ApplicationEditDialog from '@/components/application/application-edit-dialog'
 
 export default {
   components: {
     BaseTable,
     ApplicationHandleDialog,
-    PdfDialog
+    PdfDialog,
+    ApplicationEditDialog
   },
   data() {
     const vm = this
@@ -67,6 +69,10 @@ export default {
         {
           label: '年龄',
           prop: 'userAge'
+        },
+        {
+          label: '简历',
+          prop: 'resumeId'
         },
 
         {
@@ -229,22 +235,21 @@ export default {
       }
       return newRes
     },
-    handleAdd() {
-      console.log('add')
+    handleAdd(vm) {
+      this.$refs.editDialogRef.dialogVisible = true
+      this.$refs.editDialogRef.tableThis = vm
+      this.$refs.editDialogRef.outerRow = null
+    },
+    handleEdit(vm, row) {
+      this.$refs.editDialogRef.dialogVisible = true
+      this.$refs.editDialogRef.tableThis = vm
+      this.$refs.editDialogRef.outerRow = row
     },
     async handleRead(applicationId) {
       const res = await this.$axios.put(`/applications/${applicationId}`, {
         readAt: new Date()
       })
       this.resumeDialogVisible = false
-    },
-    handleEdit(row, vm, isEdit) {
-      if (isEdit) {
-        console.log('编辑', row.id)
-        vm.reload()
-      } else {
-        console.log('查看')
-      }
     }
   }
 }

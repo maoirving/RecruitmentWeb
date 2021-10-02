@@ -8,6 +8,7 @@
       @add="handleAdd"
       @edit="handleEdit"
     />
+    <company-edit-dialog ref="editDialogRef" />
   </div>
 </template>
 
@@ -16,10 +17,12 @@ import BaseTable from '@/components/base/base-table'
 import { optionFormatter } from '@/utils/formatter'
 import { companyTypeOptions, financingStageOptions, scaleOptions } from '@/utils/data-source'
 import moment from 'moment'
+import CompanyEditDialog from '@/components/company/company-edit-dialog'
 
 export default {
   components: {
-    BaseTable
+    BaseTable,
+    CompanyEditDialog
   },
 
   data() {
@@ -143,16 +146,15 @@ export default {
       }
       return newRes
     },
-    handleAdd() {
-      console.log('add')
+    handleAdd(vm) {
+      this.$refs.editDialogRef.dialogVisible = true
+      this.$refs.editDialogRef.tableThis = vm
+      this.$refs.editDialogRef.outerRow = null
     },
-    handleEdit(row, vm, isEdit) {
-      if (isEdit) {
-        console.log('编辑', row.id)
-        vm.reload()
-      } else {
-        console.log('查看')
-      }
+    handleEdit(vm, row) {
+      this.$refs.editDialogRef.dialogVisible = true
+      this.$refs.editDialogRef.tableThis = vm
+      this.$refs.editDialogRef.outerRow = row
     }
   }
 }

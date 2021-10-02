@@ -8,11 +8,7 @@
       @add="handleAdd"
       @edit="handleEdit"
     />
-    <job-edit-dialog
-      ref="jobEditRef"
-      :visible.sync="dialogVisible"
-      @close-dialog="dialogVisible = false"
-    />
+    <job-edit-dialog ref="editDialogRef" />
   </div>
 </template>
 
@@ -26,8 +22,6 @@ import {
 } from '@/utils/data-source'
 import JobEditDialog from '@/components/job/job-edit-dialog'
 import moment from 'moment'
-import { pick } from 'lodash'
-import { parseToText } from '@/utils/html-text'
 
 export default {
   components: {
@@ -37,7 +31,7 @@ export default {
   data() {
     const vm = this
     return {
-      dialogVisible: false,
+      isEdit: false,
       columns: [
         {
           label: '职位名称',
@@ -88,18 +82,6 @@ export default {
                 vm.$message.success(`${handleText}成功`)
                 this.reload()
               })
-            }
-          }
-        }
-      ],
-      buttons: [
-        {
-          label: '新增职位',
-          key: 'addCoupon',
-          span: 12,
-          events: {
-            click(item) {
-              self.$router.push({ name: 'add-discount-coupon' })
             }
           }
         }
@@ -164,32 +146,16 @@ export default {
       }
       return newRes
     },
+
     handleAdd(vm) {
-      this.$refs.jobEditRef.tableThis = vm
-      this.dialogVisible = true
+      this.$refs.editDialogRef.dialogVisible = true
+      this.$refs.editDialogRef.tableThis = vm
+      this.$refs.editDialogRef.outerRow = null
     },
-    handleEdit(row, vm, isEdit) {
-      this.dialogVisible = true
-      this.$refs.jobEditRef.tableThis = vm
-      this.$refs.jobEditRef.jobId = row.id
-      this.$refs.jobEditRef.isEdit = isEdit
-      this.$refs.jobEditRef.jobForm = pick(row, [
-        'name',
-        'type',
-        'recruitingNnumbers',
-        'workLocation',
-        'workExperience',
-        'educationBackground',
-        'description',
-        'skill',
-        'companyId',
-        'status'
-      ])
-      this.$refs.jobEditRef.jobForm.description = parseToText(row.description)
-      this.$refs.jobEditRef.jobForm.skill = parseToText(row.skill)
-      let salaryArr = row.salary.substr(0, row.salary.length - 1).split('-')
-      this.$refs.jobEditRef.jobForm.minSalary = parseInt(salaryArr[0])
-      this.$refs.jobEditRef.jobForm.maxSalary = parseInt(salaryArr[1])
+    handleEdit(vm, row) {
+      this.$refs.editDialogRef.dialogVisible = true
+      this.$refs.editDialogRef.tableThis = vm
+      this.$refs.editDialogRef.outerRow = row
     }
   }
 }

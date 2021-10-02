@@ -1,0 +1,84 @@
+<template>
+  <el-dialog
+    :width="dialogWidth"
+    top="5vh"
+    :center="true"
+    v-bind="$attrs"
+    v-on="$listeners"
+    :before-close="handleClose"
+    destroy-on-close
+  >
+    <div class="dialog-content">
+      <slot name="dialog-form" />
+    </div>
+    <div slot="footer" class="text-right">
+      <el-button size="small" @click="handleClose">取消</el-button>
+      <el-button type="primary" size="small" @click="handleSave" :disabled="disabled">
+        保存
+      </el-button>
+      <slot name="extra-button" />
+    </div>
+  </el-dialog>
+</template>
+
+<script>
+import BaseForm from '@/components/base/base-form'
+
+export default {
+  components: {
+    BaseForm
+  },
+
+  props: {
+    dialogWidth: {
+      type: String,
+      default: '50%'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    typeText: {
+      type: String,
+      default: ''
+    },
+    dialogFormItems: {
+      type: Array,
+      default: () => []
+    },
+    dialogFormData: {
+      type: Object,
+      default: () => {}
+    }
+  },
+
+  data() {
+    return {
+      id: '',
+      tableThis: null
+    }
+  },
+
+  computed: {},
+
+  watch: {
+    jobForm: {
+      handler(newObj) {
+        if (newObj.maxSalary < newObj.minSalary + 1) {
+          newObj.maxSalary = newObj.minSalary + 1
+        }
+      },
+      deep: true
+    }
+  },
+
+  methods: {
+    handleClose() {
+      this.$emit('close')
+    },
+    handleSave() {
+      this.$emit('save')
+    }
+  }
+}
+</script>

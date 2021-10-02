@@ -7,7 +7,7 @@
     :before-close="handleClose"
   >
     <div class="dialog-content">
-      <interview-form :interview="InterviewForm" />
+      <interview-form :interview="interviewForm" />
     </div>
     <div slot="footer" class="text-right">
       <el-button @click="handleClose">取消</el-button>
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       applicationId: '',
-      InterviewForm: {
+      interviewForm: {
         interviewDate: '',
         interviewTime: '',
         address: '',
@@ -46,13 +46,13 @@ export default {
     handleSend() {
       this.$confirm('确认发送该面试邀请？', { type: 'warning' })
         .then(async () => {
-          const interviewAt = `${moment(this.InterviewForm.interviewDate)
+          const interviewAt = `${moment(this.interviewForm.interviewDate)
             .utcOffset(0)
-            .format('YYYY-MM-DD')} ${this.InterviewForm.interviewTime}`
+            .format('YYYY-MM-DD')} ${this.interviewForm.interviewTime}`
           const params = {
             interviewAt: new Date(interviewAt),
-            address: this.InterviewForm.address,
-            tip: this.InterviewForm.tip,
+            address: this.interviewForm.address,
+            tip: this.interviewForm.tip,
             applicationId: this.applicationId
           }
 

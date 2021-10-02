@@ -16,10 +16,6 @@ export default {
     return {
       columns: [
         {
-          label: '消息id',
-          prop: 'id'
-        },
-        {
           label: '发送方',
           prop: 'senderId'
         },

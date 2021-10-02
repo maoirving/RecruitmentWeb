@@ -7,24 +7,23 @@
       @add="handleAdd"
       @edit="handleEdit"
     />
+    <interview-edit-dialog ref="editDialogRef" />
   </div>
 </template>
 
 <script>
 import BaseTable from '@/components/base/base-table'
+import InterviewEditDialog from '@/components/interview/interview-edit-dialog'
 import moment from 'moment'
 
 export default {
   components: {
-    BaseTable
+    BaseTable,
+    InterviewEditDialog
   },
   data() {
     return {
       columns: [
-        {
-          label: '面试id',
-          prop: 'id'
-        },
         {
           label: '公司名称',
           prop: 'companyName'
@@ -127,7 +126,7 @@ export default {
       const res = await this.$axios.get('/interviews', {
         params: params
       })
-      const list = res.data.interviews[0].Application && res.data.interviews
+      const list = res.data.interviews
       if (list && list.length) {
         list.forEach(item => {
           const application = item.Application
@@ -146,16 +145,16 @@ export default {
       }
       return newRes
     },
-    handleAdd() {
-      console.log('add')
+    handleAdd(vm) {
+      this.$refs.editDialogRef.dialogVisible = true
+      this.$refs.editDialogRef.tableThis = vm
+      this.$refs.editDialogRef.outerRow = null
     },
-    handleEdit(row, vm, isEdit) {
-      if (isEdit) {
-        console.log('编辑', row.id)
-        vm.reload()
-      } else {
-        console.log('查看')
-      }
+    handleEdit(vm, row) {
+      this.$refs.editDialogRef.dialogVisible = true
+      this.$refs.editDialogRef.tableThis = vm
+      this.$refs.editDialogRef.outerRow = row
+      console.log(row)
     }
   }
 }

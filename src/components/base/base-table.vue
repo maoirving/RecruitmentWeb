@@ -175,10 +175,17 @@ export default {
         }
         if (button === 'deleteMany') {
           if (this.columns[0].type !== 'selection') {
-            this.columns.unshift({
-              type: 'selection',
-              label: ''
-            })
+            this.columns.unshift(
+              {
+                type: 'selection',
+                label: ''
+              },
+              {
+                width: '80px',
+                label: 'id',
+                prop: 'id'
+              }
+            )
           }
 
           newButtons.push({
@@ -186,14 +193,23 @@ export default {
             span: 10,
             events: {
               click() {
-                console.log(vm.selectedArr)
-                vm.$confirm('确认批量删除选中项？', { type: 'warning' })
-                  .then(async () => {
-                    // await this.$axios.delete(`/${this.routeKey}`)
-                    vm.$message.success('批量删除成功')
-                    vm.reload()
-                  })
-                  .catch(() => {})
+                if (vm.selectedArr && vm.selectedArr.length) {
+                  vm.$confirm('确认批量删除选中项？', { type: 'warning' })
+                    .then(() => {
+                      const result = vm.selectedArr.every(async item => {
+                        const res = await vm.$axios.delete(`/${vm.routeKey}/${item.id}`)
+                        return res.data.success
+                      })
+                      if (!result) {
+                        return vm.$message.error('批量删除失败')
+                      }
+                      vm.$message.success('批量删除成功')
+                      vm.reload()
+                    })
+                    .catch(() => {})
+                } else {
+                  vm.$message.warning('请先勾选要删除的数据')
+                }
               }
             }
           })
@@ -217,8 +233,8 @@ export default {
             label: scope.row.status ? '查看' : '编辑',
             type: 'primary',
             events: {
-              click(scope) {
-                this.$emit('edit', scope.row, scope._self, !scope.row.status)
+              click({ row }) {
+                this.$emit('edit', this, row)
               }
             }
           })

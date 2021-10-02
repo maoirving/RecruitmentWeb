@@ -1,5 +1,5 @@
 <template>
-  <base-form :form-items="formItems" :form-data="interview">
+  <base-form ref="interviewFormRef" :form-items="formItems" :form-data="interview">
     <template slot="interviewDateTime">
       <el-col :span="12">
         <el-date-picker
@@ -54,11 +54,13 @@ export default {
       formItems: [
         {
           label: '面试时间',
+          rule: 'required',
           slot: 'interviewDateTime'
         },
         {
           label: '面试地点',
           prop: 'address',
+          rule: 'required',
           control: {
             attrs: {
               disabled: this.disabled

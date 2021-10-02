@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 // common
 export const whetherOptions = [
   {
@@ -11,6 +13,11 @@ export const whetherOptions = [
 ]
 
 // job
+export const getJobOptions = async () => {
+  const { data } = await axios.get('/jobs/options')
+  return data && data.options
+}
+
 export const jobTypeOptions = [
   {
     label: '校园招聘',
@@ -158,6 +165,12 @@ export const scaleOptions = [
 ]
 
 // user
+
+export const getUserOptions = async () => {
+  const { data } = await axios.get('/users/options')
+  return data && data.options
+}
+
 export const userTypeOptions = [
   {
     label: '个人用户',
@@ -196,6 +209,11 @@ export const registerTypeOptions = [
 ]
 
 // application
+export const getApplicatonIdOptions = async () => {
+  const { data } = await axios.get('/applications/ids')
+  return data && data.options
+}
+
 export const handledStatusOptions = [
   {
     label: '未处理',
