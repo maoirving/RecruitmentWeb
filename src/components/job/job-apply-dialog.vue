@@ -59,7 +59,8 @@ export default {
       this.$confirm('确认申请该职位并投递简历？', { type: 'warning' }).then(async () => {
         const response = await this.$axios.post('/applications', {
           userId: this.userId,
-          jobId: this.jobId
+          jobId: this.jobId,
+          handledStatus: 0
         })
         if (!response.data.success) {
           return this.$message.error('申请失败，请重试')

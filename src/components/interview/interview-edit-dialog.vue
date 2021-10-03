@@ -1,5 +1,5 @@
 <template>
-  <base-table-dialog
+  <base-dialog
     :title="dialogTitle"
     :visible.sync="dialogVisible"
     @close="handleClose"
@@ -10,11 +10,11 @@
       <base-form ref="interviewFormRef" :form-items="formItems" :form-data="interviewForm" />
       <interview-form ref="interviewRef" :interview="interviewForm" />
     </template>
-  </base-table-dialog>
+  </base-dialog>
 </template>
 
 <script>
-import BaseTableDialog from '@/components/base/base-table-dialog'
+import BaseDialog from '@/components/base/base-dialog'
 import InterviewForm from '@/components/interview/interview-form.vue'
 import BaseForm from '@/components/base/base-form'
 import { pick, omit, omitBy, cloneDeep } from 'lodash'
@@ -23,7 +23,7 @@ import moment from 'moment'
 
 export default {
   components: {
-    BaseTableDialog,
+    BaseDialog,
     InterviewForm,
     BaseForm
   },

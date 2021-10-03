@@ -1,5 +1,5 @@
 <template>
-  <base-table-dialog
+  <base-dialog
     :title="dialogTitle"
     :visible.sync="dialogVisible"
     @close="handleClose"
@@ -14,11 +14,11 @@
       :form-data="companyForm"
       :disabled="disabled"
     />
-  </base-table-dialog>
+  </base-dialog>
 </template>
 
 <script>
-import BaseTableDialog from '@/components/base/base-table-dialog'
+import BaseDialog from '@/components/base/base-dialog'
 import BaseForm from '@/components/base/base-form'
 import { pick, omit, omitBy, cloneDeep } from 'lodash'
 import { companyTypeOptions, financingStageOptions, scaleOptions } from '@/utils/data-source'
@@ -27,7 +27,7 @@ import { parseToHtml } from '@/utils/html-text'
 
 export default {
   components: {
-    BaseTableDialog,
+    BaseDialog,
     BaseForm
   },
 
@@ -92,6 +92,23 @@ export default {
           label: '公司名称',
           prop: 'name',
           rule: 'required'
+        },
+        {
+          label: '公司图片',
+          prop: 'imageUrl',
+          control: {
+            component: 'base-upload',
+            attrs: {
+              limit: 2 * 1024 * 1024,
+              tip: '图片限制2M以内',
+              name: 'file'
+            },
+            events: {
+              change(value) {
+                vm.companyForm.imageUrl = value
+              }
+            }
+          }
         },
         {
           label: '行业类别',

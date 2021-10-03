@@ -154,10 +154,7 @@ export default {
       this.$refs.editDialogRef.dialogVisible = true
       this.$refs.editDialogRef.tableThis = vm
       this.$refs.editDialogRef.outerRow = row
-      console.log(row)
     }
   }
 }
 </script>
-
-<style></style>

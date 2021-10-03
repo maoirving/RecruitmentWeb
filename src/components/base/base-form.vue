@@ -8,6 +8,7 @@
           :is="componentControl(item.control)"
           v-model="formData[item.prop]"
           v-bind="componentAttrs(item)"
+          v-on="componentEvents(item, formData)"
         />
       </el-form-item>
     </template>
@@ -19,7 +20,8 @@ export default {
   components: {
     BaseRadioGroup: () => import('@/components/base/base-radio-group'),
     BasePasswordInput: () => import('@/components/base/base-password-input'),
-    BaseSelect: () => import('@/components/base/base-select')
+    BaseSelect: () => import('@/components/base/base-select'),
+    BaseUpload: () => import('@/components/base/base-upload')
   },
 
   props: {
@@ -165,9 +167,22 @@ export default {
         attrs['placeholder'] = attrs['placeholder'] || prefix + item.label
       }
       return attrs
+    },
+    componentEvents(item, scope) {
+      if (!item.control || !item.control.events) {
+        return {}
+      }
+      const events = {}
+      for (const key in item.control.events) {
+        const func = item.control.events[key]
+        const ctx = {
+          scope,
+          item
+        }
+        events[key] = (...args) => func.call(this, ...args, ctx, this)
+      }
+      return events
     }
   }
 }
 </script>
-
-<style></style>

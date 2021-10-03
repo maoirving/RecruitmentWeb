@@ -1,5 +1,5 @@
 <template>
-  <div class="management-job">
+  <div class="management-application">
     <base-table
       :filter-items="filters"
       :columns="columns"
@@ -254,5 +254,3 @@ export default {
   }
 }
 </script>
-
-<style></style>

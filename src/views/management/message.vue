@@ -1,15 +1,24 @@
 <template>
   <div class="management-message">
-    <base-table :columns="columns" :fetch-data="getMessages" @add="handleAdd" @edit="handleEdit" />
+    <base-table
+      :filter-items="filters"
+      :columns="columns"
+      :fetch-data="getMessages"
+      @add="handleAdd"
+      @edit="handleEdit"
+    />
+    <message-edit-dialog ref="editDialogRef" />
   </div>
 </template>
 
 <script>
 import BaseTable from '@/components/base/base-table'
+import MessageEditDialog from '@/components/message/message-edit-dialog'
 import moment from 'moment'
 
 export default {
   components: {
+    MessageEditDialog,
     BaseTable
   },
   data() {
@@ -17,11 +26,11 @@ export default {
       columns: [
         {
           label: '发送方',
-          prop: 'senderId'
+          prop: 'senderName'
         },
         {
           label: '接收方',
-          prop: 'receiverId'
+          prop: 'receiverName'
         },
         {
           label: '消息内容',
@@ -62,31 +71,55 @@ export default {
     }
   },
 
+  computed: {
+    filters() {
+      return [
+        {
+          key: 'senderName',
+          span: 5,
+          attrs: {
+            clearable: true,
+            placeholder: '搜索发送方'
+          }
+        },
+        {
+          key: 'receiverName',
+          span: 5,
+          attrs: {
+            clearable: true,
+            placeholder: '搜索接收方'
+          }
+        }
+      ]
+    }
+  },
+
   methods: {
     async getMessages(params = {}) {
       const res = await this.$axios.get('/messages', {
         params: params
       })
       const list = res.data.messages
+      list.forEach(item => {
+        item.senderName = item.Sender.realName
+        item.receiverName = item.Receiver.realName
+      })
       const newRes = {
         list: list,
         total: res.data.pagination && res.data.pagination.total
       }
       return newRes
     },
-    handleAdd() {
-      console.log('add')
+    handleAdd(vm) {
+      this.$refs.editDialogRef.dialogVisible = true
+      this.$refs.editDialogRef.tableThis = vm
+      this.$refs.editDialogRef.outerRow = null
     },
-    handleEdit(row, vm, isEdit) {
-      if (isEdit) {
-        console.log('编辑', row.id)
-        vm.reload()
-      } else {
-        console.log('查看')
-      }
+    handleEdit(vm, row) {
+      this.$refs.editDialogRef.dialogVisible = true
+      this.$refs.editDialogRef.tableThis = vm
+      this.$refs.editDialogRef.outerRow = row
     }
   }
 }
 </script>
-
-<style></style>

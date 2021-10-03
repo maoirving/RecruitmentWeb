@@ -1,5 +1,5 @@
 <template>
-  <base-table-dialog
+  <base-dialog
     dialog-width="40%"
     :title="dialogTitle"
     :visible.sync="dialogVisible"
@@ -15,11 +15,11 @@
       :form-data="applicationForm"
       :disabled="disabled"
     />
-  </base-table-dialog>
+  </base-dialog>
 </template>
 
 <script>
-import BaseTableDialog from '@/components/base/base-table-dialog'
+import BaseDialog from '@/components/base/base-dialog'
 import BaseForm from '@/components/base/base-form'
 import { pick, omit, omitBy, cloneDeep } from 'lodash'
 import { getJobOptions, getUserOptions } from '@/utils/data-source'
@@ -28,7 +28,7 @@ import { parseToHtml } from '@/utils/html-text'
 
 export default {
   components: {
-    BaseTableDialog,
+    BaseDialog,
     BaseForm
   },
 
@@ -152,14 +152,6 @@ export default {
         const editRes = await this.$axios.put(`/applications/${applicationId}`, params)
         return editRes.data.success
       }
-    },
-    async getJobOptions() {
-      const { data } = await this.$axios.get('/jobs/options')
-      return data && data.options
-    },
-    async getUserOptions() {
-      const { data } = await this.$axios.get('/users/options')
-      return data && data.options
     }
   },
 

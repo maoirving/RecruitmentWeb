@@ -8,6 +8,7 @@
       @add="handleAdd"
       @edit="handleEdit"
     />
+    <user-edit-dialog ref="editDialogRef" />
   </div>
 </template>
 
@@ -15,22 +16,21 @@
 import BaseTable from '@/components/base/base-table'
 import { optionFormatter } from '@/utils/formatter'
 import { userTypeOptions, sexOptions } from '@/utils/data-source'
+import UserEditDialog from '@/components/user/user-edit-dialog'
 import moment from 'moment'
 
 export default {
   components: {
-    BaseTable
+    BaseTable,
+    UserEditDialog
   },
   data() {
+    const vm = this
     return {
       columns: [
         {
           label: '用户名',
           prop: 'username'
-        },
-        {
-          label: '头像',
-          prop: 'imageUrl'
         },
         {
           label: '角色',
@@ -76,14 +76,25 @@ export default {
           }
         }
       ],
-
       actions: [
         {
           label: '重置密码',
           type: 'success',
           events: {
-            click(scope) {
-              console.log('重置密码')
+            click({ row }) {
+              const password = '123456'
+              vm.$confirm(`确认将密码重置为${password}？`, { type: 'warning' })
+                .then(async () => {
+                  const res = await vm.$axios.put(`/users/${row.id}`, {
+                    password: password
+                  })
+                  if (!res.data.success) {
+                    return vm.$message.error('重置失败，请重试！')
+                  }
+                  vm.$message.success('重置成功！')
+                  this.reload()
+                })
+                .catch(() => {})
             }
           }
         }
@@ -138,16 +149,15 @@ export default {
       }
       return newRes
     },
-    handleAdd() {
-      console.log('add')
+    handleAdd(vm) {
+      this.$refs.editDialogRef.dialogVisible = true
+      this.$refs.editDialogRef.tableThis = vm
+      this.$refs.editDialogRef.outerRow = null
     },
-    handleEdit(row, vm, isEdit) {
-      if (isEdit) {
-        console.log('编辑', row.id)
-        vm.reload()
-      } else {
-        console.log('查看')
-      }
+    handleEdit(vm, row) {
+      this.$refs.editDialogRef.dialogVisible = true
+      this.$refs.editDialogRef.tableThis = vm
+      this.$refs.editDialogRef.outerRow = row
     }
   }
 }

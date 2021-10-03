@@ -1,5 +1,5 @@
 <template>
-  <base-table-dialog
+  <base-dialog
     :title="dialogTitle"
     :visible.sync="dialogVisible"
     :disabled="disabled"
@@ -35,11 +35,11 @@
     >
       保存并发布
     </el-button>
-  </base-table-dialog>
+  </base-dialog>
 </template>
 
 <script>
-import BaseTableDialog from '@/components/base/base-table-dialog'
+import BaseDialog from '@/components/base/base-dialog'
 import BaseForm from '@/components/base/base-form'
 import { pick, omit, omitBy, cloneDeep } from 'lodash'
 import {
@@ -52,7 +52,7 @@ import { parseToHtml } from '@/utils/html-text'
 
 export default {
   components: {
-    BaseTableDialog,
+    BaseDialog,
     BaseForm
   },
 

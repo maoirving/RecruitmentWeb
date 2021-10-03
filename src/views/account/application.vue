@@ -44,7 +44,7 @@ export default {
           name: 'isRead'
         },
         {
-          label: '合适',
+          label: '通过初筛',
           name: 'pass'
         },
         {
