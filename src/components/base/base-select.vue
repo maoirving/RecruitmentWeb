@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="selectedValue" v-bind="$attrs">
+  <el-select class="w-1/2" v-model="selectedValue" v-bind="$attrs">
     <el-option
       v-for="(item, i) in displayOptions"
       :key="i"

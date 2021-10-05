@@ -44,6 +44,7 @@ import BaseForm from '@/components/base/base-form'
 import { pick, omit, omitBy, cloneDeep } from 'lodash'
 import {
   jobTypeOptions,
+  getCompanyOptions,
   educationBackgroundOptions,
   workExperienceOptions
 } from '@/utils/data-source'
@@ -61,6 +62,7 @@ export default {
       dialogVisible: false,
       outerRow: null,
       tableThis: null,
+      companyOptions: [],
       jobForm: {
         name: '',
         type: '',
@@ -72,7 +74,7 @@ export default {
         educationBackground: '',
         description: '',
         skill: '',
-        companyId: 1,
+        companyId: '',
         status: ''
       }
     }
@@ -145,6 +147,18 @@ export default {
           }
         },
         {
+          label: '所属公司',
+          prop: 'companyId',
+          rule: 'required',
+          control: {
+            component: 'base-select',
+            attrs: {
+              clearable: true,
+              options: this.companyOptions
+            }
+          }
+        },
+        {
           label: '招聘人数',
           prop: 'recruitingNnumbers',
           rule: 'required',
@@ -186,6 +200,7 @@ export default {
         },
         {
           label: '工作地点',
+          rule: 'required',
           prop: 'workLocation',
           control: {
             attrs: {
@@ -232,7 +247,7 @@ export default {
         educationBackground: '',
         description: '',
         skill: '',
-        companyId: 1,
+        companyId: '',
         status: ''
       }
       this.$refs.jobFormRef.$refs['form'].resetFields()
@@ -262,6 +277,7 @@ export default {
       const job = omit(this.jobForm, ['minSalary', 'maxSalary'])
       job.salary = `${this.jobForm.minSalary}-${this.jobForm.maxSalary}K`
       job.description = parseToHtml(job.description)
+      job.skill = parseToHtml(job.skill)
       const params = omitBy(job, val => val === '')
       if (extraParams) {
         Object.assign(params, extraParams)
@@ -274,8 +290,10 @@ export default {
         return editRes.data.success
       }
     }
+  },
+
+  async mounted() {
+    this.companyOptions = await getCompanyOptions()
   }
 }
 </script>
-
-<style></style>

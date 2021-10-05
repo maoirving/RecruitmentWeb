@@ -34,25 +34,40 @@ export default {
       isEdit: false,
       columns: [
         {
+          width: '160px',
           label: '职位名称',
           prop: 'name'
         },
         {
+          width: '120px',
           label: '职位类型',
           prop: 'type',
           formatter: optionFormatter(jobTypeOptions, 'type')
         },
         {
+          width: '90px',
+          label: '招聘人数',
+          prop: 'recruitingNnumbers',
+          formatter() {
+            return row => {
+              return row.recruitingNnumbers + '人'
+            }
+          }
+        },
+        {
+          width: '110px',
           label: '薪资范围',
           prop: 'salary'
         },
         {
-          label: '工作经验',
-          prop: 'workExperience'
-        },
-        {
+          width: '100px',
           label: '学历要求',
           prop: 'educationBackground'
+        },
+        {
+          width: '100px',
+          label: '工作经验',
+          prop: 'workExperience'
         },
         {
           label: '创建时间',
@@ -160,5 +175,3 @@ export default {
   }
 }
 </script>
-
-<style></style>

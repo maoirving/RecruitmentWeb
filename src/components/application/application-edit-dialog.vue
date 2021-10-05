@@ -22,9 +22,7 @@
 import BaseDialog from '@/components/base/base-dialog'
 import BaseForm from '@/components/base/base-form'
 import { pick, omit, omitBy, cloneDeep } from 'lodash'
-import { getJobOptions, getUserOptions } from '@/utils/data-source'
-import { parseToText } from '@/utils/html-text'
-import { parseToHtml } from '@/utils/html-text'
+import { getJobOptions, getUserOptions, getResumeOptions } from '@/utils/data-source'
 
 export default {
   components: {
@@ -39,6 +37,7 @@ export default {
       tableThis: null,
       jobOptions: [],
       userOptions: [],
+      resumeOptions: [],
       applicationForm: {
         id: '',
         userId: '',
@@ -98,13 +97,16 @@ export default {
         },
         {
           label: '简历',
-          prop: 'userId',
+          prop: 'resumeId',
+          visible: this.applicationForm.userId ? true : false,
           rule: 'required',
           control: {
             component: 'base-select',
             attrs: {
               clearable: true,
-              options: this.userOptions
+              options: this.resumeOptions.filter(
+                option => option.userId === this.applicationForm.userId
+              )
             }
           }
         }
@@ -143,7 +145,6 @@ export default {
     async saveApplication() {
       const applicationId = this.applicationForm.id
       const application = omit(this.applicationForm, ['id'])
-      application.introduction = parseToHtml(application.introduction)
       const params = omitBy(application, val => val === '')
       if (!this.isEdit) {
         const res = await this.$axios.post(`/applications`, params)
@@ -158,6 +159,7 @@ export default {
   async mounted() {
     this.jobOptions = await getJobOptions()
     this.userOptions = await getUserOptions()
+    this.resumeOptions = await getResumeOptions()
   }
 }
 </script>

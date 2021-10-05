@@ -19,7 +19,7 @@
         </div>
       </li>
     </ul>
-    <pdf-dialog :visible.sync="dialogVisible" @close-dialog="dialogVisible = false" />
+    <pdf-dialog ref="resumeReadRef" />
     <file-uploading-dialog
       :visible.sync="uploadingDialogVisible"
       @close-dialog="uploadingDialogVisible = false"
@@ -46,14 +46,14 @@ export default {
 
   data() {
     return {
-      dialogVisible: false,
       uploadingDialogVisible: false
     }
   },
 
   methods: {
     showFileDialog() {
-      this.dialogVisible = true
+      this.$refs.resumeReadRef.url = 'http://localhost:3000/uploads/resumes/业务引导卡.pdf'
+      this.$refs.resumeReadRef.dialogVisible = true
     },
 
     showUploadingDialog() {

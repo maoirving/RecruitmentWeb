@@ -229,6 +229,13 @@ export default {
     showDialog() {
       this.dialogVisible = true
     }
+  },
+
+  mounted() {
+    const arr = ['hello', 'mao']
+    const str = 'hello;mao'
+    console.log(str.split(';'))
+    console.log(arr.join(';'))
   }
 }
 </script>

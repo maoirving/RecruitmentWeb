@@ -46,7 +46,7 @@ export default {
   },
   data() {
     return {
-      actionUrl: 'http://127.0.0.1:3000/upload'
+      actionUrl: 'http://127.0.0.1:3000/upload/image'
     }
   },
   computed: {},

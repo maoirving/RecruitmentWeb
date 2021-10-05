@@ -54,7 +54,6 @@ export default {
       formItems: [
         {
           label: '面试时间',
-          rule: 'required',
           slot: 'interviewDateTime'
         },
         {

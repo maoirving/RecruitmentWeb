@@ -33,15 +33,18 @@ export default {
           prop: 'username'
         },
         {
+          width: '90px',
           label: '角色',
           prop: 'type',
           formatter: optionFormatter(userTypeOptions, 'type')
         },
         {
+          width: '90px',
           label: '真实姓名',
           prop: 'realName'
         },
         {
+          width: '80px',
           label: '性别',
           prop: 'sex'
         },

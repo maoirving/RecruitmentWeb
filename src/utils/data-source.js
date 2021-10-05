@@ -74,7 +74,13 @@ export const workExperienceOptions = [
     value: '5-10年'
   }
 ]
+
 // company
+export const getCompanyOptions = async () => {
+  const { data } = await axios.get('/companies/options')
+  return data && data.options
+}
+
 export const companyTypeOptions = [
   {
     label: '电子商务',
@@ -239,3 +245,13 @@ export const applicationHandleOptions = [
     value: -1
   }
 ]
+
+// resume
+export const getResumeOptions = async id => {
+  const { data } = await axios.get('/resumes/options', {
+    params: {
+      userId: id
+    }
+  })
+  return data && data.options
+}

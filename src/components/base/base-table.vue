@@ -177,11 +177,12 @@ export default {
           if (this.columns[0].type !== 'selection') {
             this.columns.unshift(
               {
+                width: '40px',
                 type: 'selection',
                 label: ''
               },
               {
-                width: '80px',
+                width: '100px',
                 label: 'id',
                 prop: 'id'
               }
@@ -272,7 +273,7 @@ export default {
         this.tableData = res.list
         this.pageInfo.total = res.total
         this.loading = false
-      }, 800)
+      }, 500)
     },
     handleSearch(params) {
       this.filterParams = params

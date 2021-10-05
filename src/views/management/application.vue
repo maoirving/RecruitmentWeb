@@ -9,16 +9,8 @@
       @edit="handleEdit"
     />
     <application-edit-dialog ref="editDialogRef" />
-    <application-handle-dialog
-      ref="applicationHandleDialogRef"
-      :visible.sync="dialogVisible"
-      @close-dialog="dialogVisible = false"
-    />
-    <pdf-dialog
-      ref="resumeReadRef"
-      :visible.sync="resumeDialogVisible"
-      @close-dialog="handleRead"
-    />
+    <application-handle-dialog ref="applicationHandleDialogRef" />
+    <pdf-dialog ref="resumeReadRef" @close-dialog="handleRead" />
   </div>
 </template>
 
@@ -28,7 +20,6 @@ import { optionFormatter } from '@/utils/formatter'
 import {
   jobTypeOptions,
   educationBackgroundOptions,
-  workExperienceOptions,
   handledStatusOptions
 } from '@/utils/data-source'
 import moment from 'moment'
@@ -47,32 +38,35 @@ export default {
     const vm = this
     return {
       dialogVisible: false,
-      resumeDialogVisible: false,
       columns: [
         {
           label: '职位名称',
           prop: 'jobName'
         },
         {
+          width: '90px',
           label: '职位类型',
           prop: 'jobType',
           formatter: optionFormatter(jobTypeOptions, 'jobType')
         },
         {
+          width: '90px',
           label: '姓名',
           prop: 'userRealName'
         },
         {
+          width: '80px',
           label: '性别',
           prop: 'userSex'
         },
         {
+          width: '90px',
           label: '年龄',
           prop: 'userAge'
         },
         {
           label: '简历',
-          prop: 'resumeId'
+          prop: 'resumeName'
         },
 
         {
@@ -87,6 +81,7 @@ export default {
           }
         },
         {
+          width: '90px',
           label: '处理状态',
           prop: 'handledStatus',
           component: {
@@ -116,7 +111,8 @@ export default {
           events: {
             click({ row }) {
               vm.$refs.resumeReadRef.applicationId = row.id
-              vm.resumeDialogVisible = true
+              vm.$refs.resumeReadRef.url = 'http://localhost:3000/uploads/resumes/业务引导卡.pdf'
+              vm.$refs.resumeReadRef.dialogVisible = true
             }
           }
         },
@@ -126,23 +122,9 @@ export default {
           events: {
             click({ row }) {
               console.log(row)
-              vm.dialogVisible = true
-              vm.$refs.applicationHandleDialogRef.applicationId = row.id
-              vm.$refs.applicationHandleDialogRef.receiverId = row.userId
-              vm.$refs.applicationHandleDialogRef.companyId = row.companyId
+              vm.$refs.applicationHandleDialogRef.outerRow = row
               vm.$refs.applicationHandleDialogRef.tableThis = this
-            }
-          }
-        }
-      ],
-      buttons: [
-        {
-          label: '新增职位',
-          key: 'addCoupon',
-          span: 12,
-          events: {
-            click(item) {
-              self.$router.push({ name: 'add-discount-coupon' })
+              vm.$refs.applicationHandleDialogRef.dialogVisible = true
             }
           }
         }
@@ -171,17 +153,7 @@ export default {
             clearable: true,
             placeholder: '学历要求'
           },
-          options: educationBackgroundOptions
-        },
-        {
-          key: 'workExperience',
-          span: 4,
-          isSelect: true,
-          attrs: {
-            clearable: true,
-            placeholder: '工作经验'
-          },
-          options: workExperienceOptions
+          options: educationBackgroundOptions.filter(item => item.value !== '不限')
         },
         {
           key: 'handledStatus',
@@ -222,11 +194,13 @@ export default {
       list.forEach(item => {
         const user = item.User
         const job = item.Job
+        const resume = item.ResumeFile
         item.userRealName = user.realName
         item.userSex = user.sex
         item.userAge = new Date().getFullYear() - new Date(user.birthday).getFullYear() + '岁'
         item.jobName = job.name
         item.jobType = job.type
+        item.resumeName = resume && resume.name
         item.companyId = job.companyId
       })
       const newRes = {

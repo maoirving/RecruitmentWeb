@@ -1,4 +1,4 @@
-/*移除HTML标签代码*/
+// html->text
 export function parseToText(str) {
   str = str.replace(/<br\s*[\/]?>/gi, '\n')
   str = str.replace(/<\/?[^>]*>/g, '') //去除HTML tag
@@ -7,7 +7,8 @@ export function parseToText(str) {
   str = str.replace(/ /gi, '') //去掉
   return str
 }
-//转意符换成普通字符
+
+// text->html
 export function parseToHtml(str) {
   str = str.replace(/\n/gi, '<br/>')
   str = `<p>${str}</p>`

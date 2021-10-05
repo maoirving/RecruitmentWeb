@@ -1,6 +1,6 @@
 <template>
   <el-form ref="form" :model="formData" :label-width="labelWidth" :rules="rules" v-bind="$attrs">
-    <template slot="default" v-for="(item, index) in formItems">
+    <template slot="default" v-for="(item, index) in visibleFormItems">
       <el-form-item :label="item.label" :prop="item.prop" :key="index">
         <slot v-if="item.slot" :name="item.slot" :form-data="formData" />
         <component
@@ -19,7 +19,6 @@
 export default {
   components: {
     BaseRadioGroup: () => import('@/components/base/base-radio-group'),
-    BasePasswordInput: () => import('@/components/base/base-password-input'),
     BaseSelect: () => import('@/components/base/base-select'),
     BaseUpload: () => import('@/components/base/base-upload')
   },
@@ -46,6 +45,9 @@ export default {
   },
 
   computed: {
+    visibleFormItems() {
+      return this.formItems.filter(item => item.visible !== false)
+    },
     rules() {
       const ruleObj = {}
       this.formItems.forEach((item, index) => {
@@ -60,9 +62,14 @@ export default {
         const ruleArr = item.rule.split('|')
         ruleArr.forEach(rule => {
           if (rule === 'required') {
+            let message = '必填'
+            const componentMap = ['base-select', 'base-radio-group', 'el-date-picker']
+            if (item.control && componentMap.indexOf(item.control.component) !== -1) {
+              message = '必选'
+            }
             const obj = {
               required: true,
-              message: '必填',
+              message: message,
               trigger: 'blur'
             }
             ruleObj[item.prop].push(obj)

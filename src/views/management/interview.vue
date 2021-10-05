@@ -33,6 +33,7 @@ export default {
           prop: 'jobName'
         },
         {
+          width: '90px',
           label: '面试者',
           prop: 'intervieweeName'
         },

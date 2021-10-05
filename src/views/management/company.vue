@@ -29,22 +29,31 @@ export default {
     return {
       columns: [
         {
+          width: '120px',
           label: '公司名称',
           prop: 'name'
         },
         {
+          width: '90px',
           label: '行业类别',
           prop: 'type'
         },
         {
+          width: '90px',
           label: '融资阶段',
           prop: 'financingStage'
+        },
+        {
+          width: '90px',
+          label: '公司规模',
+          prop: 'scale'
         },
         {
           label: '公司地址',
           prop: 'address'
         },
         {
+          width: '90px',
           label: '法定代表人',
           prop: 'legalRepresentative'
         },

@@ -87,6 +87,7 @@ export default {
     },
 
     formItems() {
+      const vm = this
       return [
         {
           label: '公司名称',
@@ -101,7 +102,7 @@ export default {
             attrs: {
               limit: 2 * 1024 * 1024,
               tip: '图片限制2M以内',
-              name: 'file'
+              name: 'image'
             },
             events: {
               change(value) {
@@ -125,6 +126,7 @@ export default {
         {
           label: '公司地址',
           prop: 'address',
+          rule: 'required',
           control: {
             attrs: {
               placeholder: '请输入公司地址（城市+街道+门牌号...）'
@@ -179,6 +181,7 @@ export default {
         {
           label: '注册日期',
           prop: 'registeredAt',
+          rule: 'required',
           control: {
             component: 'el-date-picker',
             attrs: {

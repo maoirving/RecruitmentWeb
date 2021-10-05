@@ -6,6 +6,7 @@
     top="2vh"
     :center="true"
     v-bind="$attrs"
+    :visible.sync="dialogVisible"
     :before-close="handleClose"
   >
     <div class="page-number-holder">共 {{ numPages }} 页</div>
@@ -26,10 +27,12 @@ export default {
     Pdf
   },
 
+  props: {},
+
   data() {
-    const loadingTask = Pdf.createLoadingTask(`${window.location.origin}/files/业务引导卡.pdf`)
     return {
-      src: loadingTask,
+      dialogVisible: false,
+      url: '',
       numPages: undefined,
       currentPage: 0,
       pageCount: 0,
@@ -37,18 +40,27 @@ export default {
     }
   },
 
-  computed: {},
-
-  methods: {
-    handleClose() {
-      this.$emit('close-dialog', this.applicationId)
+  watch: {
+    dialogVisible(val) {
+      if (val) {
+        this.src.promise.then(pdf => {
+          this.numPages = pdf.numPages
+        })
+      }
     }
   },
 
-  mounted() {
-    this.src.promise.then(pdf => {
-      this.numPages = pdf.numPages
-    })
+  computed: {
+    src() {
+      return Pdf.createLoadingTask(this.url)
+    }
+  },
+
+  methods: {
+    handleClose() {
+      this.dialogVisible = false
+      this.$emit('close-dialog', this.applicationId)
+    }
   }
 }
 </script>

@@ -25,10 +25,12 @@ export default {
     return {
       columns: [
         {
+          width: '140px',
           label: '发送方',
           prop: 'senderName'
         },
         {
+          width: '140px',
           label: '接收方',
           prop: 'receiverName'
         },

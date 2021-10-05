@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    class="awesome-scrollbar"
     :width="dialogWidth"
     top="5vh"
     :center="true"
@@ -14,7 +15,7 @@
     <div slot="footer" class="text-right">
       <el-button size="small" @click="handleClose">取消</el-button>
       <el-button type="primary" size="small" @click="handleSave" :disabled="disabled">
-        保存
+        {{ saveBtnText }}
       </el-button>
       <slot name="extra-button" />
     </div>
@@ -38,37 +39,9 @@ export default {
       type: Boolean,
       default: false
     },
-    typeText: {
+    saveBtnText: {
       type: String,
-      default: ''
-    },
-    dialogFormItems: {
-      type: Array,
-      default: () => []
-    },
-    dialogFormData: {
-      type: Object,
-      default: () => {}
-    }
-  },
-
-  data() {
-    return {
-      id: '',
-      tableThis: null
-    }
-  },
-
-  computed: {},
-
-  watch: {
-    jobForm: {
-      handler(newObj) {
-        if (newObj.maxSalary < newObj.minSalary + 1) {
-          newObj.maxSalary = newObj.minSalary + 1
-        }
-      },
-      deep: true
+      default: '保存'
     }
   },
 

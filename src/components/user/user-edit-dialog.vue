@@ -105,7 +105,7 @@ export default {
             attrs: {
               limit: 2 * 1024 * 1024,
               tip: '图片限制2M以内',
-              name: 'file'
+              name: 'image'
             },
             events: {
               change(value) {
@@ -217,9 +217,11 @@ export default {
       const userId = this.userForm.id
       const user = omit(this.userForm, ['id'])
       const params = omitBy(user, val => val === '')
-      params.birthday = moment(params.birthday)
-        .utcOffset(0)
-        .format('YYYY-MM-DD')
+      if (params.birthday) {
+        params.birthday = moment(params.birthday)
+          .utcOffset(0)
+          .format('YYYY-MM-DD')
+      }
       if (!this.isProfileType) {
         params.password = '123456'
       }

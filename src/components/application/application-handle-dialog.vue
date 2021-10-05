@@ -1,21 +1,20 @@
 <template>
   <div>
-    <el-dialog
-      class="awesome-scrollbar application-handle-dialog"
+    <base-dialog
+      dialog-width="40%"
       title="处理求职申请"
-      width="40%"
-      :center="true"
-      v-bind="$attrs"
-      destroy-on-close
-      :before-close="handleClose"
-      @closed="closed"
+      save-btn-text="处理"
+      :visible.sync="dialogVisible"
+      @close="handleClose"
+      @save="handleSave"
     >
-      <base-form ref="formRef" :form-items="formItems" :form-data="applicationForm" />
-      <div slot="footer" class="text-right">
-        <el-button @click="handleClose">取消</el-button>
-        <el-button type="primary" @click="handleApplicaion">处理</el-button>
-      </div>
-    </el-dialog>
+      <base-form
+        slot="dialog-form"
+        ref="handleFormRef"
+        :form-items="formItems"
+        :form-data="applicationForm"
+      />
+    </base-dialog>
     <interview-dialog
       ref="interviewDialogRef"
       :visible.sync="interviewDialogVisible"
@@ -25,6 +24,7 @@
 </template>
 
 <script>
+import BaseDialog from '@/components/base/base-dialog'
 import BaseForm from '@/components/base/base-form'
 import { applicationHandleOptions } from '@/utils/data-source'
 import InterviewDialog from '@/components/interview/interview-dialog'
@@ -33,6 +33,7 @@ import { mapState } from 'vuex'
 
 export default {
   components: {
+    BaseDialog,
     BaseForm,
     InterviewDialog
   },
@@ -41,10 +42,13 @@ export default {
 
   data() {
     return {
-      applicationId: '',
+      dialogVisible: false,
+      outerRow: null,
+      tableThis: null,
       receiverId: '',
       companyId: '',
       applicationForm: {
+        id: '',
         handledStatus: '',
         content: ''
       },
@@ -85,57 +89,57 @@ export default {
 
   methods: {
     handleClose() {
-      const resultObj = omitBy(this.applicationForm, val => val === '')
-      if (JSON.stringify(resultObj) === '{}') {
-        this.$emit('close-dialog')
-      } else {
-        this.$confirm('填写内容不会保存，确认关闭？', { type: 'warning' })
-          .then(() => {
-            this.$emit('close-dialog')
-          })
-          .catch(() => {})
+      this.applicationForm = {
+        id: '',
+        handledStatus: '',
+        content: ''
       }
+      this.$refs.handleFormRef.$refs['form'].resetFields()
+      this.dialogVisible = false
     },
-
-    closed() {
-      this.$refs.formRef.$refs['form'].resetFields()
-    },
-
-    handleApplicaion() {
-      this.$refs.formRef.$refs['form'].validate(async valid => {
+    handleSave() {
+      this.$refs.handleFormRef.$refs['form'].validate(async valid => {
         if (!valid) return
         this.$confirm('确认处理？', { type: 'warning' })
           .then(async () => {
-            this.$emit('close-dialog')
-            const res = await this.$axios.put(`/applications/${this.applicationId}`, {
-              handledStatus: this.applicationForm.handledStatus
-            })
-            if (this.applicationForm.content) {
-              const messageRes = await this.$axios.post(`/messages`, {
-                content: this.applicationForm.content,
-                senderId: parseInt(this.userId),
-                receiverId: this.receiverId,
-                applicationId: this.applicationId
-              })
-              if (!messageRes.data.success) {
-                return
+            const isSuccessful = await this.saveApplication()
+            if (isSuccessful) {
+              this.tableThis.reload()
+              this.handleClose()
+              if (this.applicationForm.handledStatus === -1) {
+                return this.$message.success('处理成功！')
+              } else {
+                this.$confirm('处理成功！是否立即邀请面试？', { type: 'success' })
+                  .then(() => {
+                    this.$refs.interviewDialogRef.applicationId = this.applicationId
+                    this.interviewDialogVisible = true
+                  })
+                  .catch(() => {})
               }
-            }
-
-            this.tableThis.reload()
-            if (this.applicationForm.handledStatus === -1) {
-              return this.$message.success('处理成功！')
             } else {
-              this.$confirm('处理成功！是否立即邀请面试？', { type: 'success' })
-                .then(() => {
-                  this.$refs.interviewDialogRef.applicationId = this.applicationId
-                  this.interviewDialogVisible = true
-                })
-                .catch(() => {})
+              this.$message.error('保存失败，请重试')
             }
           })
           .catch(() => {})
       })
+    },
+
+    async saveApplication() {
+      const applicationId = this.applicationForm.id
+      const res = await this.$axios.put(`/applications/${applicationId}`, {
+        handledStatus: this.applicationForm.handledStatus
+      })
+      if (res.data.success && this.applicationForm.content) {
+        const messageRes = await this.$axios.post(`/messages`, {
+          content: this.applicationForm.content,
+          senderId: parseInt(this.userId),
+          receiverId: this.receiverId,
+          applicationId: applicationId
+        })
+        return messageRes.data.success
+      } else {
+        return res.data.success
+      }
     }
   }
 }
