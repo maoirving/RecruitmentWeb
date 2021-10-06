@@ -1,5 +1,5 @@
 <template>
-  <base-form ref="interviewFormRef" :form-items="formItems" :form-data="interview">
+  <base-form ref="interviewFormRef" :form-items="formItems" :form-data="interview" v-bind="$attrs">
     <template slot="interviewDateTime">
       <el-col :span="12">
         <el-date-picker

@@ -7,19 +7,16 @@
             职位列表
           </h2>
           <job-search class="mb-3" @filter="handleFilter" />
-          <el-row
-            v-if="jobs && jobs.length"
-            v-loading="isLoading"
-            class="flex-wrap"
-            type="flex"
-            :gutter="15"
-          >
-            <el-col class="mb-3" :span="12" v-for="(job, index) in jobs" :key="index">
-              <job-card :job="job" />
-            </el-col>
-          </el-row>
-          <el-empty v-else description="未找到相关职位" />
-          <base-pagination :pageInfo="pageInfo" @pagination="handlePaginate" />
+          <div class="result-wrapper" v-loading="isLoading">
+            <el-row v-if="jobs && jobs.length" class="flex-wrap" type="flex" :gutter="15">
+              <el-col class="mb-3" :span="12" v-for="(job, index) in jobs" :key="index">
+                <job-card :job="job" />
+              </el-col>
+            </el-row>
+            <el-empty v-if="jobs !== null && !jobs.length" description="未找到相关职位" />
+          </div>
+
+          <base-pagination :pageInfo="pageInfo" @pagination="getJobs" />
         </el-card>
       </el-col>
       <el-col class="aside-box" :span="7">
@@ -47,18 +44,19 @@ export default {
   },
   data() {
     return {
-      jobs: [],
+      jobs: null,
       pageInfo: {
         currentPage: 1,
         pageSize: 20,
         total: 0
       },
       filterParams: {},
-      isLoading: false
+      isLoading: true
     }
   },
   methods: {
     async getJobs() {
+      this.isLoading = true
       const res = await this.$axios.get('/jobs', {
         params: {
           currentPage: this.pageInfo.currentPage,
@@ -66,8 +64,11 @@ export default {
           ...this.filterParams
         }
       })
-      this.pageInfo.total = res.data.pagination.total
-      this.jobs = res.data.jobs
+      setTimeout(() => {
+        this.pageInfo.total = res.data.pagination.total
+        this.jobs = res.data.jobs
+        this.isLoading = false
+      }, 600)
     },
 
     handleFilter(params) {
@@ -75,14 +76,6 @@ export default {
       this.filterParams = omitBy(params, val => val === '')
       console.log(this.filterParams)
       this.getJobs()
-    },
-
-    handlePaginate() {
-      this.isLoading = true
-      setTimeout(async () => {
-        await this.getJobs()
-        this.isLoading = false
-      }, 1000)
     }
   },
 
@@ -99,6 +92,9 @@ export default {
     .main-content {
       .main-title {
         margin-bottom: $gap;
+      }
+      .result-wrapper {
+        min-height: 400px;
       }
     }
     .aside-box {

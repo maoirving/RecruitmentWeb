@@ -7,12 +7,13 @@
       @add="handleAdd"
       @edit="handleEdit"
     />
-    <interview-edit-dialog ref="editDialogRef" />
+    <interview-edit-dialog ref="editDialogRef" with-application />
   </div>
 </template>
 
 <script>
 import BaseTable from '@/components/base/base-table'
+import { getMatchedLabel, colorTypeOptions, agreedStatusOptions } from '@/utils/data-source'
 import InterviewEditDialog from '@/components/interview/interview-edit-dialog'
 import moment from 'moment'
 
@@ -57,6 +58,22 @@ export default {
           prop: 'tip'
         },
         {
+          width: '90px',
+          label: '处理状态',
+          prop: 'agreedStatus',
+          component: {
+            control: 'BaseTag',
+            attrs: {
+              type({ row }) {
+                return getMatchedLabel(colorTypeOptions, row.agreedStatus)
+              },
+              text({ row }) {
+                return getMatchedLabel(agreedStatusOptions, row.agreedStatus)
+              }
+            }
+          }
+        },
+        {
           label: '创建时间',
           prop: 'createdAt',
           formatter() {
@@ -67,26 +84,6 @@ export default {
             }
           }
         }
-      ],
-      actions: [
-        {
-          label: '编辑',
-          type: 'primary',
-          events: {
-            click(scope) {
-              console.log('编辑')
-            }
-          }
-        },
-        {
-          label: '删除',
-          type: 'danger',
-          events: {
-            click(scope) {
-              console.log('删除')
-            }
-          }
-        }
       ]
     }
   },
@@ -94,6 +91,16 @@ export default {
   computed: {
     filters() {
       return [
+        {
+          key: 'agreedStatus',
+          span: 4,
+          isSelect: true,
+          attrs: {
+            clearable: true,
+            placeholder: '处理状态'
+          },
+          options: agreedStatusOptions
+        },
         {
           key: 'companyName',
           span: 5,
@@ -148,13 +155,13 @@ export default {
     },
     handleAdd(vm) {
       this.$refs.editDialogRef.dialogVisible = true
-      this.$refs.editDialogRef.tableThis = vm
-      this.$refs.editDialogRef.outerRow = null
+      this.$refs.editDialogRef.outerThis = vm
+      this.$refs.editDialogRef.outerData = null
     },
     handleEdit(vm, row) {
       this.$refs.editDialogRef.dialogVisible = true
-      this.$refs.editDialogRef.tableThis = vm
-      this.$refs.editDialogRef.outerRow = row
+      this.$refs.editDialogRef.outerThis = vm
+      this.$refs.editDialogRef.outerData = row
     }
   }
 }

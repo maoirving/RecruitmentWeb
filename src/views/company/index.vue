@@ -7,19 +7,16 @@
             公司列表
           </h2>
           <company-search class="mb-3" @filter="handleFilter" />
-          <el-row
-            v-if="companies && companies.length"
-            v-loading="isLoading"
-            class="flex-wrap"
-            type="flex"
-            :gutter="15"
-          >
-            <el-col class="mb-3" :span="8" v-for="(company, index) in companies" :key="index">
-              <company-card :company="company" />
-            </el-col>
-          </el-row>
-          <el-empty v-else description="未找到相关公司" />
-          <base-pagination :pageInfo="pageInfo" @pagination="handlePaginate" />
+          <div class="result-wrapper" v-loading="isLoading">
+            <el-row v-if="companies && companies.length" class="flex-wrap" type="flex" :gutter="15">
+              <el-col class="mb-3" :span="8" v-for="(company, index) in companies" :key="index">
+                <company-card :company="company" />
+              </el-col>
+            </el-row>
+            <el-empty v-if="companies !== null && !companies.length" description="未找到相关公司" />
+          </div>
+
+          <base-pagination :pageInfo="pageInfo" @pagination="getCompanies" />
         </el-card>
       </el-col>
       <el-col class="aside-wrapper" :span="7">
@@ -48,19 +45,20 @@ export default {
 
   data() {
     return {
-      companies: [],
+      companies: null,
       pageInfo: {
         currentPage: 1,
         pageSize: 10,
         total: 0
       },
       filterParams: {},
-      isLoading: false
+      isLoading: true
     }
   },
 
   methods: {
     async getCompanies() {
+      this.isLoading = true
       const res = await this.$axios.get('/companies', {
         params: {
           currentPage: this.pageInfo.currentPage,
@@ -68,8 +66,11 @@ export default {
           ...this.filterParams
         }
       })
-      this.pageInfo.total = res.data.pagination.total
-      this.companies = res.data.companies
+      setTimeout(() => {
+        this.pageInfo.total = res.data.pagination.total
+        this.companies = res.data.companies
+        this.isLoading = false
+      }, 600)
     },
 
     handleFilter(params) {
@@ -77,14 +78,6 @@ export default {
       this.filterParams = omitBy(params, val => val === '')
       console.log(this.filterParams)
       this.getCompanies()
-    },
-
-    handlePaginate() {
-      this.isLoading = true
-      setTimeout(async () => {
-        await this.getCompanies()
-        this.isLoading = false
-      }, 1000)
     }
   },
 
@@ -102,8 +95,8 @@ export default {
       .main-title {
         margin-bottom: $gap;
       }
-      .company-search {
-        margin-bottom: $gap;
+      .result-wrapper {
+        min-height: 400px;
       }
     }
     .aside-wrapper {

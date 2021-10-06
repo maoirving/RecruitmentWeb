@@ -69,9 +69,9 @@ const routes = [
         component: () => import('@/views/account/application')
       },
       {
-        path: '/account/message',
-        name: 'message',
-        component: () => import('@/views/account/message')
+        path: '/account/interview',
+        name: 'interview',
+        component: () => import('@/views/account/interview')
       },
       {
         path: '/account/favorite',
@@ -114,11 +114,6 @@ const routes = [
         path: '/management/interview',
         name: 'InterviewManagement',
         component: () => import('@/views/management/interview')
-      },
-      {
-        path: '/management/message',
-        name: 'MessageManagement',
-        component: () => import('@/views/management/message')
       },
       {
         path: '/management/user',

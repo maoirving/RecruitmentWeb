@@ -33,8 +33,8 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      outerRow: null,
-      tableThis: null,
+      outerData: null,
+      outerThis: null,
       jobOptions: [],
       userOptions: [],
       resumeOptions: [],
@@ -50,7 +50,7 @@ export default {
   watch: {
     dialogVisible(val) {
       if (val) {
-        const row = cloneDeep(this.outerRow)
+        const row = cloneDeep(this.outerData)
         if (row) {
           this.applicationForm = pick(row, ['id', 'userId', 'jobId', 'resumeId'])
         }
@@ -60,10 +60,10 @@ export default {
 
   computed: {
     isEdit() {
-      return this.outerRow && this.outerRow.id !== ''
+      return this.outerData && this.outerData.id !== ''
     },
     disabled() {
-      return this.outerRow && this.outerRow.status
+      return this.outerData && this.outerData.status
     },
     dialogTitle() {
       return this.isEdit ? (this.disabled ? '查看申请' : '编辑申请') : '新增申请'
@@ -133,7 +133,7 @@ export default {
             const isSuccessful = await this.saveApplication()
             if (isSuccessful) {
               this.$message.success('保存成功')
-              this.tableThis.reload()
+              this.outerThis.reload()
               this.handleClose()
             } else {
               this.$message.error('保存失败，请重试')
@@ -158,7 +158,7 @@ export default {
 
   async mounted() {
     this.jobOptions = await getJobOptions()
-    this.userOptions = await getUserOptions()
+    this.userOptions = await getUserOptions('worker')
     this.resumeOptions = await getResumeOptions()
   }
 }

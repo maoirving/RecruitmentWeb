@@ -9,6 +9,13 @@ export function setUserId(id) {
   return Cookies.set('userId', id)
 }
 
+export function getUsername() {
+  return Cookies.get('username')
+}
+export function setUsername(username) {
+  return Cookies.set('username', username)
+}
+
 export function getToken() {
   return Cookies.get(TokenKey)
 }

@@ -27,13 +27,13 @@
       <el-row type="flex" align="middle" :gutter="10">
         <el-col :span="4">
           <base-aspect data-ratio="1:1" is-circle with-shadow>
-            <div class="image-holder" @click.stop="toCompanyDetail">
+            <div class="image-holder">
               <img :src="job.Company.imageUrl" />
             </div>
           </base-aspect>
         </el-col>
         <el-col class="flex items-center" :span="application ? 14 : 20">
-          <div class="truncate text-holder" @click.stop="toCompanyDetail">
+          <div class="truncate text-holder">
             <span
               class="truncate text-gray-600 footer-text main-text"
               :class="{ 'max-w-full': isSimpleType }"

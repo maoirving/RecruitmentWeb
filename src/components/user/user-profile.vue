@@ -88,8 +88,8 @@ export default {
     },
     showDialog() {
       this.$refs.editDialogRef.dialogVisible = true
-      this.$refs.editDialogRef.tableThis = this
-      this.$refs.editDialogRef.outerRow = this.profileForm
+      this.$refs.editDialogRef.outerThis = this
+      this.$refs.editDialogRef.outerData = this.profileForm
     },
     reload() {
       this.getUser()

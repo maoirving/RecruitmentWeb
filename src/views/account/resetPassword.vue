@@ -9,6 +9,7 @@
 
 <script>
 import BaseForm from '@/components/base/base-form'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -26,7 +27,27 @@ export default {
         {
           label: '旧密码',
           prop: 'oldPassword',
-          rule: 'required',
+          rule: [
+            {
+              required: true,
+              trigger: 'blur',
+              validator: async (rule, value, callback) => {
+                if (value) {
+                  const res = await this.$axios.post('/users/check', {
+                    userId: this.userId,
+                    password: value
+                  })
+                  if (res.data.success) {
+                    callback()
+                  } else {
+                    callback('密码错误，请重试')
+                  }
+                } else {
+                  callback('必填')
+                }
+              }
+            }
+          ],
           control: {
             attrs: {
               type: 'password',
@@ -79,13 +100,26 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState('user', {
+      userId: state => state.id
+    })
+  },
+
   methods: {
     onSubmit() {
       this.$refs.passwordFormRef.$refs['form'].validate(valid => {
         if (!valid) return
         this.$confirm('确认修改密码？', { type: 'warning' })
-          .then(() => {
+          .then(async () => {
+            const res = await this.$axios.put(`/users/${this.userId}`, {
+              password: this.passwordForm.newPassword
+            })
+            if (!res.data.success) {
+              return this.$message.error('修改失败，请重试！')
+            }
             this.$message.success('密码修改成功！')
+            this.$refs.passwordFormRef.$refs['form'].resetFields()
           })
           .catch(() => {})
       })

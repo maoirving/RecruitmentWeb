@@ -92,20 +92,13 @@ export default {
         },
         {
           id: '5',
-          title: '消息管理',
-          name: 'MessageManagement',
-          url: '/management/message',
-          iconClass: 'el-icon-chat-dot-round'
-        },
-        {
-          id: '6',
           title: '用户管理',
           name: 'UserManagement',
           url: '/management/user',
           iconClass: 'el-icon-user'
         },
         {
-          id: '7',
+          id: '6',
           title: '我的信息',
           name: 'ProfileManagement',
           url: '/management/profile',

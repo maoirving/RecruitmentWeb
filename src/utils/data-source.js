@@ -1,5 +1,9 @@
 import axios from 'axios'
 
+export function getMatchedLabel(options, value) {
+  const matchedOption = options.find(option => option.value === value)
+  return matchedOption && matchedOption.label
+}
 // common
 export const whetherOptions = [
   {
@@ -9,6 +13,20 @@ export const whetherOptions = [
   {
     label: '否',
     value: false
+  }
+]
+export const colorTypeOptions = [
+  {
+    label: 'warning',
+    value: 0
+  },
+  {
+    label: 'success',
+    value: 1
+  },
+  {
+    label: 'danger',
+    value: -1
   }
 ]
 
@@ -172,8 +190,14 @@ export const scaleOptions = [
 
 // user
 
-export const getUserOptions = async () => {
-  const { data } = await axios.get('/users/options')
+export const getUserOptions = async type => {
+  const params = {}
+  if (type) {
+    params.type = type
+  }
+  const { data } = await axios.get('/users/options', {
+    params: params
+  })
   return data && data.options
 }
 
@@ -255,3 +279,19 @@ export const getResumeOptions = async id => {
   })
   return data && data.options
 }
+
+// interview
+export const agreedStatusOptions = [
+  {
+    label: '未处理',
+    value: 0
+  },
+  {
+    label: '同意',
+    value: 1
+  },
+  {
+    label: '拒绝',
+    value: -1
+  }
+]

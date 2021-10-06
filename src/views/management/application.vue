@@ -18,8 +18,10 @@
 import BaseTable from '@/components/base/base-table'
 import { optionFormatter } from '@/utils/formatter'
 import {
+  getMatchedLabel,
   jobTypeOptions,
   educationBackgroundOptions,
+  colorTypeOptions,
   handledStatusOptions
 } from '@/utils/data-source'
 import moment from 'moment'
@@ -88,18 +90,10 @@ export default {
             control: 'BaseTag',
             attrs: {
               type({ row }) {
-                return row.handledStatus === 1
-                  ? 'success'
-                  : row.handledStatus === 0
-                  ? 'warning'
-                  : 'danger'
+                return getMatchedLabel(colorTypeOptions, row.handledStatus)
               },
               text({ row }) {
-                return row.handledStatus === 1
-                  ? '通过初筛'
-                  : row.handledStatus === 0
-                  ? '未处理'
-                  : '不合适'
+                return getMatchedLabel(handledStatusOptions, row.handledStatus)
               }
             }
           }
@@ -121,9 +115,8 @@ export default {
           type: 'warning',
           events: {
             click({ row }) {
-              console.log(row)
-              vm.$refs.applicationHandleDialogRef.outerRow = row
-              vm.$refs.applicationHandleDialogRef.tableThis = this
+              vm.$refs.applicationHandleDialogRef.outerData = row
+              vm.$refs.applicationHandleDialogRef.outerThis = this
               vm.$refs.applicationHandleDialogRef.dialogVisible = true
             }
           }
@@ -151,7 +144,7 @@ export default {
           isSelect: true,
           attrs: {
             clearable: true,
-            placeholder: '学历要求'
+            placeholder: '学历'
           },
           options: educationBackgroundOptions.filter(item => item.value !== '不限')
         },
@@ -211,13 +204,13 @@ export default {
     },
     handleAdd(vm) {
       this.$refs.editDialogRef.dialogVisible = true
-      this.$refs.editDialogRef.tableThis = vm
-      this.$refs.editDialogRef.outerRow = null
+      this.$refs.editDialogRef.outerThis = vm
+      this.$refs.editDialogRef.outerData = null
     },
     handleEdit(vm, row) {
       this.$refs.editDialogRef.dialogVisible = true
-      this.$refs.editDialogRef.tableThis = vm
-      this.$refs.editDialogRef.outerRow = row
+      this.$refs.editDialogRef.outerThis = vm
+      this.$refs.editDialogRef.outerData = row
     },
     async handleRead(applicationId) {
       const res = await this.$axios.put(`/applications/${applicationId}`, {

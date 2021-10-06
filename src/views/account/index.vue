@@ -65,20 +65,13 @@ export default {
         },
         {
           id: '4',
-          title: '面试管理',
+          title: '面试邀请',
           name: 'interview',
           url: '/account/interview',
           iconClass: 'el-icon-notebook-1'
         },
         {
           id: '5',
-          title: '消息管理',
-          name: 'message',
-          url: '/account/message',
-          iconClass: 'el-icon-chat-dot-round'
-        },
-        {
-          id: '6',
           title: '修改密码',
           name: 'resetPassword',
           url: '/account/resetPassword',

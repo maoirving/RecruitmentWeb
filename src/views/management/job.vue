@@ -164,13 +164,13 @@ export default {
 
     handleAdd(vm) {
       this.$refs.editDialogRef.dialogVisible = true
-      this.$refs.editDialogRef.tableThis = vm
-      this.$refs.editDialogRef.outerRow = null
+      this.$refs.editDialogRef.outerThis = vm
+      this.$refs.editDialogRef.outerData = null
     },
     handleEdit(vm, row) {
       this.$refs.editDialogRef.dialogVisible = true
-      this.$refs.editDialogRef.tableThis = vm
-      this.$refs.editDialogRef.outerRow = row
+      this.$refs.editDialogRef.outerThis = vm
+      this.$refs.editDialogRef.outerData = row
     }
   }
 }

@@ -60,8 +60,8 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      outerRow: null,
-      tableThis: null,
+      outerData: null,
+      outerThis: null,
       companyOptions: [],
       jobForm: {
         name: '',
@@ -83,7 +83,7 @@ export default {
   watch: {
     dialogVisible(val) {
       if (val) {
-        const row = cloneDeep(this.outerRow)
+        const row = cloneDeep(this.outerData)
         if (row) {
           this.jobForm = pick(row, [
             'id',
@@ -118,10 +118,10 @@ export default {
 
   computed: {
     isEdit() {
-      return this.outerRow && this.outerRow.id !== ''
+      return this.outerData && this.outerData.id !== ''
     },
     disabled() {
-      return this.outerRow && this.outerRow.status
+      return this.outerData && this.outerData.status
     },
     dialogTitle() {
       return this.isEdit ? (this.disabled ? '查看职位' : '编辑职位') : '新增职位'
@@ -263,7 +263,7 @@ export default {
             const isSuccessful = await this.saveJob({ status: isPost })
             if (isSuccessful) {
               this.$message.success(`${tipText}成功`)
-              this.tableThis.reload()
+              this.outerThis.reload()
               this.handleClose()
             } else {
               this.$message.error(`${tipText}失败，请重试`)

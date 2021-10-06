@@ -1,4 +1,12 @@
-import { getUserId, getToken, setUserId, setToken, removeToken } from '@/utils/auth'
+import {
+  getUserId,
+  getUsername,
+  getToken,
+  setUserId,
+  setUsername,
+  setToken,
+  removeToken
+} from '@/utils/auth'
 import { resetRouter } from '@/router'
 import axios from 'axios'
 
@@ -6,9 +14,9 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     id: getUserId(),
-    name: '',
+    username: getUsername(),
     avatar: '',
-    role: ''
+    role: 'admin'
   }
 }
 
@@ -24,8 +32,8 @@ const mutations = {
   SET_ID: (state, id) => {
     state.id = id
   },
-  SET_NAME: (state, name) => {
-    state.name = name
+  SET_NAME: (state, username) => {
+    state.username = username
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
@@ -44,11 +52,11 @@ const actions = {
         .post('/users/check', { username: username.trim(), password: password })
         .then(response => {
           const { data } = response
-          console.log(response)
           commit('SET_TOKEN', data.user.token)
           commit('SET_ID', data.user.id)
           commit('SET_NAME', data.user.username)
           setUserId(data.user.id)
+          setUsername(data.user.username)
           setToken(data.user.token, 200000)
           resolve()
         })

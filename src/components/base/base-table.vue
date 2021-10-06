@@ -136,10 +136,6 @@ export default {
           text: '面试',
           key: 'interviews'
         },
-        MessageManagement: {
-          text: '消息',
-          key: 'messages'
-        },
         UserManagement: {
           text: '用户',
           key: 'users'

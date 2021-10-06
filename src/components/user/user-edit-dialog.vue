@@ -41,8 +41,8 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      outerRow: null,
-      tableThis: null,
+      outerData: null,
+      outerThis: null,
       jobOptions: [],
       userOptions: [],
       userForm: {
@@ -62,7 +62,7 @@ export default {
   watch: {
     dialogVisible(val) {
       if (val) {
-        const row = cloneDeep(this.outerRow)
+        const row = cloneDeep(this.outerData)
         if (row) {
           this.userForm = pick(row, [
             'id',
@@ -82,10 +82,10 @@ export default {
 
   computed: {
     isEdit() {
-      return this.outerRow && this.outerRow.id !== ''
+      return this.outerData && this.outerData.id !== ''
     },
     disabled() {
-      return this.outerRow && this.outerRow.status
+      return this.outerData && this.outerData.status
     },
     dialogTitle() {
       if (this.isProfileType) {
@@ -204,7 +204,7 @@ export default {
             const isSuccessful = await this.saveUser()
             if (isSuccessful) {
               this.$message.success(`${operation}成功`)
-              this.tableThis.reload()
+              this.outerThis.reload()
               this.handleClose()
             } else {
               this.$message.error(`${operation}失败，请重试`)

@@ -14,7 +14,13 @@
     </div>
     <div slot="footer" class="text-right">
       <el-button size="small" @click="handleClose">取消</el-button>
-      <el-button type="primary" size="small" @click="handleSave" :disabled="disabled">
+      <el-button
+        v-if="!hideSaveBtn"
+        type="primary"
+        size="small"
+        @click="handleSave"
+        :disabled="disabled"
+      >
         {{ saveBtnText }}
       </el-button>
       <slot name="extra-button" />
@@ -42,6 +48,10 @@ export default {
     saveBtnText: {
       type: String,
       default: '保存'
+    },
+    hideSaveBtn: {
+      type: Boolean,
+      default: false
     }
   },
 
