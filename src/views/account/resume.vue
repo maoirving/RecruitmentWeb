@@ -14,6 +14,8 @@
 <script>
 import ResumeTable from '@/components/account/resume/resume-table'
 import FileList from '@/components/account/resume/file-list'
+import { pick, omit, omitBy, cloneDeep } from 'lodash'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -94,7 +96,26 @@ export default {
     }
   },
 
-  methods: {}
+  computed: {
+    ...mapState('user', {
+      userId: state => state.id
+    })
+  },
+
+  methods: {
+    async getResume() {
+      const res = await this.$axios.get('/resumes', {
+        params: {
+          userId: this.userId
+        }
+      })
+      const resume = omit(res.data.resumeFiles[0], ['User'])
+    }
+  },
+
+  mounted() {
+    this.getResume()
+  }
 }
 </script>
 

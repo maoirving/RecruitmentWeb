@@ -78,7 +78,7 @@ export default {
           icon: 'el-icon-user',
           label: '姓名',
           type: 'text',
-          prop: 'trueName'
+          prop: ''
         },
         {
           icon: 'el-icon-guide',
