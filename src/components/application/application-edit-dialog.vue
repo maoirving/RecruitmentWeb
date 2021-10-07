@@ -8,7 +8,7 @@
     :disabled="disabled"
   >
     <base-form
-      slot="dialog-form"
+      slot="dialog-content"
       label-width="94px"
       ref="applicationFormRef"
       :form-items="formItems"

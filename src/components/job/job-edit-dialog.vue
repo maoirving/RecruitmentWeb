@@ -7,14 +7,18 @@
     @save="handleSave(false)"
   >
     <base-form
-      slot="dialog-form"
+      slot="dialog-content"
       ref="jobFormRef"
       :form-items="formItems"
       :form-data="jobForm"
       :disabled="disabled"
     >
       <div slot="salary">
-        <el-input-number v-model="jobForm.minSalary" :step="1" :min="1"></el-input-number>
+        <el-input-number
+          v-model="jobForm.minSalary"
+          :step="1"
+          :min="1"
+        ></el-input-number>
         <span class="horizontal-line"> - </span>
         <el-input-number
           v-model="jobForm.maxSalary"
@@ -48,8 +52,7 @@ import {
   educationBackgroundOptions,
   workExperienceOptions
 } from '@/utils/data-source'
-import { parseToText } from '@/utils/html-text'
-import { parseToHtml } from '@/utils/html-text'
+import { parseToText, parseToHtml } from '@/utils/parsers'
 
 export default {
   components: {
@@ -85,19 +88,22 @@ export default {
       if (val) {
         const row = cloneDeep(this.outerData)
         if (row) {
-          this.jobForm = pick(row, [
-            'id',
-            'name',
-            'type',
-            'recruitingNnumbers',
-            'workLocation',
-            'workExperience',
-            'educationBackground',
-            'description',
-            'skill',
-            'companyId',
-            'status'
-          ])
+          this.jobForm = Object.assign(
+            this.jobForm,
+            pick(row, [
+              'id',
+              'name',
+              'type',
+              'recruitingNnumbers',
+              'workLocation',
+              'workExperience',
+              'educationBackground',
+              'description',
+              'skill',
+              'companyId',
+              'status'
+            ])
+          )
           this.jobForm.description = parseToText(row.description)
           this.jobForm.skill = parseToText(row.skill)
           let salaryArr = row.salary.substr(0, row.salary.length - 1).split('-')
@@ -124,7 +130,11 @@ export default {
       return this.outerData && this.outerData.status
     },
     dialogTitle() {
-      return this.isEdit ? (this.disabled ? '查看职位' : '编辑职位') : '新增职位'
+      return this.isEdit
+        ? this.disabled
+          ? '查看职位'
+          : '编辑职位'
+        : '新增职位'
     },
 
     formItems() {

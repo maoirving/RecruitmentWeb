@@ -10,7 +10,7 @@
     destroy-on-close
   >
     <div class="dialog-content">
-      <slot name="dialog-form" />
+      <slot name="dialog-content" />
     </div>
     <div slot="footer" class="text-right">
       <el-button size="small" @click="handleClose">取消</el-button>

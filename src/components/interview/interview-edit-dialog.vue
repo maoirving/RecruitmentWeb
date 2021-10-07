@@ -7,14 +7,18 @@
     @close="handleClose"
     @save="handleSave"
   >
-    <template slot="dialog-form">
+    <template slot="dialog-content">
       <base-form
         ref="interviewFormRef"
         :form-items="formItems"
         :form-data="interviewForm"
         :disabled="isInWorker"
       />
-      <interview-form ref="interviewRef" :interview="interviewForm" :disabled="isInWorker" />
+      <interview-form
+        ref="interviewRef"
+        :interview="interviewForm"
+        :disabled="isInWorker"
+      />
     </template>
     <template v-if="isInWorker" slot="extra-button">
       <el-button type="danger" size="small" @click="handleAccept(false)">
@@ -78,7 +82,10 @@ export default {
       if (val) {
         const row = cloneDeep(this.outerData)
         if (row) {
-          this.interviewForm = pick(row, ['id', 'applicationId', 'recruiterId', 'address', 'tip'])
+          this.interviewForm = Object.assign(
+            this.interviewForm,
+            pick(row, ['id', 'applicationId', 'recruiterId', 'address', 'tip'])
+          )
           this.interviewForm.interviewDate = moment(row.interviewAt)
             .utcOffset(0)
             .format('YYYY-MM-DD')
@@ -102,7 +109,11 @@ export default {
       if (this.isInWorker) {
         text = '面试邀请'
       } else {
-        text = this.isEdit ? '编辑面试' : this.withApplication ? '新增面试' : '邀请面试'
+        text = this.isEdit
+          ? '编辑面试'
+          : this.withApplication
+          ? '新增面试'
+          : '邀请面试'
       }
       return text
     },
@@ -156,17 +167,19 @@ export default {
     },
     handleSave() {
       let isValid = false
-      this.$refs.interviewRef.$refs.interviewFormRef.$refs['form'].validate(valid => {
-        if (this.withApplication) {
-          this.$refs.interviewFormRef.$refs['form'].validate(valid2 => {
-            if (!valid || !valid2) return
+      this.$refs.interviewRef.$refs.interviewFormRef.$refs['form'].validate(
+        valid => {
+          if (this.withApplication) {
+            this.$refs.interviewFormRef.$refs['form'].validate(valid2 => {
+              if (!valid || !valid2) return
+              isValid = true
+            })
+          } else {
+            if (!valid) return
             isValid = true
-          })
-        } else {
-          if (!valid) return
-          isValid = true
+          }
         }
-      })
+      )
       if (isValid) {
         this.$confirm('确认发送该面试邀请？', { type: 'warning' })
           .then(async () => {
@@ -184,7 +197,11 @@ export default {
     },
     async saveInterview() {
       const interviewId = this.interviewForm.id
-      const interview = omit(this.interviewForm, ['id', 'interviewDate', 'interviewTime'])
+      const interview = omit(this.interviewForm, [
+        'id',
+        'interviewDate',
+        'interviewTime'
+      ])
       interview.interviewAt = `${moment(this.interviewForm.interviewDate)
         .utcOffset(0)
         .format('YYYY-MM-DD')} ${this.interviewForm.interviewTime}`
@@ -194,7 +211,10 @@ export default {
         const res = await this.$axios.post(`/interviews`, params)
         return res.data.success
       } else {
-        const editRes = await this.$axios.put(`/interviews/${interviewId}`, params)
+        const editRes = await this.$axios.put(
+          `/interviews/${interviewId}`,
+          params
+        )
         return editRes.data.success
       }
     },

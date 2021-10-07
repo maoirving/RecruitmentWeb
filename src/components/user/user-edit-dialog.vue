@@ -8,7 +8,7 @@
     :disabled="disabled"
   >
     <base-form
-      slot="dialog-form"
+      slot="dialog-content"
       label-width="94px"
       ref="userFormRef"
       :form-items="formItems"
@@ -64,17 +64,20 @@ export default {
       if (val) {
         const row = cloneDeep(this.outerData)
         if (row) {
-          this.userForm = pick(row, [
-            'id',
-            'imageUrl',
-            'username',
-            'realName',
-            'type',
-            'sex',
-            'birthday',
-            'phoneNumber',
-            'email'
-          ])
+          this.userForm = Object.assign(
+            this.userForm,
+            pick(row, [
+              'id',
+              'imageUrl',
+              'username',
+              'realName',
+              'type',
+              'sex',
+              'birthday',
+              'phoneNumber',
+              'email'
+            ])
+          )
         }
       }
     }
@@ -91,7 +94,11 @@ export default {
       if (this.isProfileType) {
         return '修改个人信息'
       }
-      return this.isEdit ? (this.disabled ? '查看用户' : '编辑用户') : '新增用户'
+      return this.isEdit
+        ? this.disabled
+          ? '查看用户'
+          : '编辑用户'
+        : '新增用户'
     },
 
     formItems() {

@@ -28,57 +28,59 @@
             <label>{{ item.label }}：</label>{{ resume[item.prop] }}
           </p>
         </div>
-        <el-avatar v-if="description.type === 'image'" :size="100" :src="resume.imageUrl" />
-        <ol v-if="description.type === 'item'" class="experience-list">
-          <li
-            class="experience-list-item"
-            v-for="(work, index) in resume[description.prop]"
-            :key="index"
-          >
-            <p v-for="(item, i) in description.children" :key="i">
-              <strong>{{ item.label }}：</strong>{{ work[item.prop] }}
-            </p>
+        <el-avatar
+          v-if="description.type === 'image'"
+          :size="100"
+          :src="resume.imageUrl"
+        />
+        <ul v-if="description.type === 'item'" class="experience-list">
+          <li class="experience-list-item">
+            <div
+              class="flex"
+              v-for="(item, i) in description.children"
+              :key="i"
+            >
+              <strong>{{ item.label }}：</strong>
+              <p v-if="item.isPeriod">{{ resume[item.prop] | parsePeriod }}</p>
+              <p v-else v-html="resume[item.prop]"></p>
+            </div>
           </li>
-        </ol>
+        </ul>
         <ul v-if="description.type === 'list'" class="certificate-list">
           <li
             class="certificate-list-item"
-            v-for="(item, index) in resume[description.prop]"
+            v-for="(certificate, index) in resume.certificates"
             :key="index"
           >
-            {{ item[description.children[0].prop] }}
+            {{ certificate }}
           </li>
         </ul>
       </el-descriptions-item>
     </el-descriptions>
-    <resume-dialog :visible.sync="dialogVisible" @close-dialog="dialogVisible = false" />
+    <resume-edit-dialog ref="editDialogRef" />
   </div>
 </template>
 
 <script>
-import ResumeDialog from '@/components/account/resume/resume-dialog'
+import ResumeEditDialog from '@/components/account/resume/resume-edit-dialog'
+import { omit } from 'lodash'
+import { strToArr, parseToPeriodRange } from '@/utils/parsers'
+import { mapState } from 'vuex'
 
 export default {
   components: {
-    ResumeDialog
-  },
-
-  props: {
-    resume: {
-      type: Object,
-      default: () => {}
-    }
+    ResumeEditDialog
   },
 
   data() {
     return {
-      dialogVisible: false,
+      resume: {},
       descriptions: [
         {
           icon: 'el-icon-user',
           label: '姓名',
           type: 'text',
-          prop: ''
+          prop: 'realName'
         },
         {
           icon: 'el-icon-guide',
@@ -97,7 +99,7 @@ export default {
           icon: 'el-icon-school',
           label: '学历',
           type: 'text',
-          prop: 'eduction'
+          prop: 'educationBackground'
         },
         {
           icon: 'el-icon-mobile-phone',
@@ -115,7 +117,7 @@ export default {
           icon: 'el-icon-office-building',
           label: '当前住址',
           type: 'text',
-          prop: 'currentAdress'
+          prop: 'currentAddress'
         },
         {
           icon: 'el-icon-suitcase-1',
@@ -124,15 +126,15 @@ export default {
           children: [
             {
               label: '期望职位',
-              prop: 'anticipant_job'
+              prop: 'anticipantJob'
             },
             {
               label: '期望城市',
-              prop: 'anticipant_city'
+              prop: 'anticipantCity'
             },
             {
               label: '期望工资',
-              prop: 'anticipant_salary'
+              prop: 'anticipantSalary'
             }
           ]
         },
@@ -144,68 +146,43 @@ export default {
         },
         {
           icon: 'el-icon-notebook-2',
-          label: '工作经历',
-          type: 'item',
-          prop: 'works',
-          span: 3,
-          children: [
-            {
-              label: '公司名称',
-              prop: 'company_name'
-            },
-            {
-              label: '在职时间',
-              prop: 'period'
-            },
-            {
-              label: '工作内容',
-              prop: 'content'
-            }
-          ]
-        },
-        {
-          icon: 'el-icon-notebook-2',
-          label: '项目经历',
-          type: 'item',
-          prop: 'projects',
-          span: 3,
-          children: [
-            {
-              label: '项目名称',
-              prop: 'name'
-            },
-            {
-              label: '项目时间',
-              prop: 'period'
-            },
-            {
-              label: '项目描述',
-              prop: 'description'
-            }
-          ]
-        },
-        {
-          icon: 'el-icon-notebook-2',
           label: '教育经历',
           type: 'item',
-          prop: 'schools',
           span: 3,
           children: [
             {
               label: '学校名称',
-              prop: 'name'
+              prop: 'school'
             },
             {
               label: '就读时间',
-              prop: 'period'
+              prop: 'schoolPeriod',
+              isPeriod: true
             },
             {
               label: '专业',
-              prop: 'specialized_subject'
+              prop: 'specializedSubject'
+            }
+          ]
+        },
+        {
+          icon: 'el-icon-notebook-2',
+          label: '工作经历',
+          type: 'item',
+          span: 3,
+          children: [
+            {
+              label: '公司名称',
+              prop: 'workCompany'
             },
             {
-              label: '在校经历',
-              prop: 'school_experience'
+              label: '在职时间',
+              prop: 'workPeriod',
+              isPeriod: true
+            },
+            {
+              label: '工作内容',
+              prop: 'workContent'
             }
           ]
         },
@@ -214,28 +191,54 @@ export default {
           label: '资格证书',
           type: 'list',
           prop: 'certificates',
-          span: 3,
-          children: [
-            {
-              prop: 'name'
-            }
-          ]
+          span: 3
         }
       ]
     }
   },
 
+  computed: {
+    ...mapState('user', {
+      userId: state => state.id
+    })
+  },
+
+  filters: {
+    parsePeriod(arr) {
+      return arr && arr.length ? parseToPeriodRange(arr) : ''
+    }
+  },
+
   methods: {
     showDialog() {
-      this.dialogVisible = true
+      this.$refs.editDialogRef.dialogVisible = true
+      this.$refs.editDialogRef.outerThis = this
+      this.$refs.editDialogRef.outerData = this.resume
+    },
+    async getResume() {
+      const res = await this.$axios.get('/resumes', {
+        params: {
+          userId: this.userId
+        }
+      })
+      const resume = res.data.resumes[0]
+      const newResume = Object.assign(omit(resume, ['User']), resume.User)
+      newResume.age =
+        new Date().getFullYear() -
+        new Date(newResume.birthday).getFullYear() +
+        '岁'
+      newResume.certificates = strToArr(newResume.certificates)
+      newResume.schoolPeriod = strToArr(newResume.schoolPeriod)
+      newResume.workPeriod = strToArr(newResume.workPeriod)
+      this.resume = newResume
+    },
+    reload() {
+      this.getResume()
     }
   },
 
   mounted() {
-    const arr = ['hello', 'mao']
-    const str = 'hello;mao'
-    console.log(str.split(';'))
-    console.log(arr.join(';'))
+    this.getResume()
   }
 }
 </script>

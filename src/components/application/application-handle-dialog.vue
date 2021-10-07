@@ -9,7 +9,7 @@
       @save="handleSave"
     >
       <base-form
-        slot="dialog-form"
+        slot="dialog-content"
         ref="handleFormRef"
         :form-items="formItems"
         :form-data="applicationForm"

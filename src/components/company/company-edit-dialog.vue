@@ -7,7 +7,7 @@
     :disabled="disabled"
   >
     <base-form
-      slot="dialog-form"
+      slot="dialog-content"
       label-width="94px"
       ref="companyFormRef"
       :form-items="formItems"
@@ -21,9 +21,12 @@
 import BaseDialog from '@/components/base/base-dialog'
 import BaseForm from '@/components/base/base-form'
 import { pick, omit, omitBy, cloneDeep } from 'lodash'
-import { companyTypeOptions, financingStageOptions, scaleOptions } from '@/utils/data-source'
-import { parseToText } from '@/utils/html-text'
-import { parseToHtml } from '@/utils/html-text'
+import {
+  companyTypeOptions,
+  financingStageOptions,
+  scaleOptions
+} from '@/utils/data-source'
+import { parseToText, parseToHtml } from '@/utils/parsers'
 
 export default {
   components: {
@@ -83,7 +86,11 @@ export default {
       return this.outerData && this.outerData.status
     },
     dialogTitle() {
-      return this.isEdit ? (this.disabled ? '查看公司' : '编辑公司') : '新增公司'
+      return this.isEdit
+        ? this.disabled
+          ? '查看公司'
+          : '编辑公司'
+        : '新增公司'
     },
 
     formItems() {
