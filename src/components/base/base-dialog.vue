@@ -2,7 +2,7 @@
   <el-dialog
     class="awesome-scrollbar"
     :width="dialogWidth"
-    top="5vh"
+    :top="dialogTop"
     :center="true"
     v-bind="$attrs"
     v-on="$listeners"
@@ -37,6 +37,10 @@ export default {
   },
 
   props: {
+    dialogTop: {
+      type: String,
+      default: '5vh'
+    },
     dialogWidth: {
       type: String,
       default: '50%'

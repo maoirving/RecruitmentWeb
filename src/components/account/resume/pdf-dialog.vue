@@ -27,8 +27,6 @@ export default {
     Pdf
   },
 
-  props: {},
-
   data() {
     return {
       dialogVisible: false,

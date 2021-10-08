@@ -1,27 +1,41 @@
 <template>
-  <el-dialog
+  <base-dialog
+    dialog-top="20vh"
+    dialog-width="35%"
     title="选择需要投递的简历"
-    width="30%"
-    :center="true"
-    v-bind="$attrs"
-    :before-close="handleClose"
+    :visible.sync="dialogVisible"
+    save-btn-text="立即投递"
+    @close="handleClose"
+    @save="applyJob"
   >
-    <div class="dialog-content">
-      <ul>
-        <li v-for="(resume, index) in resumes" :key="index">{{ index + 1 }}.{{ resume.name }}</li>
-      </ul>
-    </div>
-    <div slot="footer" class="text-right">
-      <el-button size="small" @click="handleClose">取消</el-button>
-      <el-button type="primary" size="small" @click="applyJob">投递简历</el-button>
-    </div>
-  </el-dialog>
+    <base-form
+      slot="dialog-content"
+      ref="resumeFileFormRef"
+      :form-items="formItems"
+      :form-data="resumeFileForm"
+    />
+    <!-- <ul slot="dialog-content">
+      <li v-for="(resume, index) in resumeFiles" :key="index">
+        <i class="el-icon-document"></i>
+        <span> {{ index + 1 }}. </span>
+        <span> {{ resume.name }} </span>
+      </li>
+    </ul> -->
+  </base-dialog>
 </template>
 
 <script>
+import BaseDialog from '@/components/base/base-dialog'
+import BaseForm from '@/components/base/base-form'
+import { getResumeOptions } from '@/utils/data-source'
 import { mapState } from 'vuex'
 
 export default {
+  components: {
+    BaseDialog,
+    BaseForm
+  },
+
   props: {
     jobId: {
       type: String,
@@ -31,49 +45,72 @@ export default {
 
   data() {
     return {
-      resumes: []
+      dialogVisible: false,
+      resumeFiles: [],
+      resumeOptions: [],
+      resumeFileForm: {
+        resumeId: ''
+      }
+    }
+  },
+
+  watch: {
+    dialogVisible(val) {
+      if (val) {
+      }
     }
   },
 
   computed: {
     ...mapState('user', {
       userId: state => state.id
-    })
+    }),
+    formItems() {
+      return [
+        {
+          label: '我的简历',
+          prop: 'resumeId',
+          rule: 'required',
+          control: {
+            component: 'base-select',
+            attrs: {
+              clearable: true,
+              options: this.resumeOptions
+            }
+          }
+        }
+      ]
+    }
   },
 
   methods: {
     handleClose() {
-      this.$emit('close-dialog')
-    },
-
-    getResumes() {
-      const resume = {
-        name: 'web前端开发工程师'
-      }
-      for (let i = 0; i < 3; i++) {
-        this.resumes.push(resume)
-      }
+      this.dialogVisible = false
     },
 
     async applyJob() {
-      this.$confirm('确认申请该职位并投递简历？', { type: 'warning' }).then(async () => {
-        const response = await this.$axios.post('/applications', {
-          userId: this.userId,
-          jobId: this.jobId,
-          handledStatus: 0
+      this.$refs.resumeFileFormRef.$refs['form'].validate(valid => {
+        if (!valid) return
+        this.$confirm('确认申请该职位并投递简历？', { type: 'warning' }).then(async () => {
+          const response = await this.$axios.post('/applications', {
+            userId: this.userId,
+            jobId: this.jobId,
+            resumeId: this.resumeFileForm.resumeId,
+            handledStatus: 0
+          })
+          if (!response.data.success) {
+            return this.$message.error('申请失败，请重试')
+          }
+          this.$message.success('申请成功')
+          this.handleClose()
         })
-        if (!response.data.success) {
-          return this.$message.error('申请失败，请重试')
-        }
-        this.$message.success('申请成功')
-        this.$emit('close-dialog')
       })
     }
   },
-  created() {
-    this.getResumes()
+
+  async mounted() {
+    this.resumeOptions = await getResumeOptions(this.userId)
+    console.log(this.resumeOptions)
   }
 }
 </script>
-
-<style></style>

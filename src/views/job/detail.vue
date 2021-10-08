@@ -32,13 +32,12 @@
         </aside-wrapper>
       </el-col>
     </el-row>
-    <div class="dialog-wrapper">
-      <job-apply-dialog
-        :job-id="jobId"
-        :visible.sync="dialogVisible"
-        @close-dialog="dialogVisible = false"
-      />
-    </div>
+    <job-apply-dialog
+      ref="applyDialogRef"
+      :job-id="jobId"
+      :visible.sync="dialogVisible"
+      @close-dialog="dialogVisible = false"
+    />
   </app-layout>
 </template>
 
@@ -121,7 +120,8 @@ export default {
       if (count > 0) {
         this.$message.info('您已申请过该职位，请勿重复申请')
       } else {
-        this.dialogVisible = true
+        console.log(this.$refs.applyDialogRef)
+        this.$refs.applyDialogRef.dialogVisible = true
       }
     },
     async getJob() {
