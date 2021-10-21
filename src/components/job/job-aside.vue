@@ -1,5 +1,5 @@
 <template>
-  <aside-wrapper class="aside-container" title="已申请的职位" link="/account/application">
+  <aside-wrapper class="aside-container" title="已申请的职位" :link="link">
     <template slot="aside-content">
       <el-row v-if="isLogined" class="flex-wrap content-list" type="flex" :gutter="20">
         <el-col class="content-list-item" v-for="(application, index) in applications" :key="index">
@@ -34,7 +34,10 @@ export default {
       token: state => state.token
     }),
     isLogined() {
-      return this.token
+      return !!this.token
+    },
+    link() {
+      return this.isLogined ? '/account/application' : undefined
     }
   },
 

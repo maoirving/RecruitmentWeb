@@ -38,6 +38,7 @@ export default {
     return {
       loginForm: {
         username: '',
+        type: 'worker',
         password: ''
       },
 

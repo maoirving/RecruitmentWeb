@@ -112,6 +112,7 @@ export default {
         if (!valid) return
         this.$confirm('确认修改密码？', { type: 'warning' })
           .then(async () => {
+            console.log(22);
             const res = await this.$axios.put(`/users/${this.userId}`, {
               password: this.passwordForm.newPassword
             })

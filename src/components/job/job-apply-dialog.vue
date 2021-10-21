@@ -14,13 +14,6 @@
       :form-items="formItems"
       :form-data="resumeFileForm"
     />
-    <!-- <ul slot="dialog-content">
-      <li v-for="(resume, index) in resumeFiles" :key="index">
-        <i class="el-icon-document"></i>
-        <span> {{ index + 1 }}. </span>
-        <span> {{ resume.name }} </span>
-      </li>
-    </ul> -->
   </base-dialog>
 </template>
 
@@ -110,7 +103,6 @@ export default {
 
   async mounted() {
     this.resumeOptions = await getResumeOptions(this.userId)
-    console.log(this.resumeOptions)
   }
 }
 </script>

@@ -18,7 +18,7 @@
       @selection-change="selectionChange"
       v-on="$listeners"
     >
-      <template v-for="(column, i) in columns">
+      <template v-for="(column, i) in visibleColumns">
         <template v-if="!column.slot">
           <el-table-column v-if="!column.component" :key="i" v-bind="columnAttrs(column)" />
           <el-table-column v-else :key="i" v-bind="columnAttrs(column)">
@@ -147,6 +147,9 @@ export default {
   computed: {
     columnWidth() {
       return this.extraActions.length ? '260px' : '180px'
+    },
+    visibleColumns() {
+      return this.columns.filter(item => !!item.hide === false)
     },
     routeText() {
       return this.routeMap[this.$route.name].text

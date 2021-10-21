@@ -3,16 +3,16 @@
     <el-row type="flex" align="middle">
       <el-col v-if="buttons.length" :span="5">
         <el-row type="flex" :gutter="10">
-          <el-col v-for="(item, index) in buttons" :key="index" :span="item.span">
+          <el-col v-for="(item, index) in visibleButtons" :key="index" :span="item.span">
             <el-button v-bind="actionAttrs(item.attrs)" v-on="actionEvents(item)">
               {{ item.label }}
             </el-button>
           </el-col>
         </el-row>
       </el-col>
-      <el-col :span="19" class="ml-auto">
-        <el-row type="flex" justify="end" :gutter="10" class="wrap">
-          <el-col v-for="(item, i) in filterItems" :key="i" :span="item.span">
+      <el-col :span="19">
+        <el-row type="flex" :justify="buttons.length ? 'end' : undefined" :gutter="10" class="wrap">
+          <el-col v-for="(item, i) in visibleFilterItems" :key="i" :span="item.span">
             <el-input
               v-if="!item.isSelect"
               v-model="filterParams[item.key]"
@@ -63,6 +63,15 @@ export default {
   data() {
     return {
       filterParams: this.initParams()
+    }
+  },
+
+  computed: {
+    visibleButtons() {
+      return this.buttons.filter(item => !!item.hide === false)
+    },
+    visibleFilterItems() {
+      return this.filterItems.filter(item => !!item.hide === false)
     }
   },
 

@@ -1,12 +1,13 @@
 <template>
   <el-dialog
-    class="awesome-scrollbar pdf-dialog"
+    class="awesome-scrollbar resume-read-dialog"
     title="查看附件简历"
     width="60%"
     top="2vh"
     :center="true"
     v-bind="$attrs"
     :visible.sync="dialogVisible"
+    append-to-body
     :before-close="handleClose"
   >
     <div class="page-number-holder">共 {{ numPages }} 页</div>
@@ -56,15 +57,15 @@ export default {
 
   methods: {
     handleClose() {
-      this.dialogVisible = false
       this.$emit('close-dialog', this.applicationId)
+      this.dialogVisible = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.pdf-dialog {
+.resume-read-dialog {
   ::v-deep .el-dialog__body {
     padding-left: 20px;
     padding-right: 20px;

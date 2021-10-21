@@ -5,12 +5,14 @@
       :columns="columns"
       :extra-actions="actions"
       :fetch-data="getApplications"
+      :default-actions="defaultActions"
+      :default-buttons="defaultButtons"
       @add="handleAdd"
       @edit="handleEdit"
     />
     <application-edit-dialog ref="editDialogRef" />
     <application-handle-dialog ref="applicationHandleDialogRef" />
-    <pdf-dialog ref="resumeReadRef" @close-dialog="handleRead" />
+    <resume-read-dialog ref="resumeReadRef" @close-dialog="handleRead" />
   </div>
 </template>
 
@@ -26,16 +28,19 @@ import {
 } from '@/utils/data-source'
 import moment from 'moment'
 import ApplicationHandleDialog from '@/components/application/application-handle-dialog'
-import PdfDialog from '@/components/account/resume/pdf-dialog'
+import ResumeReadDialog from '@/components/account/resume/resume-read-dialog'
 import ApplicationEditDialog from '@/components/application/application-edit-dialog'
 
 export default {
   components: {
     BaseTable,
     ApplicationHandleDialog,
-    PdfDialog,
+    ResumeReadDialog,
     ApplicationEditDialog
   },
+
+  inject: ['isAdmin'],
+
   data() {
     const vm = this
     return {
@@ -105,7 +110,7 @@ export default {
           events: {
             click({ row }) {
               vm.$refs.resumeReadRef.applicationId = row.id
-              vm.$refs.resumeReadRef.url = 'http://localhost:3000/uploads/resumes/业务引导卡.pdf'
+              vm.$refs.resumeReadRef.url = row.ResumeFile?.url
               vm.$refs.resumeReadRef.dialogVisible = true
             }
           }
@@ -126,6 +131,12 @@ export default {
   },
 
   computed: {
+    defaultActions() {
+      return this.isAdmin ? ['delete'] : []
+    },
+    defaultButtons() {
+      return this.isAdmin ? ['add', 'deleteMany'] : []
+    },
     filters() {
       return [
         {

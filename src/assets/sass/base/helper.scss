@@ -83,6 +83,10 @@
   white-space: nowrap;
 }
 
+.text-multiline-ellipsis {
+  @include multiline-ellipsis(); /* Multiline ellipsis is not supported by Firefox, Edge & IE. */
+}
+
 // .content-title {
 //   // @extend .font-normal;
 //   padding-left: $gap;
@@ -189,4 +193,12 @@
 }
 .w-1\/2 {
   width: 50% !important;
+}
+
+// display
+.inline-block {
+  display: inline-block;
+}
+.block {
+  display: block;
 }

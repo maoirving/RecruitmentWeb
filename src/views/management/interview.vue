@@ -22,12 +22,16 @@ export default {
     BaseTable,
     InterviewEditDialog
   },
+
+  inject: ['isAdmin'],
+
   data() {
     return {
       columns: [
         {
           label: '公司名称',
-          prop: 'companyName'
+          prop: 'companyName',
+          hide: !this.isAdmin
         },
         {
           label: '面试岗位',
@@ -107,7 +111,8 @@ export default {
           attrs: {
             clearable: true,
             placeholder: '搜索公司名称'
-          }
+          },
+          hide: !this.isAdmin
         },
         {
           key: 'jobName',

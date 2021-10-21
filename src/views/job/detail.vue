@@ -85,11 +85,7 @@ export default {
           items: [
             {
               name: '公司地址',
-              prop: 'address'
-            },
-            {
-              name: '电话',
-              prop: 'phoneNumber'
+              prop: 'companyAddress'
             }
           ]
         }
@@ -101,7 +97,8 @@ export default {
 
   computed: {
     ...mapState('user', {
-      userId: state => state.id
+      userId: state => state.id,
+      token: state => state.token
     }),
     jobId() {
       return this.$route.query.jobId
@@ -110,6 +107,9 @@ export default {
 
   methods: {
     async showDialog() {
+      if (!this.token) {
+        return this.$message.info('请先登录！')
+      }
       const res = await this.$axios.get('/applications', {
         params: {
           userId: this.userId,
@@ -120,13 +120,13 @@ export default {
       if (count > 0) {
         this.$message.info('您已申请过该职位，请勿重复申请')
       } else {
-        console.log(this.$refs.applyDialogRef)
         this.$refs.applyDialogRef.dialogVisible = true
       }
     },
     async getJob() {
-      const res = await this.$axios.get(`/jobs/${this.jobId}`)
-      this.job = res.data.job
+      const { data } = await this.$axios.get(`/jobs/${this.jobId}`)
+      this.job = data.job
+      this.job.companyAddress = data.job?.Company?.address
     }
   },
 

@@ -9,11 +9,25 @@ export function setUserId(id) {
   return Cookies.set('userId', id)
 }
 
+export function getUserAvatar() {
+  return Cookies.get('avatar')
+}
+export function setUserAvatar(avatar) {
+  return Cookies.set('avatar', avatar)
+}
+
 export function getUsername() {
   return Cookies.get('username')
 }
 export function setUsername(username) {
   return Cookies.set('username', username)
+}
+
+export function getRole() {
+  return Cookies.get('role')
+}
+export function setRole(role) {
+  return Cookies.set('role', role)
 }
 
 export function getToken() {
@@ -24,6 +38,9 @@ export function setToken(token, expires) {
 }
 
 export function removeToken() {
+  Cookies.remove('userId')
+  Cookies.remove('username')
+  Cookies.remove('avatar')
   return Cookies.remove(TokenKey)
 }
 

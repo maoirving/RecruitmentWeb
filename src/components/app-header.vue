@@ -4,35 +4,48 @@
       <div class="menu-wrapper">
         <el-row type="flex" justify="space-between">
           <el-col :span="16">
-            <ul class="flex unstyle-list menu-list">
+            <ul class="flex items-center unstyle-list menu-list">
               <li class="menu-list-item" v-for="(item, index) in leftMenu" :key="index">
                 <router-link
                   :class="[
                     'text-link-white',
                     {
-                      'text-link': isActive(item.name)
-                    }
-                  ]"
-                  :to="item.url"
-                  >{{ item.title }}</router-link
-                >
-              </li>
-            </ul>
-          </el-col>
-          <el-col :span="8">
-            <ul class="flex unstyle-list justify-end menu-list">
-              <li class="menu-list-item" v-for="(item, index) in rightMenu" :key="index">
-                <router-link
-                  :class="[
-                    'text-link-white',
+                      flex: !!item.imageUrl
+                    },
                     {
                       'text-link': isActive(item.name)
                     }
                   ]"
                   :to="item.url"
                 >
-                  {{ item.title }}
+                  <el-avatar v-if="item.imageUrl" size="medium" :src="item.imageUrl" />
+                  <span v-else>{{ item.title }}</span>
                 </router-link>
+              </li>
+            </ul>
+          </el-col>
+          <el-col class="flex items-center justify-end" :span="8">
+            <ul class="flex items-center unstyle-list menu-list">
+              <li class="menu-list-item" v-for="(item, index) in rightMenu" :key="index">
+                <router-link
+                  :class="[
+                    'text-link-white',
+                    {
+                      flex: !!item.imageUrl
+                    },
+                    {
+                      'text-link': isActive(item.name)
+                    }
+                  ]"
+                  :to="item.url"
+                  :target="item.target"
+                >
+                  <el-avatar v-if="item.imageUrl" size="medium" :src="item.imageUrl" />
+                  <span v-else>{{ item.title }}</span>
+                </router-link>
+              </li>
+              <li v-if="token" class="menu-list-item">
+                <a class="text-link-white" href="javascript:;" @click="handleLogout">退出登录</a>
               </li>
             </ul>
           </el-col>
@@ -43,7 +56,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {},
@@ -51,6 +64,11 @@ export default {
   data() {
     return {
       leftMenu: [
+        {
+          name: 'Home',
+          url: '/',
+          imageUrl: require('@/assets/images/logo.png')
+        },
         {
           title: '首页',
           name: 'Home',
@@ -71,7 +89,7 @@ export default {
   },
 
   computed: {
-    ...mapState('user', ['token']),
+    ...mapState('user', ['token', 'avatar']),
     isActive() {
       return name => {
         if (name === this.$route.name) {
@@ -87,22 +105,16 @@ export default {
       let menu = [
         {
           title: '进入企业版',
-          url: '/management/job'
+          url: '/management/job',
+          target: '_blank'
         }
       ]
       if (this.token) {
-        menu.push(
-          {
-            title: '我的',
-            name: 'Account',
-            url: '/account/profile'
-          },
-          {
-            title: '退出登录',
-            name: 'Login',
-            url: '/login'
-          }
-        )
+        menu.push({
+          name: 'Account',
+          url: '/account/profile',
+          imageUrl: this.avatar ?? require('@/assets/images/user.png')
+        })
       } else {
         menu.push(
           {
@@ -119,13 +131,35 @@ export default {
       }
       return menu
     }
+  },
+
+  methods: {
+    ...mapActions('user', ['logout']),
+    handleLogout() {
+      this.$confirm('确认退出登录？', { type: 'warning' })
+        .then(() => {
+          this.logout()
+            .then(() => {
+              this.$message({
+                type: 'success',
+                message: '已退出！',
+                duration: 1000,
+                onClose: () => {
+                  this.$router.push('/')
+                }
+              })
+            })
+            .catch(() => {})
+        })
+        .catch(() => {})
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
 .header-wrapper {
   color: #fff;
-  padding: $gap 0;
+  padding: $gap-sm 0;
   background-color: #414a60;
 
   .menu-wrapper {
@@ -136,10 +170,13 @@ export default {
       &-item {
         padding-left: $gap-sm;
         padding-right: $gap-sm;
-        .active {
-        }
       }
     }
+  }
+}
+::v-deep .el-avatar {
+  img {
+    width: 100%;
   }
 }
 </style>

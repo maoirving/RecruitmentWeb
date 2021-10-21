@@ -1,5 +1,5 @@
 <template>
-  <div class="file-list-wrapper">
+  <div class="resume-list-wrapper">
     <div class="list-header">
       <el-button v-if="resumeFiles.length <= 3" size="mini" round @click="showUploadingDialog">
         上传
@@ -8,8 +8,9 @@
     <ul class="unstyle-list file-list">
       <li class="file-list-item" v-for="(file, index) in resumeFiles" :key="index">
         <div>
+          {{ `${index + 1}. ` }}
           <i class="el-icon-document"></i>
-          {{ `${index + 1}. ${file.name}` }}
+          {{ `${file.name}` }}
         </div>
         <div class="btn-holder">
           <el-button size="mini" round @click="showFileDialog(file.url)">查看</el-button>
@@ -19,28 +20,24 @@
         </div>
       </li>
     </ul>
-    <pdf-dialog ref="resumeReadRef" />
-    <file-uploading-dialog
-      :visible.sync="uploadingDialogVisible"
-      @close-dialog="uploadingDialogVisible = false"
-    />
+    <resume-read-dialog ref="resumeReadRef" />
+    <resume-upload-dialog ref="uploadDialogRef" @reload="reload" />
   </div>
 </template>
 
 <script>
-import PdfDialog from '@/components/account/resume/pdf-dialog'
-import FileUploadingDialog from '@/components/account/resume/file-uploading-dialog'
+import ResumeReadDialog from '@/components/account/resume/resume-read-dialog'
+import ResumeUploadDialog from '@/components/account/resume/resume-upload-dialog'
 import { mapState } from 'vuex'
 
 export default {
   components: {
-    PdfDialog,
-    FileUploadingDialog
+    ResumeReadDialog,
+    ResumeUploadDialog
   },
 
   data() {
     return {
-      uploadingDialogVisible: false,
       resumeFiles: []
     }
   },
@@ -60,13 +57,16 @@ export default {
       })
       this.resumeFiles = data.resumeFiles
     },
+    reload() {
+      this.getResumeFiles()
+    },
     showFileDialog(url) {
       this.$refs.resumeReadRef.url = url
       this.$refs.resumeReadRef.dialogVisible = true
     },
 
     showUploadingDialog() {
-      this.uploadingDialogVisible = true
+      this.$refs.uploadDialogRef.dialogVisible = true
     },
 
     handleDelete(id) {
@@ -78,7 +78,7 @@ export default {
             return this.$message.error('删除失败，请重试！')
           }
           this.$message.success('删除成功！')
-          this.getResumeFiles()
+          this.reload()
         })
         .catch(() => {})
     }
@@ -91,7 +91,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.file-list-wrapper {
+.resume-list-wrapper {
   .list-header {
     text-align: right;
     margin-bottom: 10px;

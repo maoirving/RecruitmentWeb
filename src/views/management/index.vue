@@ -51,17 +51,29 @@
 
 <script>
 import AppHeader from '@/components/app-header'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     AppHeader
   },
 
+  provide() {
+    return {
+      isAdmin: this.isAdmin
+    }
+  },
+
   data() {
     return {
-      isCollapse: false,
+      isCollapse: false
+    }
+  },
 
-      managementMenus: [
+  computed: {
+    ...mapGetters('user', ['isAuthenticated', 'isAdmin']),
+    managementMenus() {
+      const menus = [
         {
           id: '1',
           title: '职位管理',
@@ -74,7 +86,8 @@ export default {
           title: '公司管理',
           name: 'CompanyManagement',
           url: '/management/company',
-          iconClass: 'el-icon-office-building'
+          iconClass: 'el-icon-office-building',
+          hide: !this.isAdmin
         },
         {
           id: '3',
@@ -95,16 +108,26 @@ export default {
           title: '用户管理',
           name: 'UserManagement',
           url: '/management/user',
-          iconClass: 'el-icon-user'
+          iconClass: 'el-icon-user',
+          hide: !this.isAdmin
         },
         {
           id: '6',
+          title: '公司信息',
+          name: 'CompanyProfile',
+          url: '/management/CompanyProfile',
+          iconClass: 'el-icon-office-building',
+          hide: this.isAdmin
+        },
+        {
+          id: '7',
           title: '我的信息',
           name: 'ProfileManagement',
           url: '/management/profile',
           iconClass: 'el-icon-set-up'
         }
       ]
+      return menus.filter(item => item.hide !== true)
     }
   },
 

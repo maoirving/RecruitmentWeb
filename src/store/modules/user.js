@@ -1,13 +1,16 @@
 import {
   getUserId,
   getUsername,
+  getUserAvatar,
+  getRole,
   getToken,
   setUserId,
   setUsername,
+  setUserAvatar,
+  setRole,
   setToken,
   removeToken
 } from '@/utils/auth'
-import { resetRouter } from '@/router'
 import axios from 'axios'
 
 const getDefaultState = () => {
@@ -15,12 +18,17 @@ const getDefaultState = () => {
     token: getToken(),
     id: getUserId(),
     username: getUsername(),
-    avatar: '',
-    role: 'admin'
+    avatar: getUserAvatar(),
+    role: getRole()
   }
 }
 
 const state = getDefaultState
+
+const getters = {
+  isAuthenticated: state => !!state.token,
+  isAdmin: state => state.role === 'admin'
+}
 
 const mutations = {
   RESET_STATE: state => {
@@ -46,17 +54,21 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password, type } = userInfo
     return new Promise((resolve, reject) => {
       axios
-        .post('/users/check', { username: username.trim(), password: password })
+        .post('/users/check', { username: username.trim(), password: password, type: type })
         .then(response => {
           const { data } = response
           commit('SET_TOKEN', data.user.token)
           commit('SET_ID', data.user.id)
           commit('SET_NAME', data.user.username)
+          commit('SET_AVATAR', data.user.imageUrl)
+          commit('SET_ROLES', data.user.type)
           setUserId(data.user.id)
           setUsername(data.user.username)
+          setUserAvatar(data.user.imageUrl)
+          setRole(data.user.type)
           setToken(data.user.token, 200000)
           resolve()
         })
@@ -103,22 +115,6 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token)
-        .then(() => {
-          removeToken() // must remove  token  first
-          resetRouter()
-          commit('RESET_STATE')
-          resolve()
-        })
-        .catch(error => {
-          reject(error)
-        })
-    })
-  },
-
-  // remove token
-  resetToken({ commit }) {
-    return new Promise(resolve => {
       removeToken() // must remove  token  first
       commit('RESET_STATE')
       resolve()
@@ -129,6 +125,7 @@ const actions = {
 export default {
   namespaced: true,
   state,
+  getters,
   mutations,
   actions
 }

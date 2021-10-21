@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { getToken } from '@/utils/auth'
 
 Vue.use(VueRouter)
 
@@ -133,8 +134,26 @@ const router = new VueRouter({
   routes
 })
 
-export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
-}
+// 挂载路由导航守卫
+router.beforeEach((to, from, next) => {
+  // to 将要访问的路径
+  // from 代表从哪个路径跳转而来
+  // next 是一个函数，表示放行
+  //     next()  放行    next('/login')  强制跳转
+  const interceptionRoutes = ['/account', '/management']
+  const path = to.matched[0].path
+  if (interceptionRoutes.indexOf(path) === -1) return next()
+  // 获取token
+  const token = getToken()
+  if (!token) {
+    if (path === '/account') {
+      return next('/login')
+    }
+    if (path === '/management') {
+      return next('/management/login')
+    }
+  }
+  next()
+})
+
 export default router

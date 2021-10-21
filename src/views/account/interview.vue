@@ -1,12 +1,18 @@
 <template>
-  <div>
+  <div class="interview-wrapper">
     <el-tabs v-model="currentTab" type="card" @tab-click="getInterviews">
       <el-tab-pane v-for="(tab, index) in tabs" :key="index" :label="tab.label" :name="tab.name">
-        <el-row class="flex-wrap" type="flex" :gutter="10">
-          <el-col v-for="(interview, i) in interviews" :key="i">
-            <interview-card :interview="interview" @click-card="showDialog" />
-          </el-col>
-        </el-row>
+        <div class="result-wrapper" v-loading="loading">
+          <el-row v-if="interviews && interviews.length" class="flex-wrap" type="flex" :gutter="10">
+            <el-col v-for="(interview, i) in interviews" :key="i">
+              <interview-card :interview="interview" @click-card="showDialog" />
+            </el-col>
+          </el-row>
+          <el-empty
+            v-if="interviews !== null && !interviews.length"
+            description="未找到相应的面试邀请"
+          />
+        </div>
       </el-tab-pane>
     </el-tabs>
     <interview-edit-dialog ref="editDialogRef" is-in-worker />
@@ -45,7 +51,8 @@ export default {
           name: 'refused'
         }
       ],
-      interviews: []
+      interviews: null,
+      loading: true
     }
   },
 
@@ -57,6 +64,7 @@ export default {
 
   methods: {
     async getInterviews() {
+      this.loading = true
       let params = {}
       switch (this.currentTab) {
         case 'notHandled':
@@ -93,7 +101,10 @@ export default {
           item.recruiterImageUrl = recruiter.imageUrl
         })
       }
-      this.interviews = list
+      setTimeout(() => {
+        this.interviews = list
+        this.loading = false
+      }, 400)
     },
     reload() {
       this.getInterviews()
@@ -110,3 +121,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.interview-wrapper {
+  .result-wrapper {
+    min-height: 400px;
+  }
+}
+</style>

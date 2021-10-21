@@ -21,7 +21,7 @@
           <el-col :span="16">
             <div class="text-holder">
               <h4
-                class="text-sm font-normal header-title"
+                class="text-sm font-normal text-multiline-ellipsis header-title"
                 :class="{ 'text-green-600': !isSimpleType }"
               >
                 {{ company.name }}

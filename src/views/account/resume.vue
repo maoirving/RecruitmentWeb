@@ -5,7 +5,7 @@
         <resume-table />
       </el-collapse-item>
       <el-collapse-item title="附件简历" name="2">
-        <file-list />
+        <resume-list />
       </el-collapse-item>
     </el-collapse>
   </div>
@@ -13,14 +13,14 @@
 
 <script>
 import ResumeTable from '@/components/account/resume/resume-table'
-import FileList from '@/components/account/resume/file-list'
+import ResumeList from '@/components/account/resume/resume-list'
 import { omit } from 'lodash'
 import { strToArr, parseToPeriodRange } from '@/utils/parsers'
 
 export default {
   components: {
     ResumeTable,
-    FileList
+    ResumeList
   },
 
   data() {

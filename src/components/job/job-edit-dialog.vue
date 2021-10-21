@@ -14,11 +14,7 @@
       :disabled="disabled"
     >
       <div slot="salary">
-        <el-input-number
-          v-model="jobForm.minSalary"
-          :step="1"
-          :min="1"
-        ></el-input-number>
+        <el-input-number v-model="jobForm.minSalary" :step="1" :min="1"></el-input-number>
         <span class="horizontal-line"> - </span>
         <el-input-number
           v-model="jobForm.maxSalary"
@@ -59,6 +55,8 @@ export default {
     BaseDialog,
     BaseForm
   },
+
+  inject: ['isAdmin'],
 
   data() {
     return {
@@ -130,11 +128,7 @@ export default {
       return this.outerData && this.outerData.status
     },
     dialogTitle() {
-      return this.isEdit
-        ? this.disabled
-          ? '查看职位'
-          : '编辑职位'
-        : '新增职位'
+      return this.isEdit ? (this.disabled ? '查看职位' : '编辑职位') : '新增职位'
     },
 
     formItems() {
@@ -166,7 +160,8 @@ export default {
               clearable: true,
               options: this.companyOptions
             }
-          }
+          },
+          visible: this.isAdmin
         },
         {
           label: '招聘人数',
