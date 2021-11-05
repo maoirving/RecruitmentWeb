@@ -44,7 +44,7 @@
                   <span v-else>{{ item.title }}</span>
                 </router-link>
               </li>
-              <li v-if="token" class="menu-list-item">
+              <li v-if="isAuthenticated" class="menu-list-item">
                 <a class="text-link-white" href="javascript:;" @click="handleLogout">退出登录</a>
               </li>
             </ul>
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {},
@@ -89,7 +89,8 @@ export default {
   },
 
   computed: {
-    ...mapState('user', ['token', 'avatar']),
+    ...mapState('user', ['avatar']),
+    ...mapGetters('user', ['isAuthenticated']),
     isActive() {
       return name => {
         if (name === this.$route.name) {
@@ -109,7 +110,7 @@ export default {
           target: '_blank'
         }
       ]
-      if (this.token) {
+      if (this.isAuthenticated) {
         menu.push({
           name: 'Account',
           url: '/account/profile',
@@ -134,7 +135,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('user', ['logout']),
+    ...mapActions('user', ['getUserInfo', 'logout']),
     handleLogout() {
       this.$confirm('确认退出登录？', { type: 'warning' })
         .then(() => {
@@ -145,13 +146,19 @@ export default {
                 message: '已退出！',
                 duration: 1000,
                 onClose: () => {
-                  this.$router.push('/')
+                  this.$router.go()
                 }
               })
             })
             .catch(() => {})
         })
         .catch(() => {})
+    }
+  },
+
+  mounted() {
+    if (this.isAuthenticated) {
+      this.getUserInfo()
     }
   }
 }

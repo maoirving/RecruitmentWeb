@@ -1,14 +1,12 @@
 import {
   getUserId,
-  getUsername,
-  getUserAvatar,
-  getRole,
+  getAdminId,
   getToken,
+  getAdminToken,
   setUserId,
-  setUsername,
-  setUserAvatar,
-  setRole,
+  setAdminId,
   setToken,
+  setAdminToken,
   removeToken
 } from '@/utils/auth'
 import axios from 'axios'
@@ -16,10 +14,12 @@ import axios from 'axios'
 const getDefaultState = () => {
   return {
     token: getToken(),
+    adminToken: getAdminToken(),
     id: getUserId(),
-    username: getUsername(),
-    avatar: getUserAvatar(),
-    role: getRole()
+    adminId: getAdminId(),
+    username: '',
+    avatar: '',
+    role: ''
   }
 }
 
@@ -62,14 +62,13 @@ const actions = {
           const { data } = response
           commit('SET_TOKEN', data.user.token)
           commit('SET_ID', data.user.id)
-          commit('SET_NAME', data.user.username)
-          commit('SET_AVATAR', data.user.imageUrl)
-          commit('SET_ROLES', data.user.type)
-          setUserId(data.user.id)
-          setUsername(data.user.username)
-          setUserAvatar(data.user.imageUrl)
-          setRole(data.user.type)
-          setToken(data.user.token, 200000)
+          if (type !== 'worker') {
+            setAdminId(data.user.id)
+            setAdminToken(data.user.token, 200000)
+          } else {
+            setUserId(data.user.id)
+            setToken(data.user.token, 200000)
+          }
           resolve()
         })
         .catch(error => {
@@ -79,31 +78,14 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  getUserInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token)
-        .then(response => {
-          const { data } = response
-
-          if (!data) {
-            return reject('Verification failed, please Login again.')
-          }
-
-          if (data.isSuper) {
-            data.dmsRoles = [{ isSuper: 1 }]
-          }
-          data.dmsRoles.forEach(o => {
-            if (o.permissions) {
-              o.permissions = o.permissions.split(',')
-            }
-          })
-
-          commit('SET_ROLES', data.dmsRoles)
-          commit('SET_NAME', data.name)
-          commit(
-            'SET_AVATAR',
-            data.avatar || 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
-          )
+      axios
+        .get(`/users/${state.id}`)
+        .then(({ data }) => {
+          commit('SET_NAME', data.user.username)
+          commit('SET_AVATAR', data.user.imageUrl)
+          commit('SET_ROLES', data.user.type)
           resolve(data)
         })
         .catch(error => {

@@ -1,7 +1,7 @@
 <template>
   <div class="user-profile">
     <div class="image-holder">
-      <el-avatar :size="100" :src="profileForm.imageUrl" />
+      <el-avatar :size="100" :src="imageUrl" />
     </div>
     <el-row class="flex-wrap profile-list" type="flex" :gutter="20">
       <el-col
@@ -28,7 +28,7 @@
 <script>
 import UserEditDialog from '@/components/user/user-edit-dialog'
 import moment from 'moment'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -73,10 +73,14 @@ export default {
   computed: {
     ...mapState('user', {
       userId: state => state.id
-    })
+    }),
+    imageUrl() {
+      return this.profileForm.imageUrl ?? require('@/assets/images/user.png')
+    }
   },
 
   methods: {
+    ...mapActions('user', ['getUserInfo']),
     async getUser() {
       const res = await this.$axios.get(`/users/${this.userId}`)
       if (res.data.user) {
@@ -91,13 +95,17 @@ export default {
       this.$refs.editDialogRef.outerThis = this
       this.$refs.editDialogRef.outerData = this.profileForm
     },
-    reload() {
-      this.getUser()
+    async reload() {
+      const data = await this.getUserInfo()
+      this.profileForm = data.user
+      this.profileForm.birthday = moment(this.profileForm.birthday)
+        .utcOffset(0)
+        .format('YYYY-MM-DD')
     }
   },
 
   mounted() {
-    this.getUser()
+    this.reload()
   }
 }
 </script>

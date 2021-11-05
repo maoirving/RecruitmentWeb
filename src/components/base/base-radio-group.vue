@@ -1,5 +1,5 @@
 <template>
-  <el-radio-group class="base-radio-group" v-model="innerValue" v-bind="$attrs">
+  <el-radio-group class="base-radio-group" v-model="innerValue">
     <el-radio v-for="(option, i) in options" :key="i" :label="option[optionValue]" border>
       {{ option[optionLabel] }}
     </el-radio>
@@ -36,13 +36,21 @@ export default {
 
   data() {
     return {
-      innerValue: this.value
+      innerValue: ''
     }
   },
 
   watch: {
     innerValue(value) {
       this.$emit('change', value)
+    },
+    value: {
+      handler(val) {
+        if (val !== this.innerValue) {
+          this.innerValue = val
+        }
+      },
+      immediate: true
     }
   }
 }

@@ -21,7 +21,7 @@
 import BaseDialog from '@/components/base/base-dialog'
 import BaseForm from '@/components/base/base-form'
 import { getResumeOptions } from '@/utils/data-source'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -58,6 +58,7 @@ export default {
     ...mapState('user', {
       userId: state => state.id
     }),
+    ...mapGetters('user', ['isAuthenticated']),
     formItems() {
       return [
         {
@@ -102,7 +103,9 @@ export default {
   },
 
   async mounted() {
-    this.resumeOptions = await getResumeOptions(this.userId)
+    if (this.isAuthenticated) {
+      this.resumeOptions = await getResumeOptions(this.userId)
+    }
   }
 }
 </script>

@@ -33,11 +33,19 @@
 
 <script>
 import AppLayout from '@/layout/app-layout'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     AppLayout
   },
+
+  provide() {
+    return {
+      isAdmin: this.isAdmin
+    }
+  },
+
   data() {
     return {
       activeIndex: 'profile',
@@ -162,6 +170,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters('user', ['isAdmin']),
     titleText() {
       let title = ''
       this.accountMenus.forEach(item => {

@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
+import { getToken } from '@/utils/auth'
 
 import './plugins/element.js'
 import '@/assets/sass/app.scss' // global css
@@ -19,14 +20,12 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 axios.defaults.baseURL = 'http://127.0.0.1:3000'
-// axios.defaults.baseURL = 'http://192.168.0.198:3000'
 
-// axios.interceptors.request.use(config => {
-//   // console.log(config)
-//   config.headers.Authorization = window.sessionStorage.getItem('token')
-//   // 在最后必须 return config
-//   return config
-// })
+axios.interceptors.request.use(config => {
+  config.headers.Authorization = getToken()
+  // 在最后必须 return config
+  return config
+})
 Vue.prototype.$axios = axios
 
 new Vue({

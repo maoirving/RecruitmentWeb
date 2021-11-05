@@ -24,7 +24,6 @@ import BaseForm from '@/components/base/base-form'
 import { pick, omit, omitBy, cloneDeep } from 'lodash'
 import { sexOptions, userTypeOptions } from '@/utils/data-source'
 import moment from 'moment'
-import { setUserAvatar } from '@/utils/auth'
 
 export default {
   components: {
@@ -96,6 +95,10 @@ export default {
         return '修改个人信息'
       }
       return this.isEdit ? (this.disabled ? '查看用户' : '编辑用户') : '新增用户'
+    },
+
+    options() {
+      return sexOptions
     },
 
     formItems() {
@@ -209,7 +212,6 @@ export default {
             if (isSuccessful) {
               this.$message.success(`${operation}成功`)
               this.outerThis.reload()
-              setUserAvatar(this.userForm.imageUrl)
               this.handleClose()
             } else {
               this.$message.error(`${operation}失败，请重试`)

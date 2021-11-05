@@ -38,7 +38,7 @@ export default {
     return {
       loginForm: {
         username: '',
-        type: 'worker',
+        type: '',
         password: ''
       },
 
@@ -81,6 +81,9 @@ export default {
     title() {
       const prefix = this.isManagement ? '管理员' : '欢迎'
       return prefix + '登录'
+    },
+    userType() {
+      return this.isManagement ? 'admin' : 'worker'
     }
   },
 
@@ -95,6 +98,7 @@ export default {
     },
     async success() {
       this.isShow = false // 通过验证后，需要手动隐藏模态框
+      this.loginForm.type = this.userType
       this.login(this.loginForm)
         .then(() => {
           this.$message.success('登录成功')

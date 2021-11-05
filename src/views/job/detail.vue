@@ -48,7 +48,8 @@ import JobCard from '@/components/job/job-card'
 import AsideWrapper from '@/components/aside/aside-wrapper'
 import CompanyCard from '@/components/company/company-card'
 import JobApplyDialog from '@/components/job/job-apply-dialog'
-import { mapState } from 'vuex'
+import { getMatchedLabel, jobTypeOptions } from '@/utils/data-source'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -63,6 +64,32 @@ export default {
   data() {
     return {
       infos: [
+        {
+          title: '基本信息',
+          items: [
+            {
+              name: '工资范围',
+              prop: 'salary'
+            },
+            {
+              name: '招聘类型',
+              prop: 'type'
+            },
+
+            {
+              name: '工作经验',
+              prop: 'workExperience'
+            },
+            {
+              name: '学历要求',
+              prop: 'educationBackground'
+            },
+            {
+              name: '招聘人数',
+              prop: 'recruitingNnumbers'
+            }
+          ]
+        },
         {
           title: '职位信息',
           items: [
@@ -97,9 +124,9 @@ export default {
 
   computed: {
     ...mapState('user', {
-      userId: state => state.id,
-      token: state => state.token
+      userId: state => state.id
     }),
+    ...mapGetters('user', ['isAuthenticated']),
     jobId() {
       return this.$route.query.jobId
     }
@@ -107,7 +134,7 @@ export default {
 
   methods: {
     async showDialog() {
-      if (!this.token) {
+      if (!this.isAuthenticated) {
         return this.$message.info('请先登录！')
       }
       const res = await this.$axios.get('/applications', {
@@ -126,6 +153,8 @@ export default {
     async getJob() {
       const { data } = await this.$axios.get(`/jobs/${this.jobId}`)
       this.job = data.job
+      this.job.type = getMatchedLabel(jobTypeOptions, data.job.type)
+      this.job.recruitingNnumbers = `${data.job.recruitingNnumbers}人`
       this.job.companyAddress = data.job?.Company?.address
     }
   },

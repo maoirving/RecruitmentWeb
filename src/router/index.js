@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { getToken } from '@/utils/auth'
+import { getToken, getAdminToken } from '@/utils/auth'
 
 Vue.use(VueRouter)
 
@@ -145,13 +145,12 @@ router.beforeEach((to, from, next) => {
   if (interceptionRoutes.indexOf(path) === -1) return next()
   // 获取token
   const token = getToken()
-  if (!token) {
-    if (path === '/account') {
-      return next('/login')
-    }
-    if (path === '/management') {
-      return next('/management/login')
-    }
+  const adminToken = getAdminToken()
+  if (!token && path === '/account') {
+    return next('/login')
+  }
+  if (!adminToken && path === '/management') {
+    return next('/management/login')
   }
   next()
 })

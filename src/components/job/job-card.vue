@@ -2,7 +2,8 @@
   <div class="job-card" @click="toJobDetail">
     <div class="job-card-header">
       <h4 class="text-base truncate header-title" :class="{ 'text-green-600': !isSimpleType }">
-        {{ job.name }}
+        <span>{{ job.name }}</span>
+        <el-tag v-if="!!jobType" class="ml-2" type="warning" size="mini">{{ jobType }}</el-tag>
       </h4>
       <span class="header-tag">
         {{ job.salary }}
@@ -15,6 +16,8 @@
         <span class="text-xs">{{ job.workExperience }}</span>
         <el-divider direction="vertical" />
         <span class="text-xs">{{ job.educationBackground }}</span>
+        <el-divider direction="vertical" />
+        <span class="text-xs">{{ job.recruitingNnumbers }}人</span>
       </p>
       <p v-if="application" class="description">
         <span class="date"> 申请于 {{ application.createdAt | dateFormat }}</span>
@@ -71,6 +74,7 @@
 <script>
 import BaseAspect from '@/components/base/base-aspect'
 import moment from 'moment'
+import { getMatchedLabel, jobTypeOptions } from '@/utils/data-source'
 
 export default {
   components: {
@@ -90,6 +94,12 @@ export default {
     application: {
       type: Object,
       default: null
+    }
+  },
+
+  computed: {
+    jobType() {
+      return this.job.type === 'school' ? '校招' : ''
     }
   },
 
@@ -149,6 +159,8 @@ export default {
     align-items: center;
     margin-bottom: 8px;
     .header-title {
+      display: flex;
+      align-items: center;
       max-width: 80%;
       font-weight: 400;
     }

@@ -1,7 +1,7 @@
 <template>
   <aside-wrapper class="aside-container" title="已申请的职位" :link="link">
     <template slot="aside-content">
-      <el-row v-if="isLogined" class="flex-wrap content-list" type="flex" :gutter="20">
+      <el-row v-if="isAuthenticated" class="flex-wrap content-list" type="flex" :gutter="20">
         <el-col class="content-list-item" v-for="(application, index) in applications" :key="index">
           <job-card :job="application.Job" is-simple-type />
         </el-col>
@@ -14,7 +14,7 @@
 <script>
 import AsideWrapper from '@/components/aside/aside-wrapper'
 import JobCard from '@/components/job/job-card'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -30,14 +30,11 @@ export default {
 
   computed: {
     ...mapState('user', {
-      userId: state => state.id,
-      token: state => state.token
+      userId: state => state.id
     }),
-    isLogined() {
-      return !!this.token
-    },
+    ...mapGetters('user', ['isAuthenticated']),
     link() {
-      return this.isLogined ? '/account/application' : undefined
+      return this.isAuthenticated ? '/account/application' : undefined
     }
   },
 
@@ -54,7 +51,9 @@ export default {
   },
 
   mounted() {
-    this.getApplications()
+    if (this.isAuthenticated) {
+      this.getApplications()
+    }
   }
 }
 </script>
