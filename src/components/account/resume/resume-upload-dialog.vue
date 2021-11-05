@@ -32,7 +32,6 @@
 <script>
 import BaseDialog from '@/components/base/base-dialog'
 import BaseUpload from '@/components/base/base-upload'
-import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -52,12 +51,6 @@ export default {
       dialogVisible: false,
       uploaded: false
     }
-  },
-
-  computed: {
-    ...mapState('user', {
-      userId: state => state.id
-    })
   },
 
   methods: {
@@ -105,8 +98,7 @@ export default {
       this.uploaded = true
       const { data } = await this.$axios.post('/resumes/files', {
         name: file.name,
-        url: response.data.url,
-        userId: this.userId
+        url: response.data.url
       })
       if (data.success) {
         this.dialogVisible = false

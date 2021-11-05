@@ -9,7 +9,6 @@
 
 <script>
 import BaseForm from '@/components/base/base-form'
-import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -34,7 +33,6 @@ export default {
               validator: async (rule, value, callback) => {
                 if (value) {
                   const res = await this.$axios.post('/users/check', {
-                    userId: this.userId,
                     password: value
                   })
                   if (res.data.success) {
@@ -100,20 +98,13 @@ export default {
     }
   },
 
-  computed: {
-    ...mapState('user', {
-      userId: state => state.id
-    })
-  },
-
   methods: {
     onSubmit() {
       this.$refs.passwordFormRef.$refs['form'].validate(valid => {
         if (!valid) return
         this.$confirm('确认修改密码？', { type: 'warning' })
           .then(async () => {
-            console.log(22);
-            const res = await this.$axios.put(`/users/${this.userId}`, {
+            const res = await this.$axios.put('/users/changePassword', {
               password: this.passwordForm.newPassword
             })
             if (!res.data.success) {

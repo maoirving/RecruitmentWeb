@@ -28,18 +28,10 @@
             <label>{{ item.label }}：</label>{{ resume[item.prop] }}
           </p>
         </div>
-        <el-avatar
-          v-if="description.type === 'image'"
-          :size="100"
-          :src="resume.imageUrl"
-        />
+        <el-avatar v-if="description.type === 'image'" :size="100" :src="resume.imageUrl" />
         <ul v-if="description.type === 'item'" class="experience-list">
           <li class="experience-list-item">
-            <div
-              class="flex"
-              v-for="(item, i) in description.children"
-              :key="i"
-            >
+            <div class="flex" v-for="(item, i) in description.children" :key="i">
               <strong>{{ item.label }}：</strong>
               <p v-if="item.isPeriod">{{ resume[item.prop] | parsePeriod }}</p>
               <p v-else v-html="resume[item.prop]"></p>
@@ -65,7 +57,6 @@
 import ResumeEditDialog from '@/components/account/resume/resume-edit-dialog'
 import { omit } from 'lodash'
 import { strToArr, parseToPeriodRange } from '@/utils/parsers'
-import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -197,12 +188,6 @@ export default {
     }
   },
 
-  computed: {
-    ...mapState('user', {
-      userId: state => state.id
-    })
-  },
-
   filters: {
     parsePeriod(arr) {
       return arr && arr.length ? parseToPeriodRange(arr) : ''
@@ -216,17 +201,10 @@ export default {
       this.$refs.editDialogRef.outerData = this.resume
     },
     async getResume() {
-      const res = await this.$axios.get('/resumes', {
-        params: {
-          userId: this.userId
-        }
-      })
+      const res = await this.$axios.get('/resumes')
       const resume = res.data.resumes[0]
       const newResume = Object.assign(omit(resume, ['User']), resume.User)
-      newResume.age =
-        new Date().getFullYear() -
-        new Date(newResume.birthday).getFullYear() +
-        '岁'
+      newResume.age = new Date().getFullYear() - new Date(newResume.birthday).getFullYear() + '岁'
       newResume.certificates = strToArr(newResume.certificates)
       newResume.schoolPeriod = strToArr(newResume.schoolPeriod)
       newResume.workPeriod = strToArr(newResume.workPeriod)

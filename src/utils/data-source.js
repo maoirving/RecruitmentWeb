@@ -271,12 +271,8 @@ export const applicationHandleOptions = [
 ]
 
 // resume
-export const getResumeOptions = async id => {
-  const { data } = await axios.get('/resumes/files/options', {
-    params: {
-      userId: id
-    }
-  })
+export const getResumeOptions = async () => {
+  const { data } = await axios.get('/resumes/files/options')
   return data && data.options
 }
 

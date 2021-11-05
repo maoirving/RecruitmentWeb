@@ -22,7 +22,6 @@
 <script>
 import InterviewCard from '@/components/interview/interview-card'
 import InterviewEditDialog from '@/components/interview/interview-edit-dialog'
-import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -56,12 +55,6 @@ export default {
     }
   },
 
-  computed: {
-    ...mapState('user', {
-      userId: state => state.id
-    })
-  },
-
   methods: {
     async getInterviews() {
       this.loading = true
@@ -81,7 +74,6 @@ export default {
       }
       const res = await this.$axios.get('/interviews', {
         params: {
-          userId: this.userId,
           ...params
         }
       })

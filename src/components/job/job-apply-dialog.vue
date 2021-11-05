@@ -21,7 +21,7 @@
 import BaseDialog from '@/components/base/base-dialog'
 import BaseForm from '@/components/base/base-form'
 import { getResumeOptions } from '@/utils/data-source'
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -55,9 +55,6 @@ export default {
   },
 
   computed: {
-    ...mapState('user', {
-      userId: state => state.id
-    }),
     ...mapGetters('user', ['isAuthenticated']),
     formItems() {
       return [
@@ -87,7 +84,6 @@ export default {
         if (!valid) return
         this.$confirm('确认申请该职位并投递简历？', { type: 'warning' }).then(async () => {
           const response = await this.$axios.post('/applications', {
-            userId: this.userId,
             jobId: this.jobId,
             resumeId: this.resumeFileForm.resumeId,
             handledStatus: 0
@@ -104,7 +100,7 @@ export default {
 
   async mounted() {
     if (this.isAuthenticated) {
-      this.resumeOptions = await getResumeOptions(this.userId)
+      this.resumeOptions = await getResumeOptions()
     }
   }
 }

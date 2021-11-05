@@ -28,7 +28,7 @@
 <script>
 import UserEditDialog from '@/components/user/user-edit-dialog'
 import moment from 'moment'
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -71,9 +71,6 @@ export default {
   },
 
   computed: {
-    ...mapState('user', {
-      userId: state => state.id
-    }),
     imageUrl() {
       return this.profileForm.imageUrl ?? require('@/assets/images/user.png')
     }
@@ -82,7 +79,7 @@ export default {
   methods: {
     ...mapActions('user', ['getUserInfo']),
     async getUser() {
-      const res = await this.$axios.get(`/users/${this.userId}`)
+      const res = await this.$axios.get('/users/info')
       if (res.data.user) {
         this.profileForm = res.data.user
         this.profileForm.birthday = moment(this.profileForm.birthday)

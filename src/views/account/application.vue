@@ -35,7 +35,6 @@
 
 <script>
 import JobCard from '@/components/job/job-card'
-import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -68,12 +67,6 @@ export default {
     }
   },
 
-  computed: {
-    ...mapState('user', {
-      userId: state => state.id
-    })
-  },
-
   methods: {
     async getApplications() {
       this.loading = true
@@ -94,7 +87,6 @@ export default {
       }
       const res = await this.$axios.get('/applications', {
         params: {
-          userId: this.userId,
           ...params
         }
       })

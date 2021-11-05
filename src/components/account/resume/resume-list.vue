@@ -28,7 +28,6 @@
 <script>
 import ResumeReadDialog from '@/components/account/resume/resume-read-dialog'
 import ResumeUploadDialog from '@/components/account/resume/resume-upload-dialog'
-import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -42,19 +41,9 @@ export default {
     }
   },
 
-  computed: {
-    ...mapState('user', {
-      userId: state => state.id
-    })
-  },
-
   methods: {
     async getResumeFiles() {
-      const { data } = await this.$axios.get('/resumes/files/list', {
-        params: {
-          userId: this.userId
-        }
-      })
+      const { data } = await this.$axios.get('/resumes/files/list')
       this.resumeFiles = data.resumeFiles
     },
     reload() {

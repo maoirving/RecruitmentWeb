@@ -14,7 +14,7 @@
 <script>
 import AsideWrapper from '@/components/aside/aside-wrapper'
 import JobCard from '@/components/job/job-card'
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -29,9 +29,6 @@ export default {
   },
 
   computed: {
-    ...mapState('user', {
-      userId: state => state.id
-    }),
     ...mapGetters('user', ['isAuthenticated']),
     link() {
       return this.isAuthenticated ? '/account/application' : undefined
@@ -42,8 +39,7 @@ export default {
     async getApplications() {
       const res = await this.$axios.get('/applications', {
         params: {
-          limit: 4,
-          userId: this.userId
+          limit: 4
         }
       })
       this.applications = res.data.applications

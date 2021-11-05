@@ -49,7 +49,7 @@ import AsideWrapper from '@/components/aside/aside-wrapper'
 import CompanyCard from '@/components/company/company-card'
 import JobApplyDialog from '@/components/job/job-apply-dialog'
 import { getMatchedLabel, jobTypeOptions } from '@/utils/data-source'
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -123,9 +123,6 @@ export default {
   },
 
   computed: {
-    ...mapState('user', {
-      userId: state => state.id
-    }),
     ...mapGetters('user', ['isAuthenticated']),
     jobId() {
       return this.$route.query.jobId
@@ -139,7 +136,6 @@ export default {
       }
       const res = await this.$axios.get('/applications', {
         params: {
-          userId: this.userId,
           jobId: this.jobId
         }
       })
