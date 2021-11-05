@@ -59,6 +59,7 @@ export default {
       this.isLoading = true
       const res = await this.$axios.get('/jobs', {
         params: {
+          active: true,
           currentPage: this.pageInfo.currentPage,
           limit: this.pageInfo.pageSize,
           ...this.filterParams
