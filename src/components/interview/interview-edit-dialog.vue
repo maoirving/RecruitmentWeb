@@ -43,7 +43,7 @@ export default {
     BaseForm
   },
 
-  inject: ['isAdmin'],
+  inject: ['isSuperAdmin'],
 
   props: {
     withApplication: {
@@ -138,7 +138,7 @@ export default {
                 options: this.userOptions
               }
             },
-            visible: this.isAdmin
+            visible: this.isSuperAdmin
           }
         )
       }

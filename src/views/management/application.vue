@@ -39,7 +39,7 @@ export default {
     ApplicationEditDialog
   },
 
-  inject: ['isAdmin'],
+  inject: ['isSuperAdmin'],
 
   data() {
     const vm = this
@@ -132,10 +132,10 @@ export default {
 
   computed: {
     defaultActions() {
-      return this.isAdmin ? ['delete'] : []
+      return this.isSuperAdmin ? ['delete'] : []
     },
     defaultButtons() {
-      return this.isAdmin ? ['add', 'deleteMany'] : []
+      return this.isSuperAdmin ? ['add', 'deleteMany'] : []
     },
     filters() {
       return [

@@ -22,7 +22,11 @@ Vue.config.productionTip = false
 axios.defaults.baseURL = 'http://127.0.0.1:3000'
 
 axios.interceptors.request.use(config => {
-  config.headers.Authorization = getToken()
+  if (router.currentRoute.matched[0].name === 'Management') {
+    config.headers.Authorization = getToken('adminToken')
+  } else {
+    config.headers.Authorization = getToken()
+  }
   // 在最后必须 return config
   return config
 })

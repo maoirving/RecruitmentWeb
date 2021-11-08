@@ -1,7 +1,7 @@
 <template>
   <app-layout class="home-page">
     <el-card>
-      <block-banner />
+      <!-- <block-banner /> -->
       <block-job />
       <block-company />
     </el-card>

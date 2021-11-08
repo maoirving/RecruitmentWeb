@@ -23,7 +23,7 @@ export default {
     InterviewEditDialog
   },
 
-  inject: ['isAdmin'],
+  inject: ['isSuperAdmin'],
 
   data() {
     return {
@@ -31,7 +31,7 @@ export default {
         {
           label: '公司名称',
           prop: 'companyName',
-          hide: !this.isAdmin
+          hide: !this.isSuperAdmin
         },
         {
           label: '面试岗位',
@@ -112,7 +112,7 @@ export default {
             clearable: true,
             placeholder: '搜索公司名称'
           },
-          hide: !this.isAdmin
+          hide: !this.isSuperAdmin
         },
         {
           key: 'jobName',
