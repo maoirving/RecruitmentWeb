@@ -170,7 +170,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('user', ['isSuperAdmin']),
+    ...mapGetters('admin', ['isSuperAdmin']),
     titleText() {
       let title = ''
       this.accountMenus.forEach(item => {

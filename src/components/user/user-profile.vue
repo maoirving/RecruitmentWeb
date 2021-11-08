@@ -78,6 +78,7 @@ export default {
 
   methods: {
     ...mapActions('user', ['getUserInfo']),
+    ...mapActions('admin', ['getAdminInfo']),
     async getUser() {
       const res = await this.$axios.get('/users/info')
       if (res.data.user) {
@@ -93,7 +94,12 @@ export default {
       this.$refs.editDialogRef.outerData = this.profileForm
     },
     async reload() {
-      const data = await this.getUserInfo()
+      let data = {}
+      if (this.$route.matched[0].name === 'Management') {
+        data = await this.getUserInfo()
+      } else {
+        data = await this.getAdminInfo()
+      }
       this.profileForm = data.user
       this.profileForm.birthday = moment(this.profileForm.birthday)
         .utcOffset(0)
