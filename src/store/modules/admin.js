@@ -37,7 +37,11 @@ const actions = {
     const { username, password, type } = userInfo
     return new Promise((resolve, reject) => {
       axios
-        .post('/users/check', { username: username.trim(), password: password, type: type })
+        .post('/users/check', {
+          username: username.trim(),
+          password: password,
+          type: type
+        })
         .then(response => {
           const { data } = response
           commit('SET_TOKEN', data.user.token)
@@ -69,7 +73,7 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      removeToken('admin') // must remove  token  first
+      removeToken('adminToken') // must remove  token  first
       commit('RESET_STATE')
       resolve()
     })

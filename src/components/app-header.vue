@@ -5,7 +5,11 @@
         <el-row type="flex" justify="space-between">
           <el-col :span="16">
             <ul class="flex items-center unstyle-list menu-list">
-              <li class="menu-list-item" v-for="(item, index) in leftMenu" :key="index">
+              <li
+                class="menu-list-item"
+                v-for="(item, index) in leftMenu"
+                :key="index"
+              >
                 <router-link
                   :class="[
                     'text-link-white',
@@ -18,7 +22,11 @@
                   ]"
                   :to="item.url"
                 >
-                  <el-avatar v-if="item.imageUrl" size="medium" :src="item.imageUrl" />
+                  <el-avatar
+                    v-if="item.imageUrl"
+                    size="medium"
+                    :src="item.imageUrl"
+                  />
                   <span v-else>{{ item.title }}</span>
                 </router-link>
               </li>
@@ -26,7 +34,11 @@
           </el-col>
           <el-col class="flex items-center justify-end" :span="8">
             <ul class="flex items-center unstyle-list menu-list">
-              <li class="menu-list-item" v-for="(item, index) in rightMenu" :key="index">
+              <li
+                class="menu-list-item"
+                v-for="(item, index) in rightMenu"
+                :key="index"
+              >
                 <router-link
                   :class="[
                     'text-link-white',
@@ -40,12 +52,21 @@
                   :to="item.url"
                   :target="item.target"
                 >
-                  <el-avatar v-if="item.imageUrl" size="medium" :src="item.imageUrl" />
+                  <el-avatar
+                    v-if="item.imageUrl"
+                    size="medium"
+                    :src="item.imageUrl"
+                  />
                   <span v-else>{{ item.title }}</span>
                 </router-link>
               </li>
               <li v-if="isAuthenticated" class="menu-list-item">
-                <a class="text-link-white" href="javascript:;" @click="handleLogout">退出登录</a>
+                <a
+                  class="text-link-white"
+                  href="javascript:;"
+                  @click="handleLogout"
+                  >退出登录</a
+                >
               </li>
             </ul>
           </el-col>

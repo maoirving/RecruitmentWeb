@@ -87,6 +87,11 @@ const routes = [
     ]
   },
   {
+    path: '/enterprise/login',
+    name: 'EnterpriseLogin',
+    component: () => import('@/views/login/index')
+  },
+  {
     path: '/management/login',
     name: 'ManagementLogin',
     component: () => import('@/views/login/index')
@@ -150,7 +155,11 @@ router.beforeEach((to, from, next) => {
     return next('/login')
   }
   if (!adminToken && path === '/management') {
-    return next('/management/login')
+    const isSuperAdmin = to.query.type === 'admin'
+    if (isSuperAdmin) {
+      return next('/management/login')
+    }
+    return next('/enterprise/login')
   }
   next()
 })

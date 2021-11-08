@@ -9,8 +9,10 @@
           :form-data="loginForm"
         />
       </template>
-      <template v-if="!isManagement" slot="tip">
-        还没有账号？去<router-link class="text-link" to="/register">注册</router-link>
+      <template v-if="!isAdmin" slot="tip">
+        还没有账号？去<router-link class="text-link" to="/register"
+          >注册</router-link
+        >
       </template>
       <template slot="popup">
         <Vcode :show="isShow" @success="success" @close="close" />
@@ -36,6 +38,23 @@ export default {
 
   data() {
     return {
+      typeMap: [
+        {
+          type: 'worker',
+          title: '欢迎',
+          name: 'Login'
+        },
+        {
+          type: 'recruiter',
+          title: '企业用户',
+          name: 'EnterpriseLogin'
+        },
+        {
+          type: 'admin',
+          title: '管理员',
+          name: 'ManagementLogin'
+        }
+      ],
       loginForm: {
         username: '',
         type: '',
@@ -71,19 +90,21 @@ export default {
 
   computed: {
     isWorker() {
-      return this.$route.name === 'Login'
+      return this.userType === 'worker'
     },
-
-    isManagement() {
-      return this.$route.name === 'ManagementLogin'
+    isAdmin() {
+      return this.userType === 'admin'
     },
-
+    routeName() {
+      return this.$route.name
+    },
     title() {
-      const prefix = this.isManagement ? '管理员' : '欢迎'
+      const prefix = this.typeMap.find(item => item.name === this.routeName)
+        .title
       return prefix + '登录'
     },
     userType() {
-      return this.isManagement ? 'admin' : 'worker'
+      return this.typeMap.find(item => item.name === this.routeName).type
     }
   },
 
