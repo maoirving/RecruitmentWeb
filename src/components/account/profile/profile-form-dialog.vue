@@ -9,7 +9,11 @@
     :before-close="handleClose"
     @closed="closed"
   >
-    <base-form ref="profileFormRef" :form-items="formItems" :form-data="profileForm" />
+    <base-form
+      ref="profileFormRef"
+      :form-items="formItems"
+      :form-data="profileForm"
+    />
     <div slot="footer" class="text-right">
       <el-button @click="handleClose">取消</el-button>
       <el-button type="primary" @click="handleEdit">修改</el-button>
@@ -99,7 +103,7 @@ export default {
         if (!valid) return
         this.$confirm('确认修改？', { type: 'warning' })
           .then(async () => {
-            const res = await this.$axios.put(`/users/${this.profileForm.id}`, {
+            const res = await this.$axios.put('/users/info', {
               username: this.profileForm.username,
               realName: this.profileForm.realName,
               imageUrl: this.profileForm.imageUrl,

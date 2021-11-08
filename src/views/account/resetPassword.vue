@@ -1,6 +1,10 @@
 <template>
   <div class="resetPassword-wrapper">
-    <base-form ref="passwordFormRef" :form-items="formItems" :form-data="passwordForm" />
+    <base-form
+      ref="passwordFormRef"
+      :form-items="formItems"
+      :form-data="passwordForm"
+    />
     <div class="text-right">
       <el-button type="primary" size="small" @click="onSubmit">修改</el-button>
     </div>
@@ -104,7 +108,7 @@ export default {
         if (!valid) return
         this.$confirm('确认修改密码？', { type: 'warning' })
           .then(async () => {
-            const res = await this.$axios.put('/users/changePassword', {
+            const res = await this.$axios.put('/users/info', {
               password: this.passwordForm.newPassword
             })
             if (!res.data.success) {
