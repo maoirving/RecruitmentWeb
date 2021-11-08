@@ -42,7 +42,7 @@ export default {
 
   provide() {
     return {
-      isAdmin: this.isAdmin
+      isSuperAdmin: this.isSuperAdmin
     }
   },
 
@@ -170,7 +170,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('user', ['isAdmin']),
+    ...mapGetters('user', ['isSuperAdmin']),
     titleText() {
       let title = ''
       this.accountMenus.forEach(item => {

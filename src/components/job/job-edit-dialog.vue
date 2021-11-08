@@ -56,7 +56,7 @@ export default {
     BaseForm
   },
 
-  inject: ['isAdmin'],
+  inject: ['isSuperAdmin'],
 
   data() {
     return {
@@ -161,7 +161,7 @@ export default {
               options: this.companyOptions
             }
           },
-          visible: this.isAdmin
+          visible: this.isSuperAdmin
         },
         {
           label: '招聘人数',

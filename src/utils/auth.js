@@ -1,26 +1,14 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'token'
+const defaultToken = 'token'
 
-export function getToken() {
-  return Cookies.get(TokenKey)
+export function getToken(tokenName = defaultToken) {
+  return Cookies.get(tokenName)
 }
-export function setToken(token, expires) {
-  return Cookies.set(TokenKey, token, { expires })
-}
-
-export function getAdminToken() {
-  return Cookies.get('adminToken')
-}
-export function setAdminToken(token, expires) {
-  return Cookies.set('adminToken', token, { expires })
+export function setToken(tokenName = defaultToken, token, expires = 200000) {
+  return Cookies.set(tokenName, token, { expires })
 }
 
-export function removeToken() {
-  return Cookies.remove(TokenKey)
-}
-
-export function isSuperManagement(role) {
-  // return role && role.isSuper // && role.name.toLowerCase() === 'admin'
-  return (role && role.isSuper) || (role && role.name.toLowerCase() === 'admin')
+export function removeToken(tokenName = defaultToken) {
+  return Cookies.remove(tokenName)
 }

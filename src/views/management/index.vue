@@ -1,45 +1,45 @@
 <template>
   <el-container class="management-container">
-    <el-header>
-      <app-header class="header" />
-    </el-header>
-    <el-container>
-      <el-aside :width="isCollapse ? '58px' : '200px'">
-        <div class="icon-holder">
-          <i
-            :class="[
-              'toggle-icon',
-              {
-                'el-icon-s-unfold': isCollapse
-              },
-              {
-                'el-icon-s-fold': !isCollapse
-              }
-            ]"
-            @click="toggleCollapse"
-          >
-          </i>
-        </div>
-        <el-menu
-          :default-active="activeIndex"
-          class="el-menu-vertical-demo"
-          background-color="#333744"
-          text-color="#fff"
-          :collapse="isCollapse"
-          :collapse-transition="false"
-          active-text-color="#409EFF"
+    <el-aside :width="isCollapse ? '58px' : '200px'">
+      <div class="icon-holder">
+        <i
+          :class="[
+            'toggle-icon',
+            {
+              'el-icon-s-unfold': isCollapse
+            },
+            {
+              'el-icon-s-fold': !isCollapse
+            }
+          ]"
+          @click="toggleCollapse"
         >
-          <el-menu-item
-            v-for="(menu, index) in managementMenus"
-            :index="menu.name"
-            :key="index"
-            @click="setContent(menu)"
-          >
-            <i :class="menu.iconClass"></i>
-            <span slot="title">{{ menu.title }}</span>
-          </el-menu-item>
-        </el-menu>
-      </el-aside>
+        </i>
+      </div>
+      <el-menu
+        :default-active="activeIndex"
+        class="el-menu-vertical-demo"
+        background-color="#333744"
+        text-color="#fff"
+        :collapse="isCollapse"
+        :collapse-transition="false"
+        active-text-color="#409EFF"
+      >
+        <el-menu-item
+          v-for="(menu, index) in managementMenus"
+          :index="menu.name"
+          :key="index"
+          @click="setContent(menu)"
+        >
+          <i :class="menu.iconClass"></i>
+          <span slot="title">{{ menu.title }}</span>
+        </el-menu-item>
+      </el-menu>
+    </el-aside>
+    <el-container>
+      <el-header>
+        <admin-header class="header" />
+      </el-header>
       <el-main>
         <el-card>
           <router-view />
@@ -50,17 +50,17 @@
 </template>
 
 <script>
-import AppHeader from '@/components/app-header'
+import AdminHeader from '@/components/management/header'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    AppHeader
+    AdminHeader
   },
 
   provide() {
     return {
-      isAdmin: this.isAdmin
+      isSuperAdmin: this.isSuperAdmin
     }
   },
 
@@ -71,7 +71,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('user', ['isAuthenticated', 'isAdmin']),
+    ...mapGetters('admin', ['isAuthenticated', 'isSuperAdmin']),
     managementMenus() {
       const menus = [
         {
@@ -87,7 +87,7 @@ export default {
           name: 'CompanyManagement',
           url: '/management/company',
           iconClass: 'el-icon-office-building',
-          hide: !this.isAdmin
+          hide: !this.isSuperAdmin
         },
         {
           id: '3',
@@ -109,7 +109,7 @@ export default {
           name: 'UserManagement',
           url: '/management/user',
           iconClass: 'el-icon-user',
-          hide: !this.isAdmin
+          hide: !this.isSuperAdmin
         },
         {
           id: '6',
@@ -117,7 +117,7 @@ export default {
           name: 'CompanyProfile',
           url: '/management/CompanyProfile',
           iconClass: 'el-icon-office-building',
-          hide: this.isAdmin
+          hide: this.isSuperAdmin
         },
         {
           id: '7',
@@ -136,6 +136,9 @@ export default {
       this.isCollapse = !this.isCollapse
     },
     setContent(menu) {
+      if (this.activeIndex === menu.name) {
+        return
+      }
       this.activeIndex = menu.name
       this.$router.push({ name: menu.name })
     }

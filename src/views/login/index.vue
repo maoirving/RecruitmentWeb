@@ -75,7 +75,7 @@ export default {
     },
 
     isManagement() {
-      return this.$route.name === 'LoginManagement'
+      return this.$route.name === 'ManagementLogin'
     },
 
     title() {
@@ -99,7 +99,9 @@ export default {
     async success() {
       this.isShow = false // 通过验证后，需要手动隐藏模态框
       this.loginForm.type = this.userType
-      this.login(this.loginForm)
+      const type = this.isWorker ? 'user' : 'admin'
+      this.$store
+        .dispatch(`${type}/login`, this.loginForm)
         .then(() => {
           this.$message.success('登录成功')
           if (this.isWorker) {

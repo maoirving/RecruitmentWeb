@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const getDefaultState = () => {
   return {
-    token: getToken(),
+    token: getToken('adminToken'),
     avatar: '',
     role: ''
   }
@@ -12,7 +12,8 @@ const getDefaultState = () => {
 const state = getDefaultState
 
 const getters = {
-  isAuthenticated: state => !!state.token
+  isAuthenticated: state => !!state.token,
+  isSuperAdmin: state => state.role === 'admin'
 }
 
 const mutations = {
@@ -40,7 +41,7 @@ const actions = {
         .then(response => {
           const { data } = response
           commit('SET_TOKEN', data.user.token)
-          setToken('token', data.user.token)
+          setToken('adminToken', data.user.token)
           resolve()
         })
         .catch(error => {
@@ -50,7 +51,7 @@ const actions = {
   },
 
   // get user info
-  getUserInfo({ commit, state }) {
+  getAdminInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       axios
         .get(`/users/info`)
@@ -68,7 +69,7 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      removeToken() // must remove  token  first
+      removeToken('admin') // must remove  token  first
       commit('RESET_STATE')
       resolve()
     })
