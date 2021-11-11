@@ -5,7 +5,8 @@ const getDefaultState = () => {
   return {
     token: getToken('adminToken'),
     avatar: '',
-    role: ''
+    role: '',
+    companyId: ''
   }
 }
 
@@ -13,7 +14,8 @@ const state = getDefaultState
 
 const getters = {
   isAuthenticated: state => !!state.token,
-  isSuperAdmin: state => state.role === 'admin'
+  isSuperAdmin: state => state.role === 'admin',
+  companyId: state => state.companyId
 }
 
 const mutations = {
@@ -28,6 +30,9 @@ const mutations = {
   },
   SET_ROLE: (state, role) => {
     state.role = role
+  },
+  SET_CompanyId: (state, companyId) => {
+    state.companyId = companyId
   }
 }
 
@@ -62,6 +67,7 @@ const actions = {
         .then(({ data }) => {
           commit('SET_AVATAR', data.user.imageUrl)
           commit('SET_ROLE', data.user.type)
+          commit('SET_CompanyId', data.user.companyId)
           resolve(data)
         })
         .catch(error => {

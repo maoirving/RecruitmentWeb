@@ -54,8 +54,10 @@ export default {
         sex: '',
         birthday: '',
         phoneNumber: '',
-        email: ''
-      }
+        email: '',
+        companyId: ''
+      },
+      isRecruiter: true
     }
   },
 
@@ -75,7 +77,8 @@ export default {
               'sex',
               'birthday',
               'phoneNumber',
-              'email'
+              'email',
+              'companyId'
             ])
           )
         }
@@ -182,6 +185,13 @@ export default {
           }
         })
       }
+      if (this.isRecruiter) {
+        items.push({
+          label: '公司代码',
+          prop: 'companyId',
+          rule: 'required'
+        })
+      }
       return items
     }
   },
@@ -197,7 +207,8 @@ export default {
         sex: '',
         birthday: '',
         phoneNumber: '',
-        email: ''
+        email: '',
+        companyId: ''
       }
       this.$refs.userFormRef.$refs['form'].resetFields()
       this.dialogVisible = false

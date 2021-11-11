@@ -64,6 +64,10 @@ export default {
         {
           label: '电子邮箱',
           prop: 'email'
+        },
+        {
+          label: '所属公司',
+          prop: 'companyName'
         }
       ],
       profileForm: {}
@@ -101,6 +105,7 @@ export default {
         data = await this.getAdminInfo()
       }
       this.profileForm = data.user
+      this.profileForm.companyName = data.user?.Company?.name
       this.profileForm.birthday = moment(this.profileForm.birthday)
         .utcOffset(0)
         .format('YYYY-MM-DD')

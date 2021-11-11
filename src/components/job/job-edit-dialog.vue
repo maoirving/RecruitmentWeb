@@ -14,7 +14,11 @@
       :disabled="disabled"
     >
       <div slot="salary">
-        <el-input-number v-model="jobForm.minSalary" :step="1" :min="1"></el-input-number>
+        <el-input-number
+          v-model="jobForm.minSalary"
+          :step="1"
+          :min="1"
+        ></el-input-number>
         <span class="horizontal-line"> - </span>
         <el-input-number
           v-model="jobForm.maxSalary"
@@ -49,6 +53,7 @@ import {
   workExperienceOptions
 } from '@/utils/data-source'
 import { parseToText, parseToHtml } from '@/utils/parsers'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -121,6 +126,7 @@ export default {
   },
 
   computed: {
+    ...mapState('admin', ['companyId']),
     isEdit() {
       return this.outerData && this.outerData.id !== ''
     },
@@ -128,7 +134,11 @@ export default {
       return this.outerData && this.outerData.status
     },
     dialogTitle() {
-      return this.isEdit ? (this.disabled ? '查看职位' : '编辑职位') : '新增职位'
+      return this.isEdit
+        ? this.disabled
+          ? '查看职位'
+          : '编辑职位'
+        : '新增职位'
     },
 
     formItems() {
@@ -283,6 +293,9 @@ export default {
       job.salary = `${this.jobForm.minSalary}-${this.jobForm.maxSalary}K`
       job.description = parseToHtml(job.description)
       job.skill = parseToHtml(job.skill)
+      if (!job.companyId) {
+        job.companyId = this.companyId
+      }
       const params = omitBy(job, val => val === '')
       if (extraParams) {
         Object.assign(params, extraParams)

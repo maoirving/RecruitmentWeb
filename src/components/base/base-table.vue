@@ -20,7 +20,11 @@
     >
       <template v-for="(column, i) in visibleColumns">
         <template v-if="!column.slot">
-          <el-table-column v-if="!column.component" :key="i" v-bind="columnAttrs(column)" />
+          <el-table-column
+            v-if="!column.component"
+            :key="i"
+            v-bind="columnAttrs(column)"
+          />
           <el-table-column v-else :key="i" v-bind="columnAttrs(column)">
             <template slot-scope="scope">
               <component
@@ -30,14 +34,21 @@
                 :columns="columns"
                 v-on="componentEvents(column, scope)"
               >
-                <template v-if="column.component.slot">{{ item[column.component.slot] }}</template>
+                <template v-if="column.component.slot">{{
+                  item[column.component.slot]
+                }}</template>
               </component>
             </template>
           </el-table-column>
         </template>
       </template>
 
-      <el-table-column align="center" label="操作" fixed="right" :width="columnWidth">
+      <el-table-column
+        align="center"
+        label="操作"
+        fixed="right"
+        :width="columnWidth"
+      >
         <template slot-scope="scope">
           <template v-for="(action, i) in getVisibleActions(scope)">
             <el-button
@@ -197,7 +208,9 @@ export default {
                   vm.$confirm('确认批量删除选中项？', { type: 'warning' })
                     .then(() => {
                       const result = vm.selectedArr.every(async item => {
-                        const res = await vm.$axios.delete(`/${vm.routeKey}/${item.id}`)
+                        const res = await vm.$axios.delete(
+                          `/${vm.routeKey}/${item.id}`
+                        )
                         return res.data.success
                       })
                       if (!result) {
@@ -243,12 +256,16 @@ export default {
           newActions.push({
             label: '删除',
             type: 'danger',
-            disabled: scope.row.status,
+            disabled: !!scope.row.status,
             events: {
               click({ row }) {
-                this.$confirm(`确认删除该${this.routeText}？`, { type: 'warning' })
+                this.$confirm(`确认删除该${this.routeText}？`, {
+                  type: 'warning'
+                })
                   .then(async () => {
-                    const res = await this.$axios.delete(`/${this.routeKey}/${row.id}`)
+                    const res = await this.$axios.delete(
+                      `/${this.routeKey}/${row.id}`
+                    )
                     if (!res.data.success) {
                       return this.$message.error('删除失败')
                     }
@@ -265,7 +282,10 @@ export default {
       return newActions
     },
     reload() {
-      const params = omitBy(Object.assign(this.pageInfo, this.filterParams), val => val === '')
+      const params = omitBy(
+        Object.assign(this.pageInfo, this.filterParams),
+        val => val === ''
+      )
       this.loading = true
       setTimeout(async () => {
         const res = await this.fetchData(params)

@@ -30,6 +30,7 @@ import moment from 'moment'
 import ApplicationHandleDialog from '@/components/application/application-handle-dialog'
 import ResumeReadDialog from '@/components/account/resume/resume-read-dialog'
 import ApplicationEditDialog from '@/components/application/application-edit-dialog'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -131,6 +132,7 @@ export default {
   },
 
   computed: {
+    ...mapState('admin', ['companyId']),
     defaultActions() {
       return this.isSuperAdmin ? ['delete'] : []
     },
@@ -157,7 +159,9 @@ export default {
             clearable: true,
             placeholder: '学历'
           },
-          options: educationBackgroundOptions.filter(item => item.value !== '不限')
+          options: educationBackgroundOptions.filter(
+            item => item.value !== '不限'
+          )
         },
         {
           key: 'handledStatus',
@@ -191,8 +195,17 @@ export default {
 
   methods: {
     async getApplications(params = {}) {
+      let extra = {}
+      if (this.companyId) {
+        extra = {
+          companyId: this.companyId
+        }
+      }
       const res = await this.$axios.get('/applications', {
-        params: params
+        params: {
+          ...params,
+          ...extra
+        }
       })
       const list = res.data.applications
       list.forEach(item => {
@@ -201,7 +214,10 @@ export default {
         const resume = item.ResumeFile
         item.userRealName = user.realName
         item.userSex = user.sex
-        item.userAge = new Date().getFullYear() - new Date(user.birthday).getFullYear() + '岁'
+        item.userAge =
+          new Date().getFullYear() -
+          new Date(user.birthday).getFullYear() +
+          '岁'
         item.jobName = job.name
         item.jobType = job.type
         item.resumeName = resume && resume.name

@@ -16,12 +16,16 @@
 import BaseTable from '@/components/base/base-table'
 import { optionFormatter } from '@/utils/formatter'
 import {
+  getMatchedLabel,
+  colorTypeOptions,
+  jobStatusOptions,
   jobTypeOptions,
   educationBackgroundOptions,
   workExperienceOptions
 } from '@/utils/data-source'
 import JobEditDialog from '@/components/job/job-edit-dialog'
 import moment from 'moment'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -79,6 +83,22 @@ export default {
                 .format('YYYY-MM-DD HH:mm')
             }
           }
+        },
+        {
+          width: '90px',
+          label: '发布状态',
+          prop: 'status',
+          component: {
+            control: 'BaseTag',
+            attrs: {
+              type({ row }) {
+                return getMatchedLabel(colorTypeOptions, row.status)
+              },
+              text({ row }) {
+                return getMatchedLabel(jobStatusOptions, row.status)
+              }
+            }
+          }
         }
       ],
       actions: [
@@ -90,7 +110,9 @@ export default {
           events: {
             click({ row }) {
               const handleText = row.status ? '下架' : '发布'
-              this.$confirm(`确认${handleText}该职位？`, { type: 'warning' }).then(async () => {
+              this.$confirm(`确认${handleText}该职位？`, {
+                type: 'warning'
+              }).then(async () => {
                 await this.$axios.put(`/jobs/${row.id}`, {
                   status: !row.status
                 })
@@ -105,6 +127,7 @@ export default {
   },
 
   computed: {
+    ...mapState('admin', ['companyId']),
     filters() {
       return [
         {
@@ -151,8 +174,17 @@ export default {
 
   methods: {
     async getJobs(params = {}) {
+      let extra = {}
+      if (this.companyId) {
+        extra = {
+          companyId: this.companyId
+        }
+      }
       const res = await this.$axios.get('/jobs', {
-        params: params
+        params: {
+          ...params,
+          ...extra
+        }
       })
       const list = res.data.jobs
       const newRes = {

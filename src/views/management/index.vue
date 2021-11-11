@@ -51,7 +51,7 @@
 
 <script>
 import AdminHeader from '@/components/management/header'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -60,18 +60,20 @@ export default {
 
   provide() {
     return {
-      isSuperAdmin: this.isSuperAdmin
+      isSuperAdmin: this.isSuperAdmin,
+      companyId: this.companyId
     }
   },
 
   data() {
     return {
-      isCollapse: false
+      isCollapse: false,
+      companyIdV: ''
     }
   },
 
   computed: {
-    ...mapGetters('admin', ['isAuthenticated', 'isSuperAdmin']),
+    ...mapGetters('admin', ['isAuthenticated', 'isSuperAdmin', 'companyId']),
     managementMenus() {
       const menus = [
         {
@@ -113,14 +115,6 @@ export default {
         },
         {
           id: '6',
-          title: '公司信息',
-          name: 'CompanyProfile',
-          url: '/management/CompanyProfile',
-          iconClass: 'el-icon-office-building',
-          hide: this.isSuperAdmin
-        },
-        {
-          id: '7',
           title: '我的信息',
           name: 'ProfileManagement',
           url: '/management/profile',

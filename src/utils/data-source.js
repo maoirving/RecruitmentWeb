@@ -47,6 +47,17 @@ export const jobTypeOptions = [
   }
 ]
 
+export const jobStatusOptions = [
+  {
+    label: '未发布',
+    value: 0
+  },
+  {
+    label: '已发布',
+    value: 1
+  }
+]
+
 export const educationBackgroundOptions = [
   {
     label: '不限',
