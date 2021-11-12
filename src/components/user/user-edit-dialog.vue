@@ -24,6 +24,7 @@ import BaseForm from '@/components/base/base-form'
 import { pick, omit, omitBy, cloneDeep } from 'lodash'
 import { sexOptions, userTypeOptions } from '@/utils/data-source'
 import moment from 'moment'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -56,8 +57,7 @@ export default {
         phoneNumber: '',
         email: '',
         companyId: ''
-      },
-      isRecruiter: true
+      }
     }
   },
 
@@ -87,6 +87,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters('admin', ['isRecruiter']),
     isEdit() {
       return this.outerData && this.outerData.id !== ''
     },
@@ -97,11 +98,7 @@ export default {
       if (this.isProfileType) {
         return '修改个人信息'
       }
-      return this.isEdit
-        ? this.disabled
-          ? '查看用户'
-          : '编辑用户'
-        : '新增用户'
+      return this.isEdit ? (this.disabled ? '查看用户' : '编辑用户') : '新增用户'
     },
 
     options() {

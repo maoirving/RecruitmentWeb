@@ -21,6 +21,9 @@
                 <span v-else>{{ item.title }}</span>
               </router-link>
             </li>
+            <li v-if="isRecruiter" class="menu-list-item">
+              <a class="text-link-black" href="javascript:;" @click="handleJump">管理员登录</a>
+            </li>
           </ul>
         </el-col>
         <el-col class="flex items-center justify-end" :span="8">
@@ -78,7 +81,7 @@ export default {
 
   computed: {
     ...mapState('admin', ['avatar']),
-    ...mapGetters('admin', ['isAuthenticated', 'isSuperAdmin']),
+    ...mapGetters('admin', ['isAuthenticated', 'isSuperAdmin', 'isRecruiter']),
     isActive() {
       return name => {
         if (name === this.$route.name) {
@@ -109,6 +112,17 @@ export default {
 
   methods: {
     ...mapActions('admin', ['getAdminInfo', 'logout']),
+    handleJump() {
+      this.$confirm('前往登录页面会自动退出当前账号，是否确认？', { type: 'warning' })
+        .then(() => {
+          this.logout()
+            .then(() => {
+              this.$router.push('/management/login')
+            })
+            .catch(() => {})
+        })
+        .catch(() => {})
+    },
     handleLogout() {
       this.$confirm('确认退出登录？', { type: 'warning' })
         .then(() => {

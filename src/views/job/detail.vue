@@ -17,7 +17,7 @@
               </div>
             </div>
           </div>
-          <div class="btn-holder">
+          <div class="btn-holder" v-if="job.status">
             <el-button type="primary" size="small" round @click="showDialog">
               立即申请
             </el-button>

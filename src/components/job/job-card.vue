@@ -4,6 +4,9 @@
       <h4 class="text-base truncate header-title" :class="{ 'text-green-600': !isSimpleType }">
         <span>{{ job.name }}</span>
         <el-tag v-if="!!jobType" class="ml-2" type="warning" size="mini">{{ jobType }}</el-tag>
+        <el-tag v-if="application && !job.status" class="ml-2" type="info" size="mini">
+          职位已关闭
+        </el-tag>
       </h4>
       <span class="header-tag">
         {{ job.salary }}

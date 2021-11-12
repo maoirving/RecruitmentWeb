@@ -28,7 +28,7 @@ export default {
 
   methods: {
     async getCompanies() {
-      const res = await this.$axios.get('/companies?limit=4')
+      const res = await this.$axios.get('/companies?limit=8')
       this.companies = res.data.companies
     }
   },

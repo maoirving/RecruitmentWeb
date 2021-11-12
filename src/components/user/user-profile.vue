@@ -7,7 +7,7 @@
       <el-col
         class="profile-list-item"
         :span="12"
-        v-for="(item, index) in profileItems"
+        v-for="(item, index) in visibleProfileItems"
         :key="index"
       >
         <label class="label" for="">{{ item.label }}：</label>
@@ -28,7 +28,7 @@
 <script>
 import UserEditDialog from '@/components/user/user-edit-dialog'
 import moment from 'moment'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -64,10 +64,6 @@ export default {
         {
           label: '电子邮箱',
           prop: 'email'
-        },
-        {
-          label: '所属公司',
-          prop: 'companyName'
         }
       ],
       profileForm: {}
@@ -75,8 +71,19 @@ export default {
   },
 
   computed: {
+    ...mapGetters('admin', ['isRecruiter']),
     imageUrl() {
       return this.profileForm.imageUrl ?? require('@/assets/images/user.png')
+    },
+    visibleProfileItems() {
+      const newItems = this.profileItems
+      if (this.isRecruiter) {
+        newItems.push({
+          label: '所属公司',
+          prop: 'companyName'
+        })
+      }
+      return newItems
     }
   },
 

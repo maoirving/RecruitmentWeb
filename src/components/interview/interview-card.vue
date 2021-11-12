@@ -12,7 +12,18 @@
         <div class="interview-right">
           <div class="interview-header">
             <h4 class="text-base header-title">{{ interview.recruiterName }}</h4>
-            <span class="time-text">{{ interview.createdAt | dateFormat }}</span>
+            <div class="right-text">
+              <el-tag v-if="interview.agreedStatus === 0" class="mr-2" type="warning" size="mini">
+                未处理
+              </el-tag>
+              <el-tag v-if="interview.agreedStatus === 1" class="mr-2" type="success" size="mini">
+                已接受
+              </el-tag>
+              <el-tag v-if="interview.agreedStatus === -1" class="mr-2" type="danger" size="mini">
+                已拒绝
+              </el-tag>
+              <span>{{ interview.createdAt | dateFormat }}</span>
+            </div>
           </div>
           <div class="interview-body">
             <p>{{ interview.companyName }}</p>
@@ -74,6 +85,7 @@ export default {
 .interview-card {
   cursor: pointer;
   padding: $gap;
+  border-bottom: 1px solid #f1f1f1;
   transition: all 0.3s;
   &:hover {
     background-color: #f2f5fa;
@@ -88,7 +100,7 @@ export default {
       .header-title {
         font-weight: 400;
       }
-      .time-text {
+      .right-text {
         margin-left: auto;
       }
     }
