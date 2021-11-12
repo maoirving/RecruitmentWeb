@@ -1,7 +1,8 @@
 <template>
   <el-container class="management-container">
     <el-aside :width="isCollapse ? '58px' : '200px'">
-      <div class="icon-holder">
+      <div class="header-holder">
+        <h3 v-if="!isCollapse" class="text-holder">{{ menuTitle }}</h3>
         <i
           :class="[
             'toggle-icon',
@@ -73,7 +74,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters('admin', ['isAuthenticated', 'isSuperAdmin', 'companyId']),
+    ...mapGetters('admin', ['isAuthenticated', 'isSuperAdmin', 'isRecruiter', 'companyId']),
+    menuTitle() {
+      return this.isRecruiter ? '企业版' : '后台管理'
+    },
     managementMenus() {
       const menus = [
         {
@@ -156,11 +160,19 @@ export default {
   .el-aside {
     background-color: #333744;
     transition: all 0.4s;
-    .icon-holder {
+    .header-holder {
+      display: flex;
       text-align: right;
       padding: $gap;
+      .text-holder {
+        font-size: 18px;
+        width: 100%;
+        text-align: center;
+        color: #b3b4af;
+      }
       .toggle-icon {
         font-size: 20px;
+        margin-left: auto;
         transition: all 0.3s;
         &:hover {
           color: #fff;
