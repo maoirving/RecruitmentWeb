@@ -14,7 +14,11 @@
         :form-data="interviewForm"
         :disabled="isInWorker"
       />
-      <interview-form ref="interviewRef" :interview="interviewForm" :disabled="isInWorker" />
+      <interview-form
+        ref="interviewRef"
+        :interview="interviewForm"
+        :disabled="isInWorker"
+      />
     </template>
     <template v-if="isInWorker" slot="extra-button">
       <el-button type="danger" size="small" @click="handleAccept(false)">
@@ -34,7 +38,7 @@ import BaseForm from '@/components/base/base-form'
 import { pick, omit, omitBy, cloneDeep } from 'lodash'
 import { getApplicatonIdOptions, getUserOptions } from '@/utils/data-source'
 import moment from 'moment'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -42,8 +46,6 @@ export default {
     InterviewForm,
     BaseForm
   },
-
-  inject: ['isSuperAdmin'],
 
   props: {
     withApplication: {
@@ -96,9 +98,7 @@ export default {
   },
 
   computed: {
-    ...mapState('user', {
-      userId: state => state.id
-    }),
+    ...mapGetters('admin', ['isSuperAdmin']),
     isEdit() {
       return this.outerData && this.outerData.id !== ''
     },
@@ -107,7 +107,11 @@ export default {
       if (this.isInWorker) {
         text = '面试邀请'
       } else {
-        text = this.isEdit ? '编辑面试' : this.withApplication ? '新增面试' : '邀请面试'
+        text = this.isEdit
+          ? '编辑面试'
+          : this.withApplication
+          ? '新增面试'
+          : '邀请面试'
       }
       return text
     },
@@ -162,17 +166,19 @@ export default {
     },
     handleSave() {
       let isValid = false
-      this.$refs.interviewRef.$refs.interviewFormRef.$refs['form'].validate(valid => {
-        if (this.withApplication) {
-          this.$refs.interviewFormRef.$refs['form'].validate(valid2 => {
-            if (!valid || !valid2) return
+      this.$refs.interviewRef.$refs.interviewFormRef.$refs['form'].validate(
+        valid => {
+          if (this.withApplication) {
+            this.$refs.interviewFormRef.$refs['form'].validate(valid2 => {
+              if (!valid || !valid2) return
+              isValid = true
+            })
+          } else {
+            if (!valid) return
             isValid = true
-          })
-        } else {
-          if (!valid) return
-          isValid = true
+          }
         }
-      })
+      )
       if (isValid) {
         this.$confirm('确认发送该面试邀请？', { type: 'warning' })
           .then(async () => {
@@ -190,17 +196,23 @@ export default {
     },
     async saveInterview() {
       const interviewId = this.interviewForm.id
-      const interview = omit(this.interviewForm, ['id', 'interviewDate', 'interviewTime'])
+      const interview = omit(this.interviewForm, [
+        'id',
+        'interviewDate',
+        'interviewTime'
+      ])
       interview.interviewAt = `${moment(this.interviewForm.interviewDate)
         .utcOffset(0)
         .format('YYYY-MM-DD')} ${this.interviewForm.interviewTime}`
       const params = omitBy(interview, val => val === '')
-      params.recruiterId = params.recruiterId ? params.recruiterId : this.userId
       if (!this.isEdit) {
         const res = await this.$axios.post(`/interviews`, params)
         return res.data.success
       } else {
-        const editRes = await this.$axios.put(`/interviews/${interviewId}`, params)
+        const editRes = await this.$axios.put(
+          `/interviews/${interviewId}`,
+          params
+        )
         return editRes.data.success
       }
     },

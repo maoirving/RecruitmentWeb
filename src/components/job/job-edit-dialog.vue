@@ -53,15 +53,13 @@ import {
   workExperienceOptions
 } from '@/utils/data-source'
 import { parseToText, parseToHtml } from '@/utils/parsers'
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     BaseDialog,
     BaseForm
   },
-
-  // inject: ['isSuperAdmin'],
 
   data() {
     return {
@@ -126,7 +124,6 @@ export default {
   },
 
   computed: {
-    ...mapState('admin', ['companyId']),
     ...mapGetters('admin', ['isSuperAdmin']),
     isEdit() {
       return this.outerData && this.outerData.id !== ''
@@ -294,9 +291,6 @@ export default {
       job.salary = `${this.jobForm.minSalary}-${this.jobForm.maxSalary}K`
       job.description = parseToHtml(job.description)
       job.skill = parseToHtml(job.skill)
-      if (!job.companyId) {
-        job.companyId = this.companyId
-      }
       const params = omitBy(job, val => val === '')
       if (extraParams) {
         Object.assign(params, extraParams)

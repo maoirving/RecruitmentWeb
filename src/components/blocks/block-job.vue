@@ -2,7 +2,12 @@
   <block-section title="最新职位" url="/job">
     <template slot="block-content">
       <el-row class="flex-wrap" type="flex" :gutter="20">
-        <el-col class="mb-3" v-for="(job, index) in jobs" :key="index" :span="8">
+        <el-col
+          class="mb-3"
+          v-for="(job, index) in jobs"
+          :key="index"
+          :span="8"
+        >
           <job-card :job="job" />
         </el-col>
       </el-row>
@@ -28,7 +33,12 @@ export default {
 
   methods: {
     async getJobs() {
-      const res = await this.$axios.get('/jobs?limit=6')
+      const res = await this.$axios.get('/jobs', {
+        params: {
+          active: true,
+          limit: 6
+        }
+      })
       this.jobs = res.data.jobs
     }
   },

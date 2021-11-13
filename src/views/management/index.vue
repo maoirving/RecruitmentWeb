@@ -52,34 +52,21 @@
 
 <script>
 import AdminHeader from '@/components/management/header'
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     AdminHeader
   },
 
-  provide() {
-    return {
-      isSuperAdmin: this.isSuperAdmin,
-      companyId: this.companyId
-    }
-  },
-
   data() {
     return {
-      isCollapse: false,
-      companyIdV: ''
+      isCollapse: false
     }
   },
 
   computed: {
-    ...mapGetters('admin', [
-      'isAuthenticated',
-      'isSuperAdmin',
-      'isRecruiter',
-      'companyId'
-    ]),
+    ...mapGetters('admin', ['isSuperAdmin', 'isRecruiter']),
     menuTitle() {
       return this.isRecruiter ? '企业版' : '后台管理'
     },

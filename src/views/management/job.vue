@@ -25,7 +25,6 @@ import {
 } from '@/utils/data-source'
 import JobEditDialog from '@/components/job/job-edit-dialog'
 import moment from 'moment'
-import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -127,7 +126,6 @@ export default {
   },
 
   computed: {
-    ...mapState('admin', ['companyId']),
     filters() {
       return [
         {
@@ -174,17 +172,8 @@ export default {
 
   methods: {
     async getJobs(params = {}) {
-      let extra = {}
-      if (this.companyId) {
-        extra = {
-          companyId: this.companyId
-        }
-      }
       const res = await this.$axios.get('/jobs', {
-        params: {
-          ...params,
-          ...extra
-        }
+        params: params
       })
       const list = res.data.jobs
       const newRes = {

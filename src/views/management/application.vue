@@ -30,7 +30,7 @@ import moment from 'moment'
 import ApplicationHandleDialog from '@/components/application/application-handle-dialog'
 import ResumeReadDialog from '@/components/account/resume/resume-read-dialog'
 import ApplicationEditDialog from '@/components/application/application-edit-dialog'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -39,8 +39,6 @@ export default {
     ResumeReadDialog,
     ApplicationEditDialog
   },
-
-  inject: ['isSuperAdmin'],
 
   data() {
     const vm = this
@@ -132,7 +130,7 @@ export default {
   },
 
   computed: {
-    ...mapState('admin', ['companyId']),
+    ...mapGetters('admin', ['isSuperAdmin']),
     defaultActions() {
       return this.isSuperAdmin ? ['delete'] : []
     },
@@ -195,17 +193,8 @@ export default {
 
   methods: {
     async getApplications(params = {}) {
-      let extra = {}
-      if (this.companyId) {
-        extra = {
-          companyId: this.companyId
-        }
-      }
       const res = await this.$axios.get('/applications', {
-        params: {
-          ...params,
-          ...extra
-        }
+        params: params
       })
       const list = res.data.applications
       list.forEach(item => {

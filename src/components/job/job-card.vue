@@ -1,16 +1,54 @@
 <template>
   <div class="job-card" @click="toJobDetail">
     <div class="job-card-header">
-      <h4 class="text-base truncate header-title" :class="{ 'text-green-600': !isSimpleType }">
+      <h4
+        class="text-base truncate header-title"
+        :class="{ 'text-green-600': !isSimpleType }"
+      >
         <span>{{ job.name }}</span>
-        <el-tag v-if="!!jobType" class="ml-2" type="warning" size="mini">{{ jobType }}</el-tag>
-        <el-tag v-if="application && !job.status" class="ml-2" type="info" size="mini">
+        <el-tag v-if="!!jobType" class="ml-2" type="warning" size="mini">
+          {{ jobType }}
+        </el-tag>
+        <el-tag
+          v-if="application && !job.status"
+          class="ml-2"
+          type="info"
+          size="mini"
+        >
           职位已关闭
         </el-tag>
       </h4>
-      <span class="header-tag">
-        {{ job.salary }}
-      </span>
+      <div>
+        <template v-if="application">
+          <el-tag
+            v-if="application.handledStatus === 0"
+            class="mr-2"
+            type="warning"
+            size="mini"
+          >
+            未处理
+          </el-tag>
+          <el-tag
+            v-if="application.handledStatus === 1"
+            class="mr-2"
+            type="success"
+            size="mini"
+          >
+            通过初筛
+          </el-tag>
+          <el-tag
+            v-if="application.handledStatus === -1"
+            class="mr-2"
+            type="danger"
+            size="mini"
+          >
+            不合适
+          </el-tag>
+        </template>
+        <span class="header-tag">
+          {{ job.salary }}
+        </span>
+      </div>
     </div>
     <div class="job-card-body">
       <p v-if="!isSimpleType" class="body-content">
@@ -23,7 +61,9 @@
         <span class="text-xs">{{ job.recruitingNnumbers }}人</span>
       </p>
       <p v-if="application" class="description">
-        <span class="date"> 申请于 {{ application.createdAt | dateFormat }}</span>
+        <span class="date">
+          申请于 {{ application.createdAt | dateFormat }}</span
+        >
         <span class="date" v-if="application.readAt">
           （于 {{ application.readAt | dateFormat() }} 被查看）
         </span>

@@ -20,7 +20,7 @@ import {
 } from '@/utils/data-source'
 import InterviewEditDialog from '@/components/interview/interview-edit-dialog'
 import moment from 'moment'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -28,11 +28,14 @@ export default {
     InterviewEditDialog
   },
 
-  inject: ['isSuperAdmin'],
-
   data() {
-    return {
-      columns: [
+    return {}
+  },
+
+  computed: {
+    ...mapGetters('admin', ['isSuperAdmin']),
+    columns() {
+      return [
         {
           label: '公司名称',
           prop: 'companyName',
@@ -94,11 +97,7 @@ export default {
           }
         }
       ]
-    }
-  },
-
-  computed: {
-    ...mapState('admin', ['companyId']),
+    },
     filters() {
       return [
         {
@@ -142,17 +141,8 @@ export default {
 
   methods: {
     async getInterviews(params = {}) {
-      let extra = {}
-      if (this.companyId) {
-        extra = {
-          companyId: this.companyId
-        }
-      }
       const res = await this.$axios.get('/interviews', {
-        params: {
-          ...params,
-          ...extra
-        }
+        params: params
       })
       const list = res.data.interviews
       if (list && list.length) {

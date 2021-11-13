@@ -37,17 +37,10 @@
 
 <script>
 import AppLayout from '@/layout/app-layout'
-import { mapGetters } from 'vuex'
 
 export default {
   components: {
     AppLayout
-  },
-
-  provide() {
-    return {
-      isSuperAdmin: this.isSuperAdmin
-    }
   },
 
   data() {
@@ -167,7 +160,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters('admin', ['isSuperAdmin']),
     titleText() {
       let title = ''
       this.accountMenus.forEach(item => {
