@@ -78,11 +78,6 @@ const routes = [
         path: '/account/favorite',
         name: 'favorite',
         component: () => import('@/views/account/favorite')
-      },
-      {
-        path: '/account/resetPassword',
-        name: 'resetPassword',
-        component: () => import('@/views/account/resetPassword')
       }
     ]
   },

@@ -1,6 +1,6 @@
 <template>
   <base-dialog
-    dialog-width="50%"
+    dialog-width="40%"
     title="修改密码"
     :visible.sync="dialogVisible"
     @close="handleClose"
