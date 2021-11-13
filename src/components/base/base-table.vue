@@ -207,6 +207,14 @@ export default {
                 if (vm.selectedArr && vm.selectedArr.length) {
                   vm.$confirm('确认批量删除选中项？', { type: 'warning' })
                     .then(() => {
+                      const postedArr = vm.selectedArr.filter(
+                        item => item.status === 1
+                      )
+                      if (postedArr.length) {
+                        return vm.$message.warning(
+                          `${postedArr.length}条已发布的数据不能删除，请重新选择`
+                        )
+                      }
                       const result = vm.selectedArr.every(async item => {
                         const res = await vm.$axios.delete(
                           `/${vm.routeKey}/${item.id}`

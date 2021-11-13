@@ -53,7 +53,7 @@ import {
   workExperienceOptions
 } from '@/utils/data-source'
 import { parseToText, parseToHtml } from '@/utils/parsers'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -61,7 +61,7 @@ export default {
     BaseForm
   },
 
-  inject: ['isSuperAdmin'],
+  // inject: ['isSuperAdmin'],
 
   data() {
     return {
@@ -127,11 +127,12 @@ export default {
 
   computed: {
     ...mapState('admin', ['companyId']),
+    ...mapGetters('admin', ['isSuperAdmin']),
     isEdit() {
       return this.outerData && this.outerData.id !== ''
     },
     disabled() {
-      return this.outerData && this.outerData.status
+      return !!this.outerData && !!this.outerData.status
     },
     dialogTitle() {
       return this.isEdit

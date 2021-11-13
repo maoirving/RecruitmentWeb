@@ -7,11 +7,21 @@
             {{ company.name }}
           </h2>
           <div class="info-list">
-            <div class="info-list-item" v-for="(info, index) in infos" :key="index">
+            <div
+              class="info-list-item"
+              v-for="(info, index) in infos"
+              :key="index"
+            >
               <h4 class="text-lg info-title">{{ info.title }}</h4>
               <div class="content-list">
-                <div class="content-list-item" v-for="(item, i) in info.items" :key="i">
-                  <h5 class="text-sm content-title" v-if="item.name">{{ item.name }}：</h5>
+                <div
+                  class="content-list-item"
+                  v-for="(item, i) in info.items"
+                  :key="i"
+                >
+                  <h5 class="text-sm content-title" v-if="item.name">
+                    {{ item.name }}：
+                  </h5>
                   <p class="info-content" v-html="company[item.prop]"></p>
                 </div>
               </div>
@@ -21,17 +31,23 @@
       </el-col>
       <el-col class="aside-wrapper" :span="7">
         <aside-wrapper class="aside-container" title="在招职位">
-          <el-row
-            v-if="company.Jobs"
-            slot="aside-content"
-            class="flex-wrap content-list"
-            type="flex"
-            :gutter="20"
-          >
-            <el-col class="content-list-item" v-for="(job, index) in company.Jobs" :key="index">
-              <job-card :job="job" />
-            </el-col>
-          </el-row>
+          <template slot="aside-content">
+            <el-row
+              v-if="company.Jobs && company.Jobs.length"
+              class="flex-wrap content-list"
+              type="flex"
+              :gutter="20"
+            >
+              <el-col
+                class="content-list-item"
+                v-for="(job, index) in company.Jobs"
+                :key="index"
+              >
+                <job-card :job="job" />
+              </el-col>
+            </el-row>
+            <el-empty v-else description="该公司暂未发布职位" />
+          </template>
         </aside-wrapper>
       </el-col>
     </el-row>

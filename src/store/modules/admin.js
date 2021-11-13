@@ -61,7 +61,7 @@ const actions = {
   },
 
   // get user info
-  getAdminInfo({ commit, state }) {
+  getAdminInfo({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       axios
         .get(`/users/info`)
@@ -72,6 +72,7 @@ const actions = {
           resolve(data)
         })
         .catch(error => {
+          dispatch('logout')
           reject(error)
         })
     })

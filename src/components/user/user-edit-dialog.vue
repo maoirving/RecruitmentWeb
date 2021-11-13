@@ -36,6 +36,10 @@ export default {
     isProfileType: {
       type: Boolean,
       default: false
+    },
+    isInTable: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -98,7 +102,11 @@ export default {
       if (this.isProfileType) {
         return '修改个人信息'
       }
-      return this.isEdit ? (this.disabled ? '查看用户' : '编辑用户') : '新增用户'
+      return this.isEdit
+        ? this.disabled
+          ? '查看用户'
+          : '编辑用户'
+        : '新增用户'
     },
 
     options() {
@@ -248,7 +256,10 @@ export default {
         const res = await this.$axios.post(`/users`, params)
         return res.data.success
       } else {
-        const editRes = await this.$axios.put(`/users/info`, params)
+        const url = this.isInTable
+          ? `/users/info?userId=${userId}`
+          : '/users/info'
+        const editRes = await this.$axios.put(url, params)
         return editRes.data.success
       }
     }

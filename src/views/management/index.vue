@@ -74,7 +74,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters('admin', ['isAuthenticated', 'isSuperAdmin', 'isRecruiter', 'companyId']),
+    ...mapGetters('admin', [
+      'isAuthenticated',
+      'isSuperAdmin',
+      'isRecruiter',
+      'companyId'
+    ]),
     menuTitle() {
       return this.isRecruiter ? '企业版' : '后台管理'
     },

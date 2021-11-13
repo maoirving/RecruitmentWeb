@@ -4,7 +4,11 @@
       <el-row type="flex" justify="space-between">
         <el-col :span="16">
           <ul class="flex items-center unstyle-list menu-list">
-            <li class="menu-list-item" v-for="(item, index) in leftMenu" :key="index">
+            <li
+              class="menu-list-item"
+              v-for="(item, index) in leftMenu"
+              :key="index"
+            >
               <router-link
                 :class="[
                   'text-link-black',
@@ -17,18 +21,28 @@
                 ]"
                 :to="item.url"
               >
-                <el-avatar v-if="item.imageUrl" size="medium" :src="item.imageUrl" />
+                <el-avatar
+                  v-if="item.imageUrl"
+                  size="medium"
+                  :src="item.imageUrl"
+                />
                 <span v-else>{{ item.title }}</span>
               </router-link>
             </li>
             <li v-if="isRecruiter" class="menu-list-item">
-              <a class="text-link-black" href="javascript:;" @click="handleJump">管理员登录</a>
+              <a class="text-link-black" href="javascript:;" @click="handleJump"
+                >管理员登录</a
+              >
             </li>
           </ul>
         </el-col>
         <el-col class="flex items-center justify-end" :span="8">
           <ul class="flex items-center unstyle-list menu-list">
-            <li class="menu-list-item" v-for="(item, index) in rightMenu" :key="index">
+            <li
+              class="menu-list-item"
+              v-for="(item, index) in rightMenu"
+              :key="index"
+            >
               <router-link
                 :class="[
                   'text-link-black',
@@ -42,12 +56,21 @@
                 :to="item.url"
                 :target="item.target"
               >
-                <el-avatar v-if="item.imageUrl" size="medium" :src="item.imageUrl" />
+                <el-avatar
+                  v-if="item.imageUrl"
+                  size="medium"
+                  :src="item.imageUrl"
+                />
                 <span v-else>{{ item.title }}</span>
               </router-link>
             </li>
             <li v-if="isAuthenticated" class="menu-list-item">
-              <a class="text-link-black" href="javascript:;" @click="handleLogout">退出登录</a>
+              <a
+                class="text-link-black"
+                href="javascript:;"
+                @click="handleLogout"
+                >退出登录</a
+              >
             </li>
           </ul>
         </el-col>
@@ -99,11 +122,6 @@ export default {
           name: 'ProfileManagement',
           url: '/management/profile',
           imageUrl: this.avatar ?? require('@/assets/images/user.png')
-        },
-        {
-          title: '我的',
-          name: 'ProfileManagement',
-          url: '/management/profile'
         }
       ]
       return menu
@@ -113,7 +131,9 @@ export default {
   methods: {
     ...mapActions('admin', ['getAdminInfo', 'logout']),
     handleJump() {
-      this.$confirm('前往登录页面会自动退出当前账号，是否确认？', { type: 'warning' })
+      this.$confirm('前往登录页面会自动退出当前账号，是否确认？', {
+        type: 'warning'
+      })
         .then(() => {
           this.logout()
             .then(() => {

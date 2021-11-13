@@ -8,7 +8,7 @@
       @add="handleAdd"
       @edit="handleEdit"
     />
-    <user-edit-dialog ref="editDialogRef" />
+    <user-edit-dialog ref="editDialogRef" is-in-table />
   </div>
 </template>
 
@@ -88,9 +88,12 @@ export default {
               const password = '123456'
               vm.$confirm(`确认将密码重置为${password}？`, { type: 'warning' })
                 .then(async () => {
-                  const res = await vm.$axios.put(`/users/${row.id}`, {
-                    password: password
-                  })
+                  const res = await vm.$axios.put(
+                    `/users/info?userId=${row.id}`,
+                    {
+                      password: password
+                    }
+                  )
                   if (!res.data.success) {
                     return vm.$message.error('重置失败，请重试！')
                   }
