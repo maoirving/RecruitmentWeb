@@ -144,6 +144,7 @@ export default {
         .catch(() => {})
     },
     handleLogout() {
+      const isSuperAdmin = this.isSuperAdmin
       this.$confirm('确认退出登录？', { type: 'warning' })
         .then(() => {
           this.logout()
@@ -153,7 +154,11 @@ export default {
                 message: '已退出！',
                 duration: 1000,
                 onClose: () => {
-                  this.$router.go()
+                  if (isSuperAdmin) {
+                    this.$router.push('/management/login')
+                  } else {
+                    this.$router.push('/enterprise/login')
+                  }
                 }
               })
             })

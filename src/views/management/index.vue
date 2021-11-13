@@ -26,15 +26,17 @@
         :collapse-transition="false"
         active-text-color="#409EFF"
       >
-        <el-menu-item
-          v-for="(menu, index) in managementMenus"
-          :index="menu.name"
-          :key="index"
-          @click="setContent(menu)"
-        >
-          <i :class="menu.iconClass"></i>
-          <span slot="title">{{ menu.title }}</span>
-        </el-menu-item>
+        <template v-for="(menu, index) in managementMenus">
+          <el-menu-item
+            v-if="!menu.hide"
+            :index="menu.name"
+            :key="index"
+            @click="setContent(menu)"
+          >
+            <i :class="menu.iconClass"></i>
+            <span slot="title">{{ menu.title }}</span>
+          </el-menu-item>
+        </template>
       </el-menu>
     </el-aside>
     <el-container>
@@ -117,7 +119,7 @@ export default {
           iconClass: 'el-icon-set-up'
         }
       ]
-      return menus.filter(item => item.hide !== true)
+      return menus
     }
   },
 
