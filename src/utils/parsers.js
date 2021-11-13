@@ -18,7 +18,7 @@ export function parseToHtml(str) {
 }
 
 export function strToArr(str, separator = ';') {
-  return str.split(separator)
+  return str && str.split(separator)
 }
 export function arrToStr(arr, separator = ';') {
   return arr.join(separator)

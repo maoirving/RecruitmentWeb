@@ -9,47 +9,65 @@
       border
     >
       <template slot="extra">
-        <el-button size="small" round @click="showDialog">编辑</el-button>
+        <el-button size="small" round @click="showDialog">{{
+          buttonText
+        }}</el-button>
       </template>
-      <el-descriptions-item
-        v-for="(description, index) in descriptions"
-        :key="index"
-        :span="description.span ? description.span : 1"
-      >
-        <template slot="label">
-          <i :class="description.icon"></i>
-          {{ description.label }}
-        </template>
-        <span v-if="description.type === 'text'">
-          {{ resume[description.prop] }}
-        </span>
-        <div class="text-group" v-if="description.type === 'textGroup'">
-          <p v-for="(item, i) in description.children" :key="i">
-            <label>{{ item.label }}：</label>{{ resume[item.prop] }}
-          </p>
-        </div>
-        <el-avatar v-if="description.type === 'image'" :size="100" :src="resume.imageUrl" />
-        <ul v-if="description.type === 'item'" class="experience-list">
-          <li class="experience-list-item">
-            <div class="flex" v-for="(item, i) in description.children" :key="i">
-              <strong>{{ item.label }}：</strong>
-              <p v-if="item.isPeriod">{{ resume[item.prop] | parsePeriod }}</p>
-              <p v-else v-html="resume[item.prop]"></p>
-            </div>
-          </li>
-        </ul>
-        <ul v-if="description.type === 'list'" class="certificate-list">
-          <li
-            class="certificate-list-item"
-            v-for="(certificate, index) in resume.certificates"
-            :key="index"
-          >
-            {{ certificate }}
-          </li>
-        </ul>
-      </el-descriptions-item>
+      <template v-if="resume !== null">
+        <el-descriptions-item
+          v-for="(description, index) in descriptions"
+          :key="index"
+          :span="description.span ? description.span : 1"
+        >
+          <template slot="label">
+            <i :class="description.icon"></i>
+            {{ description.label }}
+          </template>
+          <span v-if="description.type === 'text'">
+            {{ resume[description.prop] }}
+          </span>
+          <div class="text-group" v-if="description.type === 'textGroup'">
+            <p v-for="(item, i) in description.children" :key="i">
+              <label>{{ item.label }}：</label>{{ resume[item.prop] }}
+            </p>
+          </div>
+          <el-avatar
+            v-if="description.type === 'image'"
+            :size="100"
+            :src="resume.imageUrl"
+          />
+          <ul v-if="description.type === 'item'" class="experience-list">
+            <li class="experience-list-item">
+              <div
+                class="flex"
+                v-for="(item, i) in description.children"
+                :key="i"
+              >
+                <strong>{{ item.label }}：</strong>
+                <p v-if="item.isPeriod">
+                  {{ resume[item.prop] | parsePeriod }}
+                </p>
+                <p v-else v-html="resume[item.prop]"></p>
+              </div>
+            </li>
+          </ul>
+          <ul v-if="description.type === 'list'" class="certificate-list">
+            <li
+              class="certificate-list-item"
+              v-for="(certificate, index) in resume.certificates"
+              :key="index"
+            >
+              {{ certificate }}
+            </li>
+          </ul>
+        </el-descriptions-item>
+      </template>
     </el-descriptions>
-    <resume-edit-dialog ref="editDialogRef" />
+    <el-empty v-if="resume === null" description="您还没有在线简历" />
+    <resume-edit-dialog
+      ref="editDialogRef"
+      :dialog-title="`${buttonText}简历`"
+    />
   </div>
 </template>
 
@@ -65,7 +83,7 @@ export default {
 
   data() {
     return {
-      resume: {},
+      resume: null,
       descriptions: [
         {
           icon: 'el-icon-user',
@@ -188,6 +206,12 @@ export default {
     }
   },
 
+  computed: {
+    buttonText() {
+      return this.resume === null ? '新建' : '编辑'
+    }
+  },
+
   filters: {
     parsePeriod(arr) {
       return arr && arr.length ? parseToPeriodRange(arr) : ''
@@ -198,17 +222,24 @@ export default {
     showDialog() {
       this.$refs.editDialogRef.dialogVisible = true
       this.$refs.editDialogRef.outerThis = this
-      this.$refs.editDialogRef.outerData = this.resume
+      if (this.resume !== null) {
+        this.$refs.editDialogRef.outerData = this.resume
+      }
     },
     async getResume() {
-      const res = await this.$axios.get('/resumes')
-      const resume = res.data.resumes[0]
-      const newResume = Object.assign(omit(resume, ['User']), resume.User)
-      newResume.age = new Date().getFullYear() - new Date(newResume.birthday).getFullYear() + '岁'
-      newResume.certificates = strToArr(newResume.certificates)
-      newResume.schoolPeriod = strToArr(newResume.schoolPeriod)
-      newResume.workPeriod = strToArr(newResume.workPeriod)
-      this.resume = newResume
+      const { data } = await this.$axios.get('/resumes')
+      const resume = data.resumes[0]
+      if (data.resumes.length) {
+        const newResume = Object.assign(omit(resume, ['User']), resume.User)
+        newResume.age =
+          new Date().getFullYear() -
+          new Date(newResume.birthday).getFullYear() +
+          '岁'
+        newResume.certificates = strToArr(newResume.certificates)
+        newResume.schoolPeriod = strToArr(newResume.schoolPeriod)
+        newResume.workPeriod = strToArr(newResume.workPeriod)
+        this.resume = newResume
+      }
     },
     reload() {
       this.getResume()

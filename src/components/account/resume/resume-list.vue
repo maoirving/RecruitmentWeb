@@ -1,25 +1,42 @@
 <template>
   <div class="resume-list-wrapper">
     <div class="list-header">
-      <el-button v-if="resumeFiles.length <= 3" size="mini" round @click="showUploadingDialog">
+      <el-button
+        v-if="resumeFiles.length <= 3"
+        size="mini"
+        round
+        @click="showUploadingDialog"
+      >
         上传
       </el-button>
     </div>
-    <ul class="unstyle-list file-list">
-      <li class="file-list-item" v-for="(file, index) in resumeFiles" :key="index">
+    <ul v-if="resumeFiles.length" class="unstyle-list file-list">
+      <li
+        class="file-list-item"
+        v-for="(file, index) in resumeFiles"
+        :key="index"
+      >
         <div>
           {{ `${index + 1}. ` }}
           <i class="el-icon-document"></i>
           {{ `${file.name}` }}
         </div>
         <div class="btn-holder">
-          <el-button size="mini" round @click="showFileDialog(file.url)">查看</el-button>
-          <el-button type="danger" size="mini" round @click="handleDelete(file.id)">
+          <el-button size="mini" round @click="showFileDialog(file.url)"
+            >查看</el-button
+          >
+          <el-button
+            type="danger"
+            size="mini"
+            round
+            @click="handleDelete(file.id)"
+          >
             删除
           </el-button>
         </div>
       </li>
     </ul>
+    <el-empty v-else description="您还没有上传简历" />
     <resume-read-dialog ref="resumeReadRef" />
     <resume-upload-dialog ref="uploadDialogRef" @reload="reload" />
   </div>

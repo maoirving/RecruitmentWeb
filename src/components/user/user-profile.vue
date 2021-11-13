@@ -96,15 +96,6 @@ export default {
   methods: {
     ...mapActions('user', ['getUserInfo']),
     ...mapActions('admin', ['getAdminInfo']),
-    async getUser() {
-      const res = await this.$axios.get('/users/info')
-      if (res.data.user) {
-        this.profileForm = res.data.user
-        this.profileForm.birthday = moment(this.profileForm.birthday)
-          .utcOffset(0)
-          .format('YYYY-MM-DD')
-      }
-    },
     showDialog() {
       this.$refs.editDialogRef.dialogVisible = true
       this.$refs.editDialogRef.outerThis = this
@@ -122,9 +113,11 @@ export default {
       }
       this.profileForm = data.user
       this.profileForm.companyName = data.user?.Company?.name
-      this.profileForm.birthday = moment(this.profileForm.birthday)
-        .utcOffset(0)
-        .format('YYYY-MM-DD')
+      if (this.profileForm.birthday) {
+        this.profileForm.birthday = moment(this.profileForm.birthday)
+          .utcOffset(0)
+          .format('YYYY-MM-DD')
+      }
     }
   },
 

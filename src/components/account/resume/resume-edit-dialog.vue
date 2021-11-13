@@ -1,7 +1,7 @@
 <template>
   <base-dialog
     class="resume-dialog"
-    title="编辑简历"
+    :title="dialogTitle"
     :visible.sync="dialogVisible"
     @close="handleClose"
     @save="handleSave"
@@ -96,6 +96,13 @@ export default {
     BaseForm
   },
 
+  props: {
+    dialogTitle: {
+      type: String,
+      default: ''
+    }
+  },
+
   data() {
     return {
       activeNames: ['certificates'],
@@ -180,17 +187,22 @@ export default {
         id: '',
         currentAddress: '',
         anticipantJob: '',
-        minSalary: '',
+        minSalary: 0,
         maxSalary: '',
         anticipantCity: '',
         school: '',
         specializedSubject: '',
-        schoolPeriod: '',
+        schoolPeriod: [],
         workCompany: '',
-        workPeriod: '',
+        workPeriod: [],
         workContent: '',
-        certificates: []
-      }
+        certificates: [
+          {
+            name: ''
+          }
+        ]
+      },
+      outerData: null
     }
   },
 
@@ -220,9 +232,19 @@ export default {
           this.resumeForm.maxSalary = parseInt(salaryArr[1])
           this.resumeForm.workContent = parseToText(row.workContent)
           this.resumeForm.certificates = []
-          row.certificates.forEach(item => {
-            this.resumeForm.certificates.push({ name: item })
-          })
+          if (row.certificates) {
+            row.certificates.forEach(item => {
+              this.resumeForm.certificates.push({ name: item })
+            })
+          } else {
+            this.resumeForm.certificates.push({ name: '' })
+          }
+          if (row.schoolPeriod === null) {
+            this.resumeForm.schoolPeriod = []
+          }
+          if (row.workPeriod === null) {
+            this.resumeForm.workPeriod = []
+          }
         }
       }
     },
@@ -238,7 +260,7 @@ export default {
 
   computed: {
     isEdit() {
-      return this.outerData && this.outerData.id !== ''
+      return !!this.outerData && !!this.outerData.id !== ''
     }
   },
 
