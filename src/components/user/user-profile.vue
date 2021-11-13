@@ -18,21 +18,27 @@
       <el-button size="small" round @click="showDialog">
         修改个人信息
       </el-button>
+      <el-button size="small" type="danger" round @click="showPasswordDialog">
+        修改密码
+      </el-button>
     </div>
     <div class="dialog-wrapper">
       <user-edit-dialog ref="editDialogRef" is-profile-type />
+      <change-password-dialog ref="passwordDialogRef" />
     </div>
   </div>
 </template>
 
 <script>
 import UserEditDialog from '@/components/user/user-edit-dialog'
+import ChangePasswordDialog from '@/components/user/change-password-dialog'
 import moment from 'moment'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
-    UserEditDialog
+    UserEditDialog,
+    ChangePasswordDialog
   },
 
   props: {
@@ -103,6 +109,9 @@ export default {
       this.$refs.editDialogRef.dialogVisible = true
       this.$refs.editDialogRef.outerThis = this
       this.$refs.editDialogRef.outerData = this.profileForm
+    },
+    showPasswordDialog() {
+      this.$refs.passwordDialogRef.dialogVisible = true
     },
     async reload() {
       let data = {}
