@@ -73,13 +73,19 @@ export default {
         interviewTime: '',
         address: '',
         tip: ''
-      }
+      },
+      matchedCompanyId: ''
     }
   },
 
   watch: {
     dialogVisible(val) {
       if (val) {
+        if (this.interviewForm.applicationId) {
+          this.matchedCompanyId = this.getMatchedCompanyId(
+            this.interviewForm.applicationId
+          )
+        }
         const row = cloneDeep(this.outerData)
         if (row) {
           this.interviewForm = Object.assign(
@@ -117,40 +123,54 @@ export default {
     },
     formItems() {
       let items = []
+      const vm = this
       if (this.withApplication) {
-        items.push(
-          {
-            label: '申请id',
-            prop: 'applicationId',
-            rule: 'required',
-            control: {
-              component: 'base-select',
-              attrs: {
-                clearable: true,
-                options: this.applicatonIdOptions
+        items.push({
+          label: '申请id',
+          prop: 'applicationId',
+          rule: 'required',
+          control: {
+            component: 'base-select',
+            attrs: {
+              clearable: true,
+              options: this.applicatonIdOptions
+            },
+            events: {
+              change(value) {
+                vm.matchedCompanyId = vm.getMatchedCompanyId(value)
               }
             }
-          },
-          {
-            label: '发送者',
-            prop: 'recruiterId',
-            rule: 'required',
-            control: {
-              component: 'base-select',
-              attrs: {
-                clearable: true,
-                options: this.userOptions
-              }
-            },
-            visible: this.isSuperAdmin
           }
-        )
+        })
+      }
+      if (this.isSuperAdmin) {
+        items.push({
+          label: '发送者',
+          prop: 'recruiterId',
+          rule: 'required',
+          control: {
+            component: 'base-select',
+            attrs: {
+              clearable: true,
+              options: this.userOptions.filter(
+                option => option.companyId === this.matchedCompanyId
+              )
+            }
+          },
+          visible: this.interviewForm.applicationId ? true : false
+        })
       }
       return items
     }
   },
 
   methods: {
+    getMatchedCompanyId(value) {
+      const matchedApplication = this.applicatonIdOptions.find(
+        item => item.value === value
+      )
+      return matchedApplication?.Job?.companyId
+    },
     handleClose() {
       this.interviewForm = {
         id: '',
@@ -238,7 +258,7 @@ export default {
   },
 
   async mounted() {
-    if (this.withApplication) {
+    if (!this.isInWorker) {
       this.applicatonIdOptions = await getApplicatonIdOptions()
       this.userOptions = await getUserOptions('recruiter')
     }
