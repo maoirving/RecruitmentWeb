@@ -29,10 +29,6 @@ export function parseToPeriodRange(arr) {
   return newStr
 }
 export function parseToPeriodStr(arr) {
-  const newArr = arr.map(item =>
-    moment(item)
-      .utcOffset(0)
-      .format('YYYY-MM-DD')
-  )
+  const newArr = arr.map(item => moment(item).format('YYYY-MM-DD'))
   return arrToStr(newArr)
 }

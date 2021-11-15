@@ -245,9 +245,7 @@ export default {
       const user = omit(this.userForm, ['id'])
       const params = omitBy(user, val => val === '')
       if (params.birthday) {
-        params.birthday = moment(params.birthday)
-          .utcOffset(0)
-          .format('YYYY-MM-DD')
+        params.birthday = moment(params.birthday).format('YYYY-MM-DD')
       }
       if (!this.isProfileType) {
         params.password = '123456'

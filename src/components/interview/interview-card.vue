@@ -11,15 +11,32 @@
       <el-col :span="21">
         <div class="interview-right">
           <div class="interview-header">
-            <h4 class="text-base header-title">{{ interview.recruiterName }}</h4>
+            <h4 class="text-base header-title">
+              {{ interview.recruiterName }}
+            </h4>
             <div class="right-text">
-              <el-tag v-if="interview.agreedStatus === 0" class="mr-2" type="warning" size="mini">
+              <el-tag
+                v-if="interview.agreedStatus === 0"
+                class="mr-2"
+                type="warning"
+                size="mini"
+              >
                 未处理
               </el-tag>
-              <el-tag v-if="interview.agreedStatus === 1" class="mr-2" type="success" size="mini">
+              <el-tag
+                v-if="interview.agreedStatus === 1"
+                class="mr-2"
+                type="success"
+                size="mini"
+              >
                 已接受
               </el-tag>
-              <el-tag v-if="interview.agreedStatus === -1" class="mr-2" type="danger" size="mini">
+              <el-tag
+                v-if="interview.agreedStatus === -1"
+                class="mr-2"
+                type="danger"
+                size="mini"
+              >
                 已拒绝
               </el-tag>
               <span>{{ interview.createdAt | dateFormat }}</span>
@@ -57,25 +74,21 @@ export default {
 
   computed: {
     interviewDetail() {
-      return `面试时间：${this.formatDate(this.interview.interviewAt)}，面试地点：${
-        this.interview.address
-      }，备注：${this.interview.tip}`
+      return `面试时间：${this.formatDate(
+        this.interview.interviewAt
+      )}，面试地点：${this.interview.address}，备注：${this.interview.tip}`
     }
   },
 
   filters: {
     dateFormat(val, formatStr = 'MM-DD HH:mm') {
-      return moment(val)
-        .utcOffset(0)
-        .format(formatStr)
+      return moment(val).format(formatStr)
     }
   },
 
   methods: {
     formatDate(val, formatStr = 'MM-DD HH:mm') {
-      return moment(val)
-        .utcOffset(0)
-        .format(formatStr)
+      return moment(val).format(formatStr)
     }
   }
 }

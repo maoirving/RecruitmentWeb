@@ -15,7 +15,11 @@
 <script>
 import BaseTable from '@/components/base/base-table'
 import { optionFormatter } from '@/utils/formatter'
-import { companyTypeOptions, financingStageOptions, scaleOptions } from '@/utils/data-source'
+import {
+  companyTypeOptions,
+  financingStageOptions,
+  scaleOptions
+} from '@/utils/data-source'
 import moment from 'moment'
 import CompanyEditDialog from '@/components/company/company-edit-dialog'
 
@@ -66,9 +70,7 @@ export default {
           prop: 'registeredAt',
           formatter() {
             return row => {
-              return moment(row.createdAt)
-                .utcOffset(0)
-                .format('YYYY-MM-DD')
+              return moment(row.registeredAt).format('YYYY-MM-DD')
             }
           }
         },
@@ -77,9 +79,7 @@ export default {
           prop: 'createdAt',
           formatter() {
             return row => {
-              return moment(row.createdAt)
-                .utcOffset(0)
-                .format('YYYY-MM-DD HH:mm')
+              return moment(row.createdAt).format('YYYY-MM-DD HH:mm')
             }
           }
         }

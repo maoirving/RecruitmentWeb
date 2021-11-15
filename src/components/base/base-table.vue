@@ -185,18 +185,11 @@ export default {
         }
         if (button === 'deleteMany') {
           if (this.columns[0].type !== 'selection') {
-            this.columns.unshift(
-              {
-                width: '40px',
-                type: 'selection',
-                label: ''
-              },
-              {
-                width: '100px',
-                label: 'id',
-                prop: 'id'
-              }
-            )
+            this.columns.unshift({
+              width: '40px',
+              type: 'selection',
+              label: ''
+            })
           }
 
           newButtons.push({
@@ -376,6 +369,14 @@ export default {
         click() // 调用this.actionEvents时已经绑定了上下文以及参数信息，这里直接调用即可
       }
     }
+  },
+
+  created() {
+    this.columns.unshift({
+      width: '100px',
+      label: 'id',
+      prop: 'id'
+    })
   },
 
   mounted() {

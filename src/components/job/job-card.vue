@@ -65,7 +65,7 @@
           申请于 {{ application.createdAt | dateFormat }}</span
         >
         <span class="date" v-if="application.readAt">
-          （于 {{ application.readAt | dateFormat() }} 被查看）
+          （于 {{ application.readAt | dateFormat }} 被查看）
         </span>
       </p>
     </div>
@@ -172,9 +172,7 @@ export default {
 
   filters: {
     dateFormat(val, formatStr = 'MM-DD HH:mm') {
-      return moment(val)
-        .utcOffset(0)
-        .format(formatStr)
+      return moment(val).format(formatStr)
     },
     city(val) {
       return val.substr(0, 2)

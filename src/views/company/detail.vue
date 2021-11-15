@@ -141,9 +141,7 @@ export default {
       const res = await this.$axios.get(`/companies/${this.companyId}`)
       const company = res.data.company
       const registeredAt = company.registeredAt
-      company.registeredAt = moment(registeredAt)
-        .utcOffset(0)
-        .format('YYYY-MM-DD')
+      company.registeredAt = moment(registeredAt).format('YYYY-MM-DD')
       this.company = company
     }
   },

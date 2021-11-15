@@ -114,9 +114,9 @@ export default {
       this.profileForm = data.user
       this.profileForm.companyName = data.user?.Company?.name
       if (this.profileForm.birthday) {
-        this.profileForm.birthday = moment(this.profileForm.birthday)
-          .utcOffset(0)
-          .format('YYYY-MM-DD')
+        this.profileForm.birthday = moment(this.profileForm.birthday).format(
+          'YYYY-MM-DD'
+        )
       }
     }
   },

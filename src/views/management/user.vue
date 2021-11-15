@@ -53,9 +53,7 @@ export default {
           prop: 'birthday',
           formatter() {
             return row => {
-              return moment(row.createdAt)
-                .utcOffset(0)
-                .format('YYYY-MM-DD')
+              return moment(row.createdAt).format('YYYY-MM-DD')
             }
           }
         },
@@ -72,9 +70,7 @@ export default {
           prop: 'createdAt',
           formatter() {
             return row => {
-              return moment(row.createdAt)
-                .utcOffset(0)
-                .format('YYYY-MM-DD HH:mm')
+              return moment(row.createdAt).format('YYYY-MM-DD HH:mm')
             }
           }
         }

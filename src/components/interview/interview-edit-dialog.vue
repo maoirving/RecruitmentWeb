@@ -86,12 +86,12 @@ export default {
             this.interviewForm,
             pick(row, ['id', 'applicationId', 'recruiterId', 'address', 'tip'])
           )
-          this.interviewForm.interviewDate = moment(row.interviewAt)
-            .utcOffset(0)
-            .format('YYYY-MM-DD')
-          this.interviewForm.interviewTime = moment(row.interviewAt)
-            .utcOffset(0)
-            .format('HH:mm')
+          this.interviewForm.interviewDate = moment(row.interviewAt).format(
+            'YYYY-MM-DD'
+          )
+          this.interviewForm.interviewTime = moment(row.interviewAt).format(
+            'HH:mm'
+          )
         }
       }
     }
@@ -201,9 +201,9 @@ export default {
         'interviewDate',
         'interviewTime'
       ])
-      interview.interviewAt = `${moment(this.interviewForm.interviewDate)
-        .utcOffset(0)
-        .format('YYYY-MM-DD')} ${this.interviewForm.interviewTime}`
+      interview.interviewAt = `${moment(
+        this.interviewForm.interviewDate
+      ).format('YYYY-MM-DD')} ${this.interviewForm.interviewTime}`
       const params = omitBy(interview, val => val === '')
       if (!this.isEdit) {
         const res = await this.$axios.post(`/interviews`, params)

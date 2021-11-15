@@ -55,9 +55,7 @@ export default {
           prop: 'interviewAt',
           formatter() {
             return row => {
-              return moment(row.interviewAt)
-                .utcOffset(0)
-                .format('YYYY-MM-DD HH:mm')
+              return moment(row.interviewAt).format('YYYY-MM-DD HH:mm')
             }
           }
         },
@@ -90,9 +88,7 @@ export default {
           prop: 'createdAt',
           formatter() {
             return row => {
-              return moment(row.createdAt)
-                .utcOffset(0)
-                .format('YYYY-MM-DD HH:mm')
+              return moment(row.createdAt).format('YYYY-MM-DD HH:mm')
             }
           }
         }
