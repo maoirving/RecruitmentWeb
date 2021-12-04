@@ -22,7 +22,7 @@ import moment from 'moment'
 export default {
   components: {
     BaseTable,
-    UserEditDialog
+    UserEditDialog,
   },
   data() {
     const vm = this
@@ -30,40 +30,42 @@ export default {
       columns: [
         {
           label: '用户名',
-          prop: 'username'
+          prop: 'username',
         },
         {
           width: '90px',
           label: '角色',
           prop: 'type',
-          formatter: optionFormatter(userTypeOptions, 'type')
+          formatter: optionFormatter(userTypeOptions, 'type'),
         },
         {
           width: '90px',
           label: '真实姓名',
-          prop: 'realName'
+          prop: 'realName',
         },
         {
           width: '80px',
           label: '性别',
-          prop: 'sex'
+          prop: 'sex',
         },
         {
           label: '出生日期',
           prop: 'birthday',
           formatter() {
             return row => {
-              return moment(row.createdAt).format('YYYY-MM-DD')
+              return row.birthday
+                ? moment(row.birthday).format('YYYY-MM-DD')
+                : '-'
             }
-          }
+          },
         },
         {
           label: '手机号码',
-          prop: 'phoneNumber'
+          prop: 'phoneNumber',
         },
         {
           label: '电子邮箱',
-          prop: 'email'
+          prop: 'email',
         },
         {
           label: '注册时间',
@@ -72,8 +74,8 @@ export default {
             return row => {
               return moment(row.createdAt).format('YYYY-MM-DD HH:mm')
             }
-          }
-        }
+          },
+        },
       ],
       actions: [
         {
@@ -87,7 +89,7 @@ export default {
                   const res = await vm.$axios.put(
                     `/users/info?userId=${row.id}`,
                     {
-                      password: password
+                      password: password,
                     }
                   )
                   if (!res.data.success) {
@@ -97,10 +99,10 @@ export default {
                   this.reload()
                 })
                 .catch(() => {})
-            }
-          }
-        }
-      ]
+            },
+          },
+        },
+      ],
     }
   },
 
@@ -113,9 +115,9 @@ export default {
           isSelect: true,
           attrs: {
             clearable: true,
-            placeholder: '用户角色'
+            placeholder: '用户角色',
           },
-          options: userTypeOptions
+          options: userTypeOptions,
         },
         {
           key: 'sex',
@@ -123,31 +125,31 @@ export default {
           isSelect: true,
           attrs: {
             clearable: true,
-            placeholder: '性别'
+            placeholder: '性别',
           },
-          options: sexOptions
+          options: sexOptions,
         },
         {
           key: 'realName',
           span: 5,
           attrs: {
             clearable: true,
-            placeholder: '搜索用户'
-          }
-        }
+            placeholder: '搜索用户',
+          },
+        },
       ]
-    }
+    },
   },
 
   methods: {
     async getUsers(params = {}) {
       const res = await this.$axios.get('/users', {
-        params: params
+        params: params,
       })
       const list = res.data.users
       const newRes = {
         list: list,
-        total: res.data.pagination && res.data.pagination.total
+        total: res.data.pagination && res.data.pagination.total,
       }
       return newRes
     },
@@ -160,8 +162,8 @@ export default {
       this.$refs.editDialogRef.dialogVisible = true
       this.$refs.editDialogRef.outerThis = vm
       this.$refs.editDialogRef.outerData = row
-    }
-  }
+    },
+  },
 }
 </script>
 
