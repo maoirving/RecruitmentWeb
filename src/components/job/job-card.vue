@@ -58,10 +58,12 @@
         <el-divider direction="vertical" />
         <span class="text-xs">{{ job.educationBackground }}</span>
         <el-divider direction="vertical" />
-        <span class="text-xs">
-          招聘{{ job.recruitingNnumbers }}人（{{
-            job.Applications.length
-          }}人已申请）
+        <span class="text-xs"> 招聘{{ job.recruitingNnumbers }}人 </span>
+        <span
+          class="text-xs"
+          v-if="job.Applications && job.Applications.length"
+        >
+          （{{ job.Applications.length }}人已申请）
         </span>
       </p>
       <p v-if="application" class="description">
