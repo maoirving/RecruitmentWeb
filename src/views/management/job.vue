@@ -58,6 +58,16 @@ export default {
           }
         },
         {
+          width: '100px',
+          label: '已申请人数',
+          prop: 'Applications',
+          formatter() {
+            return row => {
+              return row.Applications.length + '人'
+            }
+          }
+        },
+        {
           width: '110px',
           label: '薪资范围',
           prop: 'salary'
