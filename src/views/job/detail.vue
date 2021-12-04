@@ -7,11 +7,21 @@
             {{ job.name }}
           </h2>
           <div class="info-list">
-            <div class="info-list-item" v-for="(info, index) in infos" :key="index">
+            <div
+              class="info-list-item"
+              v-for="(info, index) in infos"
+              :key="index"
+            >
               <h4 class="text-lg info-title">{{ info.title }}</h4>
               <div class="content-list">
-                <div class="content-list-item" v-for="(item, i) in info.items" :key="i">
-                  <h5 class="text-sm content-title" v-if="item.name">{{ item.name }}：</h5>
+                <div
+                  class="content-list-item"
+                  v-for="(item, i) in info.items"
+                  :key="i"
+                >
+                  <h5 class="text-sm content-title" v-if="item.name">
+                    {{ item.name }}：
+                  </h5>
                   <p class="info-content" v-html="job[item.prop]"></p>
                 </div>
               </div>
@@ -58,7 +68,7 @@ export default {
     JobCard,
     AsideWrapper,
     CompanyCard,
-    JobApplyDialog
+    JobApplyDialog,
   },
 
   data() {
@@ -69,56 +79,60 @@ export default {
           items: [
             {
               name: '工资范围',
-              prop: 'salary'
+              prop: 'salary',
             },
             {
               name: '招聘类型',
-              prop: 'type'
+              prop: 'type',
             },
 
             {
               name: '工作经验',
-              prop: 'workExperience'
+              prop: 'workExperience',
             },
             {
               name: '学历要求',
-              prop: 'educationBackground'
+              prop: 'educationBackground',
             },
             {
               name: '招聘人数',
-              prop: 'recruitingNnumbers'
-            }
-          ]
+              prop: 'recruitingNnumbers',
+            },
+            {
+              name: '已申请人数',
+              prop: 'appliedNnumbers',
+            },
+          ],
         },
         {
           title: '职位信息',
           items: [
             {
               name: '岗位职责',
-              prop: 'description'
+              prop: 'description',
             },
             {
               name: '技能要求',
-              prop: 'skill'
+              prop: 'skill',
             },
             {
               name: '工作地址',
-              prop: 'workLocation'
-            }
-          ]
+              prop: 'workLocation',
+            },
+          ],
         },
         {
           title: '联系方式',
           items: [
             {
               name: '公司地址',
-              prop: 'companyAddress'
-            }
-          ]
-        }
+              prop: 'companyAddress',
+            },
+          ],
+        },
       ],
       job: {},
-      dialogVisible: false
+      dialogVisible: false,
     }
   },
 
@@ -126,7 +140,7 @@ export default {
     ...mapGetters('user', ['isAuthenticated']),
     jobId() {
       return this.$route.query.jobId
-    }
+    },
   },
 
   methods: {
@@ -136,8 +150,8 @@ export default {
       }
       const res = await this.$axios.get('/applications', {
         params: {
-          jobId: this.jobId
-        }
+          jobId: this.jobId,
+        },
       })
       const count = res.data.pagination && res.data.pagination.total
       if (count > 0) {
@@ -151,13 +165,14 @@ export default {
       this.job = data.job
       this.job.type = getMatchedLabel(jobTypeOptions, data.job.type)
       this.job.recruitingNnumbers = `${data.job.recruitingNnumbers}人`
+      this.job.appliedNnumbers = `${data.job.Applications.length}人`
       this.job.companyAddress = data.job?.Company?.address
-    }
+    },
   },
 
   mounted() {
     this.getJob()
-  }
+  },
 }
 </script>
 

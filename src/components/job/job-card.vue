@@ -58,7 +58,11 @@
         <el-divider direction="vertical" />
         <span class="text-xs">{{ job.educationBackground }}</span>
         <el-divider direction="vertical" />
-        <span class="text-xs">{{ job.recruitingNnumbers }}人</span>
+        <span class="text-xs">
+          招聘{{ job.recruitingNnumbers }}人（{{
+            job.Applications.length
+          }}人已申请）
+        </span>
       </p>
       <p v-if="application" class="description">
         <span class="date">
@@ -121,29 +125,29 @@ import { getMatchedLabel, jobTypeOptions } from '@/utils/data-source'
 
 export default {
   components: {
-    BaseAspect
+    BaseAspect,
   },
   props: {
     isSimpleType: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     job: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
 
     application: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
 
   computed: {
     jobType() {
       return this.job.type === 'school' ? '校招' : ''
-    }
+    },
   },
 
   methods: {
@@ -151,8 +155,8 @@ export default {
       this.$router.push({
         path: '/job/detail',
         query: {
-          jobId: this.job.id
-        }
+          jobId: this.job.id,
+        },
       })
     },
 
@@ -160,14 +164,14 @@ export default {
       this.$router.push({
         path: '/company/detail',
         query: {
-          companyId: this.job.companyId
-        }
+          companyId: this.job.companyId,
+        },
       })
     },
 
     handleDelete(applicationId) {
       this.$emit('delete-application', applicationId)
-    }
+    },
   },
 
   filters: {
@@ -176,8 +180,8 @@ export default {
     },
     city(val) {
       return val.substr(0, 2)
-    }
-  }
+    },
+  },
 }
 </script>
 
