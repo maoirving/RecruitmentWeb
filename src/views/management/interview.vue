@@ -4,6 +4,8 @@
       :filter-items="filters"
       :columns="columns"
       :fetch-data="getInterviews"
+      :default-actions="defaultActions"
+      :default-buttons="defaultButtons"
       @add="handleAdd"
       @edit="handleEdit"
     />
@@ -13,11 +15,7 @@
 
 <script>
 import BaseTable from '@/components/base/base-table'
-import {
-  getMatchedLabel,
-  colorTypeOptions,
-  agreedStatusOptions
-} from '@/utils/data-source'
+import { getMatchedLabel, colorTypeOptions, agreedStatusOptions } from '@/utils/data-source'
 import InterviewEditDialog from '@/components/interview/interview-edit-dialog'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
@@ -34,6 +32,12 @@ export default {
 
   computed: {
     ...mapGetters('admin', ['isSuperAdmin']),
+    defaultActions() {
+      return this.isSuperAdmin ? ['delete'] : ['edit', 'delete']
+    },
+    defaultButtons() {
+      return this.isSuperAdmin ? ['deleteMany'] : ['add', 'deleteMany']
+    },
     columns() {
       return [
         {

@@ -100,29 +100,6 @@ export default {
             }
           }
         }
-      ],
-      actions: [
-        {
-          label: '查看简历',
-          events: {
-            click({ row }) {
-              vm.$refs.resumeReadRef.applicationId = row.id
-              vm.$refs.resumeReadRef.url = row.ResumeFile?.url
-              vm.$refs.resumeReadRef.dialogVisible = true
-            }
-          }
-        },
-        {
-          label: '处理',
-          type: 'warning',
-          events: {
-            click({ row }) {
-              vm.$refs.applicationHandleDialogRef.outerData = row
-              vm.$refs.applicationHandleDialogRef.outerThis = this
-              vm.$refs.applicationHandleDialogRef.dialogVisible = true
-            }
-          }
-        }
       ]
     }
   },
@@ -133,7 +110,7 @@ export default {
       return this.isSuperAdmin ? ['delete'] : []
     },
     defaultButtons() {
-      return this.isSuperAdmin ? ['add', 'deleteMany'] : []
+      return this.isSuperAdmin ? ['deleteMany'] : []
     },
     filters() {
       return [
@@ -155,9 +132,7 @@ export default {
             clearable: true,
             placeholder: '学历'
           },
-          options: educationBackgroundOptions.filter(
-            item => item.value !== '不限'
-          )
+          options: educationBackgroundOptions.filter(item => item.value !== '不限')
         },
         {
           key: 'handledStatus',
@@ -186,6 +161,32 @@ export default {
           }
         }
       ]
+    },
+    actions() {
+      return [
+        {
+          label: '查看简历',
+          events: {
+            click({ row }) {
+              vm.$refs.resumeReadRef.applicationId = row.id
+              vm.$refs.resumeReadRef.url = row.ResumeFile?.url
+              vm.$refs.resumeReadRef.dialogVisible = true
+            }
+          }
+        },
+        {
+          label: '处理',
+          type: 'warning',
+          visible: () => !this.isSuperAdmin,
+          events: {
+            click({ row }) {
+              vm.$refs.applicationHandleDialogRef.outerData = row
+              vm.$refs.applicationHandleDialogRef.outerThis = this
+              vm.$refs.applicationHandleDialogRef.dialogVisible = true
+            }
+          }
+        }
+      ]
     }
   },
 
@@ -201,10 +202,7 @@ export default {
         const resume = item.ResumeFile
         item.userRealName = user.realName
         item.userSex = user.sex
-        item.userAge =
-          new Date().getFullYear() -
-          new Date(user.birthday).getFullYear() +
-          '岁'
+        item.userAge = new Date().getFullYear() - new Date(user.birthday).getFullYear() + '岁'
         item.jobName = job.name
         item.jobType = job.type
         item.resumeName = resume && resume.name
