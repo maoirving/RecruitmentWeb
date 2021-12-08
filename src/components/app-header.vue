@@ -127,7 +127,7 @@ export default {
       let menu = [
         {
           title: '进入企业版',
-          url: '/management/job',
+          url: '/management/job?type=enterprise',
           target: '_blank'
         }
       ]

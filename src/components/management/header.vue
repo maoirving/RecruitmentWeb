@@ -102,9 +102,24 @@ export default {
     }
   },
 
+  watch: {
+    isSuperAdmin(val) {
+      if (val && this.isEnterpriseType) {
+        this.logout()
+          .then(() => {
+            this.$router.push('/enterprise/login')
+          })
+          .catch(() => {})
+      }
+    }
+  },
+
   computed: {
     ...mapState('admin', ['avatar']),
     ...mapGetters('admin', ['isAuthenticated', 'isSuperAdmin', 'isRecruiter']),
+    isEnterpriseType() {
+      return this.$route.query.type === 'enterprise'
+    },
     isActive() {
       return name => {
         if (name === this.$route.name) {
