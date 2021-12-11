@@ -1,6 +1,10 @@
 <template>
   <simple-layout class="login-page">
-    <sign-wrapper title="欢迎注册" btn-text="立即注册" @btn-click="handleRegister">
+    <sign-wrapper
+      title="欢迎注册"
+      btn-text="立即注册"
+      @btn-click="handleRegister"
+    >
       <template slot="form-content">
         <base-form
           ref="registerRef"
@@ -18,7 +22,9 @@
         </base-form>
       </template>
       <template slot="tip">
-        已有账号？去<router-link class="text-link" to="/login">登录</router-link>
+        已有账号？去<router-link class="text-link" to="/login"
+          >登录</router-link
+        >
       </template>
     </sign-wrapper>
   </simple-layout>
@@ -151,7 +157,9 @@ export default {
 
   methods: {
     async checkUsername() {
-      const res = await this.$axios.post('/users/check', { username: this.registerForm.username })
+      const res = await this.$axios.post('/users/check', {
+        username: this.registerForm.username
+      })
       return res.data.success === true
     },
 
@@ -169,8 +177,10 @@ export default {
           type: 'success',
           message: '注册成功，请登录！'
         })
+        const routeName =
+          this.registerForm.type === 'recruiter' ? 'EnterpriseLogin' : 'Login'
         this.$router.push({
-          name: 'Login',
+          name: routeName,
           params: {
             username: form.username
           }

@@ -15,7 +15,7 @@ const state = getDefaultState
 const getters = {
   isAuthenticated: state => !!state.token,
   isSuperAdmin: state => state.role === 'admin',
-  isRecruiter: state => !!state.companyId,
+  isRecruiter: state => state.role === 'recruiter',
   companyId: state => state.companyId
 }
 
