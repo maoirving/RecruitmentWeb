@@ -139,7 +139,8 @@ export default {
   computed: {
     ...mapGetters('user', ['isAuthenticated']),
     jobId() {
-      return this.$route.query.jobId
+      let id = this.$route.query.jobId;
+      return parseInt(id)
     },
   },
 

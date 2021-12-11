@@ -124,16 +124,16 @@ export default {
           },
           options: jobTypeOptions
         },
-        {
-          key: 'educationBackground',
-          span: 4,
-          isSelect: true,
-          attrs: {
-            clearable: true,
-            placeholder: '学历'
-          },
-          options: educationBackgroundOptions.filter(item => item.value !== '不限')
-        },
+        // {
+        //   key: 'educationBackground',
+        //   span: 4,
+        //   isSelect: true,
+        //   attrs: {
+        //     clearable: true,
+        //     placeholder: '学历'
+        //   },
+        //   options: educationBackgroundOptions.filter(item => item.value !== '不限')
+        // },
         {
           key: 'handledStatus',
           span: 4,
@@ -163,6 +163,7 @@ export default {
       ]
     },
     actions() {
+      const vm = this
       return [
         {
           label: '查看简历',
@@ -202,7 +203,10 @@ export default {
         const resume = item.ResumeFile
         item.userRealName = user.realName
         item.userSex = user.sex
-        item.userAge = new Date().getFullYear() - new Date(user.birthday).getFullYear() + '岁'
+        item.userAge =
+          new Date().getFullYear() -
+          new Date(user.birthday).getFullYear() +
+          '岁'
         item.jobName = job.name
         item.jobType = job.type
         item.resumeName = resume && resume.name

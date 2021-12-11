@@ -31,7 +31,7 @@ export default {
 
   props: {
     jobId: {
-      type: String,
+      type: [String, Number],
       default: ''
     }
   },
